@@ -1,0 +1,33 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.9'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'uk.ac.swansea'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+	maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+	// rest
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	// dto
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	// validation
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	// piston - code execution engine
+	implementation 'com.github.the-codeboy:Piston4J:0.0.6'
+	// model mapper - map list of objects into dto
+	implementation 'org.modelmapper:modelmapper:2.3.0'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
