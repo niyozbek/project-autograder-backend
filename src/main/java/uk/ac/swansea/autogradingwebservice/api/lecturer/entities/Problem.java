@@ -16,5 +16,5 @@ public class Problem {
 
     private String description;
     private Integer status;
-    private Long lecturer_id;
+    private Long lecturerId;
 }

@@ -1,4 +1,4 @@
-package uk.ac.swansea.autogradingwebservice.api.submission.controllers.dto;
+package uk.ac.swansea.autogradingwebservice.api.student.controllers.dto;
 
 import lombok.Data;
 
@@ -14,6 +14,4 @@ public class SubmissionDto {
     private String fileName;
     @NotBlank
     private String code;
-    private String input;
-    private String expectedOutput;
 }

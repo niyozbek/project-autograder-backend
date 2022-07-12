@@ -21,7 +21,7 @@ public class TestCaseController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('LECTURER')")
-    public List<TestCase> getTestCases(@PathVariable Long id) throws ResourceNotFoundException {
+    public List<TestCase> getTestCases(@PathVariable Long id) {
         return testCaseService.getAllTestCasesByProblemId(id);
     }
 

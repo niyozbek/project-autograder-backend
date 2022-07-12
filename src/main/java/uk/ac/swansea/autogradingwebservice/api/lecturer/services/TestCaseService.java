@@ -17,7 +17,7 @@ public class TestCaseService {
     @Autowired
     private TestCaseRepository testCaseRepository;
 
-    public List<TestCase> getAllTestCasesByProblemId(Long id) throws ResourceNotFoundException {
+    public List<TestCase> getAllTestCasesByProblemId(Long id) {
         return testCaseRepository.findAllByProblemId(id);
     }
 

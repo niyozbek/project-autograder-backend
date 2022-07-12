@@ -11,12 +11,20 @@ import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
 import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/lecturer/problem")
 public class ProblemController {
     @Autowired
     private ProblemService problemService;
+
+    @GetMapping
+    @PreAuthorize("hasAuthority('LECTURER')")
+    public List<Problem> getProblems(Authentication authentication) throws ResourceNotFoundException {
+        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
+        return problemService.getProblemsByLecturerId(user.getId());
+    }
 
     @GetMapping("{id}")
     @PreAuthorize("hasAuthority('LECTURER')")
