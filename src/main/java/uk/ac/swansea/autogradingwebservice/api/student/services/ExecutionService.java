@@ -1,9 +1,6 @@
 package uk.ac.swansea.autogradingwebservice.api.student.services;
 
-import com.github.codeboy.piston4j.api.CodeFile;
-import com.github.codeboy.piston4j.api.ExecutionRequest;
-import com.github.codeboy.piston4j.api.ExecutionResult;
-import com.github.codeboy.piston4j.api.Piston;
+import com.github.codeboy.piston4j.api.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +12,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+// TODO: Maybe find additional code exec engine, java is returning empty response often
 @Service
 public class ExecutionService {
     @Autowired
@@ -32,11 +30,14 @@ public class ExecutionService {
         CodeFile codeFile = new CodeFile(dto.getFileName(), dto.getCode()); //create the codeFile containing the javascript code
         ExecutionRequest request = new ExecutionRequest(dto.getLanguage(), dto.getVersion(), codeFile); //create the request using the codeFile, a language and a version
         request.setStdin(dto.getInput());
-        ExecutionResult result = api.execute(request); //execute the request
+        // loop until we get appropriate result, because java code fails sometimes in remote server
+        ExecutionOutput executionOutput;
+        do {
+            ExecutionResult result = api.execute(request); //execute the request
+            executionOutput = result.getOutput();
+        } while (executionOutput.getCode() != 0 && executionOutput.getSignal() != null);
 
-        // get crucial data into variables
-        ExecutionResultDto resultDto = new ExecutionResultDto();
-        String output = result.getOutput().getOutput();
+        String output = executionOutput.getOutput();
         // remove \n from the result
         if (output.length() > 1) {
             output = output.substring(0, output.length() - 1);
@@ -44,10 +45,10 @@ public class ExecutionService {
 
         String expectedOutput = dto.getExpectedOutput();
         // populate dto fields
-        resultDto.setOutput(output);
-        resultDto.setExpectedOutput(expectedOutput);
-        resultDto.setIsValid(Objects.equals(output, expectedOutput));
-        return resultDto;
+        return ExecutionResultDto.builder()
+                .output(output)
+                .expectedOutput(expectedOutput)
+                .isValid(Objects.equals(output, expectedOutput)).build();
     }
 
     /**

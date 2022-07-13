@@ -8,30 +8,31 @@ import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.TestCase
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.TestCase;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.services.TestCaseService;
 import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
+import uk.ac.swansea.autogradingwebservice.exceptions.BadRequestException;
+import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/lecturer/problem/{id}/test-case")
+@RequestMapping("api/lecturer/problem/{problemId}/test-case")
 public class TestCaseController {
     @Autowired
     private TestCaseService testCaseService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('LECTURER')")
-    public List<TestCase> getTestCases(@PathVariable Long id) {
-        return testCaseService.getAllTestCasesByProblemId(id);
+    public List<TestCase> getTestCases(@PathVariable Long problemId) {
+        return testCaseService.getAllTestCasesByProblemId(problemId);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('LECTURER')")
     public TestCase addTestCase(Authentication authentication,
-                               @PathVariable Long id,
-                               @Valid @RequestBody TestCaseDto testCaseDto) {
-        // TODO: verify userId to match problem owner
+                               @PathVariable Long problemId,
+                               @Valid @RequestBody TestCaseDto testCaseDto) throws BadRequestException, ResourceNotFoundException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        testCaseDto.setProblemId(id);
-        return testCaseService.addTestCase(testCaseDto);
+        testCaseDto.setProblemId(problemId);
+        return testCaseService.addTestCase(testCaseDto, user.getId());
     }
 }

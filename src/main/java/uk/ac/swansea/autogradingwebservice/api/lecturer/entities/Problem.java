@@ -14,7 +14,9 @@ public class Problem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String title;
     private String description;
+    // TODO: make status useful
     private Integer status;
     private Long lecturerId;
 }

@@ -1,13 +1,14 @@
 package uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class ProblemDto extends ProblemBriefDto {
+public class ProblemBriefDto {
+    private Long id;
     @NotBlank
-    private String description;
+    private String title;
+    private Integer status;
+    private Long lecturerId;
 }
