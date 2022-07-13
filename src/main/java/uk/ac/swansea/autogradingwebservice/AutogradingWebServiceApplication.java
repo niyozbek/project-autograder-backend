@@ -6,8 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class AutogradingWebServiceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AutogradingWebServiceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AutogradingWebServiceApplication.class, args);
+    }
+
 
 }

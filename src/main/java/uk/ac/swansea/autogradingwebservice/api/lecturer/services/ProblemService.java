@@ -24,7 +24,7 @@ public class ProblemService {
 
     public Problem getProblem(Long id) throws ResourceNotFoundException {
         return problemRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException());
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     public List<Problem> getProblemsByLecturerId(Long id) {

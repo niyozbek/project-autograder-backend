@@ -10,8 +10,10 @@ spring:
     open-in-view: true
 
   datasource:
-    platform: postgres
     url: jdbc:postgresql://localhost:5432/autograder
     username: root
     password: root
     driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres

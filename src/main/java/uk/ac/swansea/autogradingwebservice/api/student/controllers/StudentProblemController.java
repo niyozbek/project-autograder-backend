@@ -8,16 +8,21 @@ import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.Problem;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.services.ProblemService;
 import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autogradingwebservice.api.student.entities.Submission;
-import uk.ac.swansea.autogradingwebservice.api.student.entities.SubmissionDetail;
 import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionService;
 import uk.ac.swansea.autogradingwebservice.api.student.services.dto.RuntimeDto;
 import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
-import uk.ac.swansea.autogradingwebservice.exceptions.BadRequestException;
 import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * View all problems
+ * View a problem
+ * Submit the code+
+ * Get previous submissions to a specific problem
+ *
+ */
 @RestController
 @RequestMapping("api/student/problem")
 public class StudentProblemController {
@@ -46,51 +51,26 @@ public class StudentProblemController {
 
     /**
      * Submit solution to a problem
-     * @param id
-     * @param submissionDto
+     * @param id problemId
+     * @param submissionDto submission body
      */
     @PostMapping("{id}/submit")
     @PreAuthorize("hasAuthority('STUDENT')")
-    public void submitSolution(Authentication authentication,
+    public Submission submitSolution(Authentication authentication,
                                @PathVariable Long id,
                                @Valid @RequestBody SubmissionDto submissionDto) throws ResourceNotFoundException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        submissionService.submitSolution(id, submissionDto, user.getId());
+        return submissionService.submitSolution(id, submissionDto, user.getId());
     }
 
     /**
      * Get list of submitted solutions by the student for a specific problem
-     * @return
+     * @return list of submission
      */
     @GetMapping("{id}/submission")
     @PreAuthorize("hasAuthority('STUDENT')")
     public List<Submission> getSubmissions(Authentication authentication, @PathVariable Long id) {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         return submissionService.getSubmissionsByProblemIdAndStudentId(id, user.getId());
-    }
-
-    /**
-     * Get list specific submission
-     * @return
-     */
-    @GetMapping("{problemId}/submission/{submissionId}")
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public Submission getSubmission(Authentication authentication,
-                                          @PathVariable Long problemId,
-                                          @PathVariable Long submissionId) throws BadRequestException, ResourceNotFoundException {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        return submissionService.getSubmission(submissionId, problemId, user.getId());
-    }
-
-    /**
-     * Get test cases and results
-     */
-    @GetMapping("{problemId}/submission/{submissionId}/detail")
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public List<SubmissionDetail> getSubmissionDetails(Authentication authentication,
-                                                @PathVariable Long problemId,
-                                                @PathVariable Long submissionId) throws BadRequestException, ResourceNotFoundException {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        return submissionService.getSubmissionDetail(submissionId, problemId, user.getId());
     }
 }

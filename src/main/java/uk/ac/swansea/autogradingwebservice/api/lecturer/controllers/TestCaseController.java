@@ -8,7 +8,6 @@ import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.TestCase
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.TestCase;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.services.TestCaseService;
 import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
-import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 
 import javax.validation.Valid;
 import java.util.List;

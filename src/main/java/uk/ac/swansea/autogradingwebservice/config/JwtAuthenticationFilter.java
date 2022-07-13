@@ -50,16 +50,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean notAuthorized(UserDetails user, HttpServletRequest request) {
         String url = request.getRequestURI();
-        if (url.contains("/api/admin") && !user.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ADMIN"))) {
+        if (url.contains("/api/admin") && user.getAuthorities().stream()
+                .noneMatch(a -> a.getAuthority().equals("ADMIN"))) {
             return true;
         }
-        if (url.contains("/api/lecturer") && !user.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("LECTURER"))) {
+        if (url.contains("/api/lecturer") && user.getAuthorities().stream()
+                .noneMatch(a -> a.getAuthority().equals("LECTURER"))) {
             return true;
         }
-        if (url.contains("/api/student") && !user.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("STUDENT"))) {
+        if (url.contains("/api/student") && user.getAuthorities().stream()
+                .noneMatch(a -> a.getAuthority().equals("STUDENT"))) {
             return true;
         }
 

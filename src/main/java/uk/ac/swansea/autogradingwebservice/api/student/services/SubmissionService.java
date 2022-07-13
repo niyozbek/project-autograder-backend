@@ -9,6 +9,7 @@ import uk.ac.swansea.autogradingwebservice.api.lecturer.services.TestCaseService
 import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autogradingwebservice.api.student.entities.Submission;
 import uk.ac.swansea.autogradingwebservice.api.student.entities.SubmissionDetail;
+import uk.ac.swansea.autogradingwebservice.api.student.messaging.SubmissionSender;
 import uk.ac.swansea.autogradingwebservice.api.student.repositories.SubmissionDetailRepository;
 import uk.ac.swansea.autogradingwebservice.api.student.repositories.SubmissionRepository;
 import uk.ac.swansea.autogradingwebservice.api.student.services.dto.ExecutionDto;
@@ -32,8 +33,10 @@ public class SubmissionService {
     private ExecutionService executionService;
     @Autowired
     private SubmissionDetailRepository submissionDetailRepository;
+    @Autowired
+    private SubmissionSender submissionSender;
 
-    public void submitSolution(Long id, SubmissionDto submissionDto, Long studentId) throws ResourceNotFoundException {
+    public Submission submitSolution(Long id, SubmissionDto submissionDto, Long studentId) throws ResourceNotFoundException {
         Problem problem = problemService.getProblem(id);
         Submission submission = new Submission();
         submission.setProblemId(problem.getId());
@@ -43,6 +46,12 @@ public class SubmissionService {
         submission.setFilename(submissionDto.getFileName());
         submission.setCode(submissionDto.getCode());
         submissionRepository.save(submission);
+        submissionSender.send(submission.getId());
+        return submission;
+    }
+
+    public void runSubmission(Long submissionId) throws ResourceNotFoundException {
+        Submission submission = getSubmission(submissionId);
         runTestCases(submission);
     }
 
@@ -73,27 +82,32 @@ public class SubmissionService {
     }
 
     // use problemId and studentID to verify if submissionId can be accessed
-    public Submission getSubmission(Long submissionId, Long problemId, Long studentId) throws BadRequestException, ResourceNotFoundException {
+    public Submission getSubmission(Long submissionId, Long studentId) throws BadRequestException, ResourceNotFoundException {
         Submission submission = submissionRepository.findById(submissionId).orElseThrow(
-                () -> new ResourceNotFoundException());
-        if (!Objects.equals(submission.getProblemId(), problemId)) {
-            throw new BadRequestException();
-        }
+                ResourceNotFoundException::new);
         if (!Objects.equals(submission.getStudentId(), studentId)) {
             throw new BadRequestException();
         }
         return submission;
     }
 
-    public List<SubmissionDetail> getSubmissionDetail(Long submissionId, Long problemId, Long id) throws BadRequestException, ResourceNotFoundException {
-        Submission submission = getSubmission(submissionId, problemId, id);
-        List<SubmissionDetail> submissionDetails = submissionDetailRepository
+    public Submission getSubmission(Long submissionId) throws ResourceNotFoundException {
+        return submissionRepository.findById(submissionId).orElseThrow(
+                ResourceNotFoundException::new);
+    }
+
+    public List<SubmissionDetail> getSubmissionDetail(Long submissionId, Long id) throws BadRequestException, ResourceNotFoundException {
+        Submission submission = getSubmission(submissionId, id);
+        return submissionDetailRepository
                 .findAllBySubmissionId(submission.getId());
-        return submissionDetails;
     }
 
     public List<RuntimeDto> getRuntime(Long id) {
         // maybe consider id later
         return executionService.getRuntimes();
+    }
+
+    public List<Submission> getSubmissionsByStudentId(Long studentId) {
+        return submissionRepository.findAllByStudentId(studentId);
     }
 }

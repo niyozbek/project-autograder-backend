@@ -34,7 +34,9 @@ dependencies {
     // api security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     // token provider for auth
-    implementation 'com.auth0:java-jwt:3.18.1'
+    implementation 'com.auth0:java-jwt:3.19.2'
+    // redis for messaging and caching
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {

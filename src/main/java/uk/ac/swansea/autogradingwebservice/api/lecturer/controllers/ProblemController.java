@@ -13,6 +13,12 @@ import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * Create problem, so that students can submit a code for it+
+ * TODO: Can view grade of each student in terms of valid test cases and percentage
+ * Can view all problems created previously+
+ * Can't view problems created by other lecturers+
+ */
 @RestController
 @RequestMapping("api/lecturer/problem")
 public class ProblemController {
@@ -21,7 +27,7 @@ public class ProblemController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('LECTURER')")
-    public List<Problem> getProblems(Authentication authentication) throws ResourceNotFoundException {
+    public List<Problem> getProblems(Authentication authentication) {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         return problemService.getProblemsByLecturerId(user.getId());
     }

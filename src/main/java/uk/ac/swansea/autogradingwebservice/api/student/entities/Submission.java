@@ -1,7 +1,5 @@
 package uk.ac.swansea.autogradingwebservice.api.student.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
