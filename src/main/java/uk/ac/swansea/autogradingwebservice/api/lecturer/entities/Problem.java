@@ -16,7 +16,8 @@ public class Problem {
 
     private String title;
     private String description;
-    // TODO: make status useful
-    private Integer status;
+    private Status status;
     private Long lecturerId;
+
+    public enum Status {ACTIVE, EXPIRED, ARCHIVED}
 }

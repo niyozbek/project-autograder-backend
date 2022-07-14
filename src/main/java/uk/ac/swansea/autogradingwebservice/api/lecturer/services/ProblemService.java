@@ -1,6 +1,7 @@
 package uk.ac.swansea.autogradingwebservice.api.lecturer.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.ProblemDto;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.Problem;
@@ -20,7 +21,7 @@ public class ProblemService {
         Problem problem = new Problem();
         problem.setTitle(problemDto.getTitle());
         problem.setDescription(problemDto.getDescription());
-        problem.setStatus(1);
+        problem.setStatus(Problem.Status.ACTIVE);
         problem.setLecturerId(problemDto.getLecturerId());
         return problemRepository.save(problem);
     }
@@ -39,12 +40,19 @@ public class ProblemService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public List<Problem> getProblemsByLecturerId(Long id) {
-        return problemRepository.findAllByLecturerId(id);
+    public List<Problem> getProblemsByLecturerId(Long id, Pageable pageable) {
+        return problemRepository.findAllByLecturerId(id, pageable);
     }
 
-    public List<Problem> getProblems() {
-        return (List<Problem>) problemRepository.findAll();
+    public List<Problem> getProblems(Pageable pageable) {
+        return problemRepository.findAll(pageable).toList();
     }
 
+    public Problem updateProblem(Long id, ProblemDto problemDto) throws ResourceNotFoundException {
+        Problem problem = getProblem(id);
+        problem.setTitle(problemDto.getTitle());
+        problem.setDescription(problemDto.getDescription());
+        problem.setStatus(problemDto.getStatus());
+        return problemRepository.save(problem);
+    }
 }

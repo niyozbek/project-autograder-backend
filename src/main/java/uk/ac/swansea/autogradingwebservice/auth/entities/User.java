@@ -1,11 +1,14 @@
 package uk.ac.swansea.autogradingwebservice.auth.entities;
 
-import java.util.*;
+import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Data
 public class User {
 
     @Id
@@ -24,26 +27,4 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public Set<Role> getRoles() {
-        return new HashSet<>(roles);
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    // remaining getters and setters are not shown for brevity
 }

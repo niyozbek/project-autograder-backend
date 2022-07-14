@@ -1,19 +1,16 @@
-package uk.ac.swansea.autogradingwebservice.api.student.controllers;
+package uk.ac.swansea.autogradingwebservice.api.lecturer.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionBriefDto;
-import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionDetailDto;
-import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionDto;
+import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.SubmissionBriefDto;
+import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.SubmissionDetailDto;
+import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autogradingwebservice.api.student.entities.Submission;
 import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionService;
-import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
-import uk.ac.swansea.autogradingwebservice.exceptions.BadRequestException;
 import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 
 import java.util.List;
@@ -25,35 +22,26 @@ import java.util.stream.Collectors;
  * View every test case of every submission+
  */
 @RestController
-@RequestMapping("api/student/submission")
-public class StudentSubmissionController {
+@RequestMapping("api/lecturer")
+public class SubmissionController {
     @Autowired
     private SubmissionService submissionService;
     @Autowired
     private ModelMapper modelMapper;
 
     /**
-     * Get list of submitted solutions by the student
-     * also for a specific problem
+     * Get list of submitted solutions of a specific problem
      *
      * @return list of submissions
      */
-    @GetMapping
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public List<SubmissionBriefDto> getSubmissions(Authentication authentication,
-                                                   @RequestParam(required = false) Long problemId,
+    @GetMapping("problem/{problemId}/submission")
+    @PreAuthorize("hasAuthority('LECTURER')")
+    public List<SubmissionBriefDto> getSubmissions(@PathVariable Long problemId,
                                                    @RequestParam(defaultValue = "0") Integer pageNo,
                                                    @RequestParam(defaultValue = "10") Integer pageSize) {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        List<Submission> submissionList;
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        if (problemId != null) {
-            submissionList = submissionService
-                    .getSubmissionsByProblemIdAndStudentId(problemId, user.getId(), pageable);
-        } else {
-            submissionList = submissionService
-                    .getSubmissionsByStudentId(user.getId(), pageable);
-        }
+        List<Submission> submissionList = submissionService
+                .getSubmissionsByProblemId(problemId, pageable);
         return convertToDto(submissionList);
     }
 
@@ -62,24 +50,21 @@ public class StudentSubmissionController {
      *
      * @return submission
      */
-    @GetMapping("{submissionId}")
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public SubmissionDto getSubmission(Authentication authentication,
-                                       @PathVariable Long submissionId)
-            throws BadRequestException, ResourceNotFoundException {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        return convertToDto(submissionService.getSubmission(submissionId, user.getId()));
+    @GetMapping("submission/{submissionId}")
+    @PreAuthorize("hasAuthority('LECTURER')")
+    public SubmissionDto getSubmission(@PathVariable Long submissionId)
+            throws ResourceNotFoundException {
+        Submission submission = submissionService.getSubmission(submissionId);
+        return convertToDto(submission);
     }
 
     /**
      * Get test cases and results
      */
-    @GetMapping("{submissionId}/detail")
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public List<SubmissionDetailDto> getSubmissionDetails(Authentication authentication,
-                                                          @PathVariable Long submissionId) throws BadRequestException, ResourceNotFoundException {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        return submissionService.getSubmissionDetail(submissionId, user.getId())
+    @GetMapping("submission/{submissionId}/detail")
+    @PreAuthorize("hasAuthority('LECTURER')")
+    public List<SubmissionDetailDto> getSubmissionDetails(@PathVariable Long submissionId) {
+        return submissionService.getSubmissionDetail(submissionId)
                 .stream()
                 .map(submissionDetail -> SubmissionDetailDto.builder()
                         .id(submissionDetail.getId())

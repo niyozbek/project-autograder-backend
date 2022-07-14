@@ -2,6 +2,8 @@ package uk.ac.swansea.autogradingwebservice.api.student.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import uk.ac.swansea.autogradingwebservice.api.student.entities.Submission;
 import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionService;
 import uk.ac.swansea.autogradingwebservice.api.student.services.dto.RuntimeDto;
 import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
+import uk.ac.swansea.autogradingwebservice.exceptions.BadRequestException;
 import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 
 import javax.validation.Valid;
@@ -38,8 +41,10 @@ public class StudentProblemController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('STUDENT')")
-    public List<ProblemBriefDto> getProblems() {
-        return convertToDto(problemService.getProblems());
+    public List<ProblemBriefDto> getProblems(@RequestParam(defaultValue = "0") Integer pageNo,
+                                             @RequestParam(defaultValue = "10") Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        return convertToDto(problemService.getProblems(pageable));
     }
 
     @GetMapping("{id}")
@@ -65,7 +70,7 @@ public class StudentProblemController {
     public Submission submitSolution(Authentication authentication,
                                      @PathVariable Long id,
                                      @Valid @RequestBody SubmissionDto submissionDto)
-            throws ResourceNotFoundException {
+            throws ResourceNotFoundException, BadRequestException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         return submissionService.submitSolution(id, submissionDto, user.getId());
     }

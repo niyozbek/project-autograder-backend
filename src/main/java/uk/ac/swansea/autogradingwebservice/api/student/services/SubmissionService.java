@@ -1,6 +1,7 @@
 package uk.ac.swansea.autogradingwebservice.api.student.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.Problem;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.TestCase;
@@ -36,8 +37,12 @@ public class SubmissionService {
     @Autowired
     private SubmissionSender submissionSender;
 
-    public Submission submitSolution(Long id, SubmissionDto submissionDto, Long studentId) throws ResourceNotFoundException {
+    public Submission submitSolution(Long id, SubmissionDto submissionDto, Long studentId)
+            throws ResourceNotFoundException, BadRequestException {
         Problem problem = problemService.getProblem(id);
+        if (!Objects.equals(problem.getStatus(), Problem.Status.ACTIVE)) {
+            throw new BadRequestException();
+        }
         Submission submission = new Submission();
         submission.setProblemId(problem.getId());
         submission.setStudentId(studentId);
@@ -70,15 +75,16 @@ public class SubmissionService {
             // save result to submissionDetails
             SubmissionDetail submissionDetail = new SubmissionDetail();
             submissionDetail.setSubmissionId(submission.getId());
-            submissionDetail.setTestCaseId(testCase.getId());
+            submissionDetail.setTestCase(testCase);
             submissionDetail.setActualOutput(executionResultDto.getOutput());
             submissionDetail.setTestCaseIsPassed(executionResultDto.getIsValid());
             submissionDetailRepository.save(submissionDetail);
         });
     }
 
-    public List<Submission> getSubmissionsByProblemIdAndStudentId(Long problemId, Long studentId) {
-        return submissionRepository.findAllByProblemIdAndStudentId(problemId, studentId);
+    public List<Submission> getSubmissionsByProblemIdAndStudentId(Long problemId, Long studentId,
+                                                                  Pageable pageable) {
+        return submissionRepository.findAllByProblemIdAndStudentId(problemId, studentId, pageable);
     }
 
     // use problemId and studentID to verify if submissionId can be accessed
@@ -96,10 +102,14 @@ public class SubmissionService {
                 ResourceNotFoundException::new);
     }
 
-    public List<SubmissionDetail> getSubmissionDetail(Long submissionId, Long id) throws BadRequestException, ResourceNotFoundException {
-        Submission submission = getSubmission(submissionId, id);
+    public List<SubmissionDetail> getSubmissionDetail(Long submissionId, Long studentId) throws BadRequestException, ResourceNotFoundException {
+        Submission submission = getSubmission(submissionId, studentId);
+        return getSubmissionDetail(submission.getId());
+    }
+
+    public List<SubmissionDetail> getSubmissionDetail(Long submissionId) {
         return submissionDetailRepository
-                .findAllBySubmissionId(submission.getId());
+                .findAllBySubmissionId(submissionId);
     }
 
     public List<RuntimeDto> getRuntime(Long id) {
@@ -107,7 +117,11 @@ public class SubmissionService {
         return executionService.getRuntimes();
     }
 
-    public List<Submission> getSubmissionsByStudentId(Long studentId) {
-        return submissionRepository.findAllByStudentId(studentId);
+    public List<Submission> getSubmissionsByStudentId(Long studentId, Pageable pageable) {
+        return submissionRepository.findAllByStudentId(studentId, pageable);
+    }
+
+    public List<Submission> getSubmissionsByProblemId(Long problemId, Pageable pageable) {
+        return submissionRepository.findAllByProblemId(problemId, pageable);
     }
 }
