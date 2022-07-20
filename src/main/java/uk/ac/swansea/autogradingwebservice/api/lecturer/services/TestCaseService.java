@@ -1,6 +1,7 @@
 package uk.ac.swansea.autogradingwebservice.api.lecturer.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.TestCaseDto;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.Problem;
@@ -20,6 +21,9 @@ public class TestCaseService {
 
     public List<TestCase> getAllTestCasesByProblemId(Long id) {
         return testCaseRepository.findAllByProblemId(id);
+    }
+    public List<TestCase> getAllTestCasesByProblemId(Long id, Pageable pageable) {
+        return testCaseRepository.findAllByProblemId(id, pageable);
     }
 
     public TestCase addTestCase(TestCaseDto testCaseDto, Long lecturerId) throws ResourceNotFoundException, BadRequestException {
