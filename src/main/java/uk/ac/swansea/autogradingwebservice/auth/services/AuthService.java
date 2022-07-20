@@ -28,9 +28,12 @@ public class AuthService {
         } catch (BadCredentialsException e) {
             throw new UnauthorizedException();
         }
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return tokenProvider.generateUserToken(authentication);
+    }
+
+    public String getUserRoleFromJWT(String jwt) {
+        return tokenProvider.getUserRoleFromJWT(jwt);
     }
 }

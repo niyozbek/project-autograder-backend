@@ -36,6 +36,7 @@ public class JwtTokenProvider {
                 .withSubject(user.getId().toString() + user.getUsername())
                 .withClaim("id", user.getId())
                 .withClaim("username", user.getUsername())
+                .withClaim("role", user.getRoleName())
                 .sign(Algorithm.HMAC256(jwtSecret.getBytes()));
     }
 
@@ -46,6 +47,15 @@ public class JwtTokenProvider {
         DecodedJWT jwt = verifier.verify(token);
 
         return jwt.getClaim("username").asString();
+    }
+
+    public String getUserRoleFromJWT(String token) {
+        JWTVerifier verifier = JWT.require(Algorithm.HMAC256(jwtSecret.getBytes()))
+                .build();    //
+
+        DecodedJWT jwt = verifier.verify(token);
+
+        return jwt.getClaim("role").asString();
     }
 
     public boolean validateToken(String authToken) {
