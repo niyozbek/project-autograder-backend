@@ -13,6 +13,6 @@ public class SubmissionBriefDto {
     @NotBlank
     private String version;
     @NotBlank
-    private String fileName;
+    private String filename;
     private Long studentId;
 }

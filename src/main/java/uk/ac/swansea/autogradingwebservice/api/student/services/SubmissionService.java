@@ -48,7 +48,7 @@ public class SubmissionService {
         submission.setStudentId(studentId);
         submission.setLanguage(submissionDto.getLanguage());
         submission.setVersion(submissionDto.getVersion());
-        submission.setFilename(submissionDto.getFileName());
+        submission.setFilename(submissionDto.getFilename());
         submission.setCode(submissionDto.getCode());
         submissionRepository.save(submission);
         submissionSender.send(submission.getId());
@@ -65,7 +65,7 @@ public class SubmissionService {
         ExecutionDto executionDto = ExecutionDto.builder()
                 .language(submission.getLanguage())
                 .version(submission.getVersion())
-                .fileName(submission.getFilename())
+                .filename(submission.getFilename())
                 .code(submission.getCode())
                 .build();
         testCases.forEach(testCase -> {

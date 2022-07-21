@@ -4,7 +4,7 @@ CREATE TABLE submissions
     problem_id BIGINT        NOT NULL,
     language   varchar(16)   NOT NULL,
     version    varchar(16)   NOT NULL,
-    fileName   varchar(256)  NOT NULL,
+    filename   varchar(256)  NOT NULL,
     code       varchar(2048) NOT NULL,
     student_id BIGINT        NOT NULL,
     CONSTRAINT test_cases_fk_problem_id FOREIGN KEY (problem_id) REFERENCES problems (id),

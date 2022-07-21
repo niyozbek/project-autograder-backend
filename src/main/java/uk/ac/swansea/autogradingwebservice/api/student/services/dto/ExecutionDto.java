@@ -17,7 +17,7 @@ public class ExecutionDto {
     @NotBlank
     private String version;
     @NotBlank
-    private String fileName;
+    private String filename;
     @NotBlank
     private String code;
     private String input;
