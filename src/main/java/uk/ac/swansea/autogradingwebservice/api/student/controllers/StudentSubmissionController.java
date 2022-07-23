@@ -11,7 +11,10 @@ import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.Submissio
 import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionDetailDto;
 import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autogradingwebservice.api.student.entities.Submission;
+import uk.ac.swansea.autogradingwebservice.api.student.entities.SubmissionTestResult;
+import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionDetailService;
 import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionService;
+import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionTestResultService;
 import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
 import uk.ac.swansea.autogradingwebservice.exceptions.BadRequestException;
 import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
@@ -29,6 +32,10 @@ import java.util.stream.Collectors;
 public class StudentSubmissionController {
     @Autowired
     private SubmissionService submissionService;
+    @Autowired
+    private SubmissionDetailService submissionDetailService;
+    @Autowired
+    private SubmissionTestResultService submissionTestResultService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -79,7 +86,7 @@ public class StudentSubmissionController {
     public List<SubmissionDetailDto> getSubmissionDetails(Authentication authentication,
                                                           @PathVariable Long submissionId) throws BadRequestException, ResourceNotFoundException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        return submissionService.getSubmissionDetail(submissionId, user.getId())
+        return submissionDetailService.getSubmissionDetail(submissionId, user.getId())
                 .stream()
                 .map(submissionDetail -> SubmissionDetailDto.builder()
                         .id(submissionDetail.getId())
@@ -90,6 +97,18 @@ public class StudentSubmissionController {
                         .testCaseIsPassed(submissionDetail.getTestCaseIsPassed())
                         .build()
                 ).collect(Collectors.toList());
+    }
+
+    /**
+     * Get test cases and results
+     */
+    @GetMapping("{submissionId}/test-result")
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public SubmissionTestResult getTestResult(Authentication authentication,
+                                              @PathVariable Long submissionId)
+            throws BadRequestException, ResourceNotFoundException {
+        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
+        return submissionTestResultService.getSubmissionTestResult(submissionId, user.getId());
     }
 
     private List<SubmissionBriefDto> convertToDto(List<Submission> submissionList) {

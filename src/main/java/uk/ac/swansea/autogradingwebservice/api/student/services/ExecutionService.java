@@ -37,7 +37,7 @@ public class ExecutionService {
             executionOutput = result.getOutput();
         } while (executionOutput.getCode() != 0 && executionOutput.getSignal() != null);
 
-        String output = executionOutput.getOutput();
+        String output = executionOutput.getStdout();
         // remove \n from the result
         if (output.length() > 1) {
             output = output.substring(0, output.length() - 1);

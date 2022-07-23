@@ -13,7 +13,7 @@ import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.ProblemBr
 import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.ProblemDto;
 import uk.ac.swansea.autogradingwebservice.api.student.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autogradingwebservice.api.student.entities.Submission;
-import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionService;
+import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionMainService;
 import uk.ac.swansea.autogradingwebservice.api.student.services.dto.RuntimeDto;
 import uk.ac.swansea.autogradingwebservice.config.MyUserDetails;
 import uk.ac.swansea.autogradingwebservice.exceptions.BadRequestException;
@@ -35,7 +35,7 @@ public class StudentProblemController {
     @Autowired
     private ProblemService problemService;
     @Autowired
-    private SubmissionService submissionService;
+    private SubmissionMainService submissionMainService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -56,7 +56,7 @@ public class StudentProblemController {
     @GetMapping("{id}/runtime")
     @PreAuthorize("hasAuthority('STUDENT')")
     public List<RuntimeDto> getProblemRuntime(@PathVariable Long id) {
-        return submissionService.getRuntime(id);
+        return submissionMainService.getRuntime(id);
     }
 
     /**
@@ -72,7 +72,7 @@ public class StudentProblemController {
                                      @Valid @RequestBody SubmissionDto submissionDto)
             throws ResourceNotFoundException, BadRequestException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        return submissionService.submitSolution(id, submissionDto, user.getId());
+        return submissionMainService.submitSolution(id, submissionDto, user.getId());
     }
 
 

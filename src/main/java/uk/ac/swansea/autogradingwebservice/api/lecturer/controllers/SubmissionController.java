@@ -10,6 +10,7 @@ import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.Submissi
 import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.SubmissionDetailDto;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autogradingwebservice.api.student.entities.Submission;
+import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionDetailService;
 import uk.ac.swansea.autogradingwebservice.api.student.services.SubmissionService;
 import uk.ac.swansea.autogradingwebservice.exceptions.ResourceNotFoundException;
 
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 public class SubmissionController {
     @Autowired
     private SubmissionService submissionService;
+    @Autowired
+    private SubmissionDetailService submissionDetailService;
     @Autowired
     private ModelMapper modelMapper;
 
@@ -64,7 +67,7 @@ public class SubmissionController {
     @GetMapping("submission/{submissionId}/detail")
     @PreAuthorize("hasAuthority('LECTURER')")
     public List<SubmissionDetailDto> getSubmissionDetails(@PathVariable Long submissionId) {
-        return submissionService.getSubmissionDetail(submissionId)
+        return submissionDetailService.getSubmissionDetail(submissionId)
                 .stream()
                 .map(submissionDetail -> SubmissionDetailDto.builder()
                         .id(submissionDetail.getId())

@@ -35,4 +35,8 @@ public class TestCaseService {
         testCase.setExpectedOutput(testCaseDto.getExpectedOutput());
         return testCaseRepository.save(testCase);
     }
+
+    public int countAllTestCasesByProblemId(Long problemId) {
+        return testCaseRepository.countAllByProblemId(problemId);
+    }
 }

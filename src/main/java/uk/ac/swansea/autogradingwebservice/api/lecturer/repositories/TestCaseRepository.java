@@ -10,4 +10,6 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
     List<TestCase> findAllByProblemId(Long id);
 
     List<TestCase> findAllByProblemId(Long id, Pageable pageable);
+
+    int countAllByProblemId(Long problemId);
 }
