@@ -1,3 +1,6 @@
+# TODO LIST
+1. get runtime REST endpoint cache response
+
 # Requirements
 - please use JDK17
 

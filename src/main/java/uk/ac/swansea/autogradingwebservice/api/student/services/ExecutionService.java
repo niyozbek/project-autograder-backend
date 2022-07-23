@@ -3,6 +3,7 @@ package uk.ac.swansea.autogradingwebservice.api.student.services;
 import com.github.codeboy.piston4j.api.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autogradingwebservice.api.student.services.dto.ExecutionDto;
 import uk.ac.swansea.autogradingwebservice.api.student.services.dto.ExecutionResultDto;
@@ -55,6 +56,7 @@ public class ExecutionService {
      *
      * @return list of runtime
      */
+    @Cacheable(value = "runtimes")
     public List<RuntimeDto> getRuntimes() {
         Piston api = Piston.getDefaultApi(); //get the api at https://emkc.org/api/v2/piston
         return api.getRuntimes()
