@@ -6,6 +6,7 @@ CREATE TABLE submissions
     version    varchar(16)   NOT NULL,
     filename   varchar(256)  NOT NULL,
     code       varchar(2048) NOT NULL,
+    status     INT           NOT NULL,
     student_id BIGINT        NOT NULL,
     CONSTRAINT test_cases_fk_problem_id FOREIGN KEY (problem_id) REFERENCES problems (id),
     CONSTRAINT problems_fk_student_id FOREIGN KEY (student_id) REFERENCES users (user_id)

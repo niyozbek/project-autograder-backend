@@ -19,5 +19,8 @@ public class Submission {
     private String version;
     private String filename;
     private String code;
+    private Status status;
     private Long studentId;
+
+    public enum Status {NEW, COMPILE_ERROR, WRONG_ANSWER, ACCEPTED}
 }

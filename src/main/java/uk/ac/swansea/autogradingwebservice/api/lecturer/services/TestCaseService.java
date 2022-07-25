@@ -39,4 +39,9 @@ public class TestCaseService {
     public int countAllTestCasesByProblemId(Long problemId) {
         return testCaseRepository.countAllByProblemId(problemId);
     }
+
+    public TestCase getFirstTestCaseByProblemId(Long problemId) throws ResourceNotFoundException {
+        return testCaseRepository.findFirstByProblemId(problemId)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.TestCase;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TestCaseRepository extends PagingAndSortingRepository<TestCase, Long> {
     List<TestCase> findAllByProblemId(Long id);
@@ -12,4 +13,6 @@ public interface TestCaseRepository extends PagingAndSortingRepository<TestCase,
     List<TestCase> findAllByProblemId(Long id, Pageable pageable);
 
     int countAllByProblemId(Long problemId);
+
+    Optional<TestCase> findFirstByProblemId(Long problemId);
 }

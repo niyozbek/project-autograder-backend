@@ -58,10 +58,35 @@ public class SubmissionMainService {
 
     public void runSubmission(Long submissionId) throws ResourceNotFoundException {
         Submission submission = submissionService.getSubmission(submissionId);
+        verifyCodeCompilation(submission);
         runTestCases(submission);
     }
 
+    private void verifyCodeCompilation(Submission submission) throws ResourceNotFoundException {
+        ExecutionDto executionDto = ExecutionDto.builder()
+                .language(submission.getLanguage())
+                .version(submission.getVersion())
+                .filename(submission.getFilename())
+                .code(submission.getCode())
+                .build();
+        TestCase firstTestCase = testCaseService.getFirstTestCaseByProblemId(submission.getProblemId());
+
+        executionDto.setInput(firstTestCase.getInput());
+        executionDto.setExpectedOutput(firstTestCase.getExpectedOutput());
+
+        boolean isCompiled = executionService.isCompiled(executionDto);
+        if (!isCompiled) {
+            submission.setStatus(Submission.Status.COMPILE_ERROR);
+            submissionService.updateSubmission(submission);
+        }
+    }
+
     private void runTestCases(Submission submission) throws ResourceNotFoundException {
+        // don't run test cases if the code is not compiled
+        if (submission.getStatus() == Submission.Status.COMPILE_ERROR) {
+            return;
+        }
+
         List<TestCase> testCases = testCaseService.getAllTestCasesByProblemId(submission.getProblemId());
         ExecutionDto executionDto = ExecutionDto.builder()
                 .language(submission.getLanguage())
@@ -83,6 +108,15 @@ public class SubmissionMainService {
             }
             submissionTestResultService.updateSubmissionTestResult(submissionTestResult);
         });
+
+        if (Objects.equals(submissionTestResult.getProcessedTestCases(), submissionTestResult.getTotalTestCases())) {
+            if (Objects.equals(submissionTestResult.getCorrectTestCases(), submissionTestResult.getTotalTestCases())) {
+                submission.setStatus(Submission.Status.ACCEPTED);
+            } else {
+                submission.setStatus(Submission.Status.WRONG_ANSWER);
+            }
+            submissionService.updateSubmission(submission);
+        }
     }
 
     public List<RuntimeDto> getRuntime(Long id) {

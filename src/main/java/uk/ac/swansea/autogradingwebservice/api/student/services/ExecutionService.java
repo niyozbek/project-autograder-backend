@@ -26,17 +26,7 @@ public class ExecutionService {
      * @return result
      */
     public ExecutionResultDto submit(ExecutionDto dto) {
-        Piston api = Piston.getDefaultApi(); //get the api at https://emkc.org/api/v2/piston
-        CodeFile codeFile = new CodeFile(dto.getFilename(), dto.getCode()); //create the codeFile containing the javascript code
-        ExecutionRequest request = new ExecutionRequest(dto.getLanguage(), dto.getVersion(), codeFile); //create the request using the codeFile, a language and a version
-        request.setStdin(dto.getInput());
-        // loop until we get appropriate result, because java code fails sometimes in remote server
-        ExecutionOutput executionOutput;
-        do {
-            ExecutionResult result = api.execute(request); //execute the request
-            executionOutput = result.getOutput();
-        } while (executionOutput.getCode() != 0 && executionOutput.getSignal() != null);
-
+        ExecutionOutput executionOutput = getOutput(dto);
         String output = executionOutput.getStdout();
         // remove \n from the result
         if (output.length() > 1) {
@@ -49,6 +39,33 @@ public class ExecutionService {
                 .output(output)
                 .expectedOutput(expectedOutput)
                 .isValid(Objects.equals(output, expectedOutput)).build();
+    }
+
+    /**
+     * You can also execute the code without getting the runtime.
+     * However, this is not recommended since it won't work unless you know the correct version of the runtime
+     *
+     * @param dto input
+     * @return result
+     */
+    public boolean isCompiled(ExecutionDto dto) {
+        ExecutionOutput executionOutput = getOutput(dto);
+        return executionOutput.getStderr().isBlank();
+    }
+
+    private ExecutionOutput getOutput(ExecutionDto dto) {
+        Piston api = Piston.getDefaultApi(); //get the api at https://emkc.org/api/v2/piston
+        CodeFile codeFile = new CodeFile(dto.getFilename(), dto.getCode()); //create the codeFile containing the javascript code
+        ExecutionRequest request = new ExecutionRequest(dto.getLanguage(), dto.getVersion(), codeFile); //create the request using the codeFile, a language and a version
+        request.setStdin(dto.getInput());
+        // loop until we get appropriate result, because java code fails sometimes in remote server
+        ExecutionOutput executionOutput;
+        do {
+            ExecutionResult result = api.execute(request); //execute the request
+            executionOutput = result.getOutput();
+        } while (executionOutput.getCode() != 0 && executionOutput.getSignal() != null);
+
+        return executionOutput;
     }
 
     /**

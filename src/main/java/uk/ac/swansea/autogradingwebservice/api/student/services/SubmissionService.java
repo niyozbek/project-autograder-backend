@@ -52,6 +52,11 @@ public class SubmissionService {
         submission.setVersion(version);
         submission.setFilename(filename);
         submission.setCode(code);
+        submission.setStatus(Submission.Status.NEW);
         return submissionRepository.save(submission);
+    }
+
+    public void updateSubmission(Submission submission) {
+        submissionRepository.save(submission);
     }
 }
