@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autogradingwebservice.api.admin.controllers.dto.NewUserDto;
@@ -32,7 +33,7 @@ public class AdminStudentController {
     public List<UserDto> getStudents(@RequestParam(defaultValue = "0") Integer pageNo,
                                      @RequestParam(defaultValue = "10") Integer pageSize)
             throws ResourceNotFoundException {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
         return convertToDto(userService.getStudents(pageable));
     }
 

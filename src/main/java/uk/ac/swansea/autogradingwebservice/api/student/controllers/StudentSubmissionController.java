@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +54,7 @@ public class StudentSubmissionController {
                                                    @RequestParam(defaultValue = "10") Integer pageSize) {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         List<Submission> submissionList;
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
         if (problemId != null) {
             submissionList = submissionService
                     .getSubmissionsByProblemIdAndStudentId(problemId, user.getId(), pageable);

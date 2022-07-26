@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.controllers.dto.SubmissionBriefDto;
@@ -42,7 +43,7 @@ public class SubmissionController {
     public List<SubmissionBriefDto> getSubmissions(@PathVariable Long problemId,
                                                    @RequestParam(defaultValue = "0") Integer pageNo,
                                                    @RequestParam(defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
         List<Submission> submissionList = submissionService
                 .getSubmissionsByProblemId(problemId, pageable);
         return convertToDto(submissionList);
