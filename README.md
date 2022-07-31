@@ -1,3 +1,6 @@
+# TODO
+- Restrict usage of websocket for students then to specific studentId
+
 # Requirements
 - please use JDK17
 
