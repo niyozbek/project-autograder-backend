@@ -1,4 +1,5 @@
 # TODO
+- show grade percentage in submissionTable
 - Restrict usage of websocket for students then to specific studentId
 
 # Requirements

@@ -108,6 +108,8 @@ public class SubmissionMainService {
             }
             submissionTestResultService.updateSubmissionTestResult(submissionTestResult);
         });
+        submissionTestResult.setStatus(SubmissionTestResult.Status.COMPLETED);
+        submissionTestResultService.updateSubmissionTestResult(submissionTestResult);
 
         if (Objects.equals(submissionTestResult.getProcessedTestCases(), submissionTestResult.getTotalTestCases())) {
             if (Objects.equals(submissionTestResult.getCorrectTestCases(), submissionTestResult.getTotalTestCases())) {

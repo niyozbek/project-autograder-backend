@@ -17,6 +17,7 @@ public class SubmissionTestResultService {
 
     public void createSubmissionTestResult(Long submissionId, int totalTestCases, int processedTestCases, int correctTestCases) {
         SubmissionTestResult submissionTestResult = new SubmissionTestResult();
+        submissionTestResult.setStatus(SubmissionTestResult.Status.PROCESSING);
         submissionTestResult.setSubmissionId(submissionId);
         submissionTestResult.setTotalTestCases(totalTestCases);
         submissionTestResult.setProcessedTestCases(processedTestCases);

@@ -15,8 +15,10 @@ public class SubmissionTestResult {
     @Id
     @Column(name = "submissionId")
     private Long submissionId;
+    private Status status;
 
     private Integer totalTestCases;
     private Integer processedTestCases;
     private Integer correctTestCases;
+    public enum Status {PROCESSING, COMPLETED}
 }
