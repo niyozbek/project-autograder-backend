@@ -17,4 +17,5 @@ public class SubmissionBriefDto {
     private String filename;
     private Long studentId;
     private Submission.Status status;
+    private Integer grade;
 }

@@ -117,6 +117,10 @@ public class SubmissionMainService {
             } else {
                 submission.setStatus(Submission.Status.WRONG_ANSWER);
             }
+            int grade = (int) Math.round(
+                    (double) submissionTestResult.getCorrectTestCases() * 100 /
+                            (double) submissionTestResult.getTotalTestCases());
+            submission.setGrade(grade);
             submissionService.updateSubmission(submission);
         }
     }

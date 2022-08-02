@@ -20,6 +20,7 @@ public class Submission {
     private String filename;
     private String code;
     private Status status;
+    private Integer grade;
     private Long studentId;
 
     public enum Status {NEW, COMPILE_ERROR, WRONG_ANSWER, ACCEPTED}
