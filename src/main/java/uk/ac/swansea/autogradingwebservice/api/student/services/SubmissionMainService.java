@@ -1,7 +1,10 @@
 package uk.ac.swansea.autogradingwebservice.api.student.services;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.Problem;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.entities.TestCase;
 import uk.ac.swansea.autogradingwebservice.api.lecturer.services.ProblemService;
@@ -20,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Slf4j
 public class SubmissionMainService {
     @Autowired
     private ProblemService problemService;
@@ -123,6 +127,19 @@ public class SubmissionMainService {
             submission.setGrade(grade);
             submissionService.updateSubmission(submission);
         }
+
+        // send it to another service
+        log.info("sending to client >>");
+        postToClient(submissionTestResult);
+    }
+
+    @Value("${client-url}")
+    private String clientUrl;
+
+    private String postToClient(SubmissionTestResult submissionTestResult) {
+        String uri = clientUrl;
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.postForObject(uri, submissionTestResult, String.class);
     }
 
     public List<RuntimeDto> getRuntime(Long id) {
