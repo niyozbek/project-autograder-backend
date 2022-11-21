@@ -26,7 +26,7 @@ public class ExecutionService {
      * @return result
      */
     public ExecutionResultDto submit(ExecutionDto dto) {
-        ExecutionOutput executionOutput = getOutput(dto);
+        ExecutionOutput executionOutput = execute(dto);
         String output = executionOutput.getStdout();
         // remove \n from the result
         if (output.length() > 1) {
@@ -49,11 +49,11 @@ public class ExecutionService {
      * @return result
      */
     public boolean isCompiled(ExecutionDto dto) {
-        ExecutionOutput executionOutput = getOutput(dto);
+        ExecutionOutput executionOutput = execute(dto);
         return executionOutput.getStderr().isBlank();
     }
 
-    private ExecutionOutput getOutput(ExecutionDto dto) {
+    private ExecutionOutput execute(ExecutionDto dto) {
         Piston api = Piston.getDefaultApi(); //get the api at https://emkc.org/api/v2/piston
         CodeFile codeFile = new CodeFile(dto.getFilename(), dto.getCode()); //create the codeFile containing the javascript code
         ExecutionRequest request = new ExecutionRequest(dto.getLanguage(), dto.getVersion(), codeFile); //create the request using the codeFile, a language and a version
