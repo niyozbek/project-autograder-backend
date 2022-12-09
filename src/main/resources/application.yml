@@ -26,4 +26,4 @@ spring:
   sql:
     init:
       platform: postgres
-client-url: http://localhost:8081/submission-test-result
+client-url: http://localhost:8886/submission-test-result
