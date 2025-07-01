@@ -43,7 +43,7 @@ public class AdminLecturerController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    @Operation(summary = "Create new student", description = "Creates a new lecturer account")
+    @Operation(summary = "Create new lecturer", description = "Creates a new lecturer account")
     public UserDto createLecturer(@Valid @RequestBody NewUserDto newUserDto)
             throws ResourceNotFoundException {
         return convertToDto(userService.createLecturer(newUserDto));

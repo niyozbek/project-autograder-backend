@@ -1,5 +1,7 @@
 package uk.ac.swansea.autogradingwebservice.api.lecturer.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("api/lecturer/problem")
+@Tag(name = "Manage problems", description = "Lecturer can manage problems")
 public class ProblemController {
     @Autowired
     private ProblemService problemService;
@@ -36,6 +39,10 @@ public class ProblemController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('LECTURER')")
+    @Operation(
+            summary = "Get all problems",
+            description = "Returns a paginated list of problems created by the authenticated lecturer. Results are sorted by ID in descending order."
+    )
     public List<ProblemBriefDto> getProblems(Authentication authentication,
                                              @RequestParam(defaultValue = "0") Integer pageNo,
                                              @RequestParam(defaultValue = "10") Integer pageSize) {
@@ -46,6 +53,10 @@ public class ProblemController {
 
     @GetMapping("{id}")
     @PreAuthorize("hasAuthority('LECTURER')")
+    @Operation(
+            summary = "Get problem by ID",
+            description = "Returns detailed information about a specific problem. Only accessible by the lecturer who created it."
+    )
     public ProblemDto getProblem(Authentication authentication,
                                  @PathVariable Long id)
             throws ResourceNotFoundException, BadRequestException {
@@ -55,6 +66,10 @@ public class ProblemController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('LECTURER')")
+    @Operation(
+            summary = "Create new problem",
+            description = "Creates a new programming problem with the provided details. The authenticated lecturer will be set as the creator."
+    )
     public ProblemDto createProblem(Authentication authentication,
                                     @Valid @RequestBody ProblemDto problemDto) {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
@@ -64,6 +79,10 @@ public class ProblemController {
 
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('LECTURER')")
+    @Operation(
+            summary = "Update problem",
+            description = "Updates an existing problem. Only the lecturer who created the problem can modify it."
+    )
     public ProblemDto updateProblem(Authentication authentication,
                                     @PathVariable Long id,
                                     @Valid @RequestBody ProblemDto problemDto)
