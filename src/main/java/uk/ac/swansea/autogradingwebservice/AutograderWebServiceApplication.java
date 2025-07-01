@@ -6,10 +6,10 @@ import org.springframework.cache.annotation.EnableCaching;
 
 @SpringBootApplication
 @EnableCaching
-public class AutogradingWebServiceApplication {
+public class AutograderWebServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AutogradingWebServiceApplication.class, args);
+        SpringApplication.run(AutograderWebServiceApplication.class, args);
     }
 
 
