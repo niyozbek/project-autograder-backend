@@ -37,17 +37,13 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
     docker compose -f compose.local.yaml exec {SERVICE} bash
 Example:
 
-    docker compose -f compose.local.yaml exec admin-api bash
+    docker compose -f compose.local.yaml exec app bash
 
 # Get started
 Three roles are created with migration by default:
 -admin role -> {username: admin, password: admin}
 -lecturer role -> {username: alex, password: alex}
 -student role -> {username: patrick, password: patrick}
-
-# TODO
-- Restrict usage of websocket for students then to specific studentId
-- confirm if two websocket connections collide
 
 # REST API DOCUMENTATION: 
 http://localhost:8080/swagger-ui/index.html#/
