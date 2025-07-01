@@ -1,5 +1,7 @@
 package uk.ac.swansea.autogradingwebservice.api.admin.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("api/admin/student")
+@Tag(name = "Manage students", description = "Admin can manage students")
 public class AdminStudentController {
     @Autowired
     private UserService userService;
@@ -30,6 +33,10 @@ public class AdminStudentController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Operation(
+            summary = "Get all students",
+            description = "Returns a paginated list of students. Results are sorted by ID in descending order."
+    )
     public List<UserDto> getStudents(@RequestParam(defaultValue = "0") Integer pageNo,
                                      @RequestParam(defaultValue = "10") Integer pageSize)
             throws ResourceNotFoundException {
@@ -39,6 +46,10 @@ public class AdminStudentController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
+    @Operation(
+            summary = "Create new student",
+            description = "Creates a new student account with the provided user details"
+    )
     public UserDto createStudent(@Valid @RequestBody NewUserDto newUserDto)
             throws ResourceNotFoundException {
         return convertToDto(userService.createStudent(newUserDto));
