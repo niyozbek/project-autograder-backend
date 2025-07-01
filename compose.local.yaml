@@ -1,8 +1,8 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: gradle:8.5-jdk17
+    working_dir: /app
+    command: [ "gradle", "bootRun", "--no-daemon" ]
     volumes:
         - .:/app
     ports:
