@@ -30,14 +30,13 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
 - Up with build:
   `docker compose -f compose.local.yaml up --build -d`
 
-- View changes to code - restart app:
-  `docker compose -f compose.local.yaml restart app`
+- Apply changes in the app - build and restart the app:
+  `docker compose -f compose.local.yaml build app && docker compose -f compose.local.yaml restart app`
 
 ### Access container terminal:
-    docker compose -f compose.local.yaml exec {SERVICE} bash
+  `docker compose -f compose.local.yaml exec {SERVICE} bash`
 Example:
-
-    docker compose -f compose.local.yaml exec app bash
+  `docker compose -f compose.local.yaml exec app bash`
 
 # Get started
 Three roles are created with migration by default:
