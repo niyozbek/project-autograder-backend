@@ -3,24 +3,20 @@ An autograding web application is a software tool designed to automatically eval
 Frontend web application is available at https://github.com/niyozbek/project-autograder-app.
 
 # Requirements
-- please use JDK17
+- Docker
 
-## Installation:
+## Dev environment set-up (Optional):
 - Install java open-jdk:17
 - Install gradle:
   `sdk install gradle`
+  `gradle --version`
+  `gradle build`
+  `gradle bootRun`
 
 ## Use openssl to generate keys or secrets:
     openssl rand -base64 18
     openssl rand -base64 36
     openssl rand -base64 64
-
-## Run the project (Manual):
-
-### Build and run via graddle:
-  `gradle --version`
-  `gradle build`
-  `gradle bootRun`
 
 ## Run the project (Docker)
 
