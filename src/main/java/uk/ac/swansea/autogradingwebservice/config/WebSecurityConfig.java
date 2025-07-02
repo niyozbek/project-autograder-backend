@@ -66,7 +66,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/auth/**", 
                      "/v3/api-docs/**",
                      "/swagger-ui/**",
-                     "/swagger-ui.html").permitAll()
+                     "/swagger-ui.html",
+                    "/gs-guide-websocket/**"
+            ).permitAll()
             .anyRequest().authenticated()
             .and()
             .exceptionHandling()
