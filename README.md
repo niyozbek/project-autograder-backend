@@ -12,6 +12,7 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
   `gradle --version`
   `gradle build`
   `gradle bootRun`
+- Documentation: https://docs.spring.io/spring-boot/docs/2.6.6/reference/htmlsingle
 
 ## Use openssl to generate keys or secrets:
     openssl rand -base64 18

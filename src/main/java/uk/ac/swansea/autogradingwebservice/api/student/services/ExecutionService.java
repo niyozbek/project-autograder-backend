@@ -69,7 +69,7 @@ public class ExecutionService {
     }
 
     /**
-     * Get list of available runtimes/languages and versions
+     * Get a list of available runtimes/languages and versions
      *
      * @return list of runtime
      */

@@ -103,7 +103,7 @@ public class SubmissionMainService {
             executionDto.setInput(testCase.getInput());
             executionDto.setExpectedOutput(testCase.getExpectedOutput());
             ExecutionResultDto executionResultDto = executionService.submit(executionDto);
-            // save result to submissionDetails
+            // save the result to submissionDetails
             submissionDetailService.createSubmissionDetail(submission.getId(),
                     testCase, executionResultDto.getOutput(), executionResultDto.getIsValid());
             submissionTestResult.setProcessedTestCases(submissionTestResult.getProcessedTestCases() + 1);

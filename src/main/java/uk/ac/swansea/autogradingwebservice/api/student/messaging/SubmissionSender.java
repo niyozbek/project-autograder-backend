@@ -15,7 +15,7 @@ public class SubmissionSender {
     private StringRedisTemplate stringRedisTemplate;
 
     public void send(Long submissionId) {
-        LOGGER.info("Sending message...");
+        LOGGER.info("Sending submissionId=#{}", submissionId);
         stringRedisTemplate.convertAndSend("submissionId", String.valueOf(submissionId));
     }
 }

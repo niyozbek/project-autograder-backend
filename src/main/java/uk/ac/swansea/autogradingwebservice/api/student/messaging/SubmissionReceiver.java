@@ -12,8 +12,8 @@ public class SubmissionReceiver {
     @Autowired
     private SubmissionMainService submissionMainService;
 
-    public void receiveMessage(String message) throws ResourceNotFoundException {
-        LOGGER.info("Received <" + message + ">");
-        submissionMainService.runSubmission(Long.valueOf(message));
+    public void receiveMessage(String submissionId) throws ResourceNotFoundException {
+        LOGGER.info("Received submissionId=#{}", submissionId);
+        submissionMainService.runSubmission(Long.valueOf(submissionId));
     }
 }

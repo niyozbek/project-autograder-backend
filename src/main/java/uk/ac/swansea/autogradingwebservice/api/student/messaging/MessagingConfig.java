@@ -11,9 +11,9 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 /**
  * WebSocketMessage queues are ideal for requests which may take a long time to process.
  * Messaging to process submissions, enables asynchronously executing tests.
- * Direct/synchronous/blocking calls increases rest response time.
- * Also, Messaging helps to use third party code execution engine synchronously which
- * allows balancing load on backend and api during peak hours
+ * Direct/synchronous/blocking calls increase rest response time.
+ * Also, Messaging helps to use the third party code execution engine synchronously, which
+ * allows balancing a load on backend and api during peak hours
  */
 @Configuration
 public class MessagingConfig {
