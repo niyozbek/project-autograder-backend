@@ -1,9 +1,6 @@
 server:
   port: 8080
 spring:
-  devtools:
-    restart:
-      enabled: true
   flyway:
     baseline-on-migrate: true
   cache:
