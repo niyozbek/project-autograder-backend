@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import uk.ac.swansea.autograder.api.student.entities.SubmissionTestResult;
-import uk.ac.swansea.autograder.api.student.services.SubmissionTestResultService;
+import uk.ac.swansea.autograder.general.entities.SubmissionTestResult;
+import uk.ac.swansea.autograder.general.services.SubmissionTestResultService;
 
 @Controller
 public class WebSocketController {

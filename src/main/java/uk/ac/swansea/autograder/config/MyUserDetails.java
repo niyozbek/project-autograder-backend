@@ -3,8 +3,8 @@ package uk.ac.swansea.autograder.config;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import uk.ac.swansea.autograder.auth.entities.Role;
-import uk.ac.swansea.autograder.auth.entities.User;
+import uk.ac.swansea.autograder.general.entities.Role;
+import uk.ac.swansea.autograder.general.entities.User;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package uk.ac.swansea.autograder.api.student.controllers.dto;
 
 import lombok.Data;
-import uk.ac.swansea.autograder.api.lecturer.entities.Problem;
+import uk.ac.swansea.autograder.general.entities.Problem;
 
 @Data
 public class ProblemBriefDto {

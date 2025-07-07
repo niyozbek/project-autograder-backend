@@ -3,8 +3,8 @@ package uk.ac.swansea.autograder.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.auth.entities.User;
-import uk.ac.swansea.autograder.auth.repositories.UserRepository;
+import uk.ac.swansea.autograder.general.entities.User;
+import uk.ac.swansea.autograder.general.repositories.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

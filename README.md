@@ -34,6 +34,12 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
 - Apply changes in the app - build and restart the app:
   `docker compose -f compose.local.yaml build app && docker compose -f compose.local.yaml restart app`
 
+## Run the project in debug mode via IntelliJ:
+- Up redis and pgsql for local profile:
+  `docker compose -f compose.local.yaml up redis pgsql --build -d`
+- Configure application-local.yml.
+- Set profile to local in IntelliJ.
+
 ### Access container terminal:
   `docker compose -f compose.local.yaml exec {SERVICE} bash`
 Example:

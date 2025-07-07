@@ -1,7 +1,7 @@
 package uk.ac.swansea.autograder.api.student.controllers.dto;
 
 import lombok.Data;
-import uk.ac.swansea.autograder.api.student.entities.Submission;
+import uk.ac.swansea.autograder.general.entities.Submission;
 
 import javax.validation.constraints.NotBlank;
 

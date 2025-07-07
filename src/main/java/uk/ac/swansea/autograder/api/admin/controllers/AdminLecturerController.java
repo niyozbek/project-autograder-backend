@@ -11,8 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.admin.controllers.dto.NewUserDto;
 import uk.ac.swansea.autograder.api.admin.controllers.dto.UserDto;
-import uk.ac.swansea.autograder.auth.entities.User;
-import uk.ac.swansea.autograder.auth.services.UserService;
+import uk.ac.swansea.autograder.general.entities.User;
+import uk.ac.swansea.autograder.general.services.UserService;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import javax.validation.Valid;

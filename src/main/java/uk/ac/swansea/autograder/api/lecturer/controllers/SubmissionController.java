@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.lecturer.controllers.dto.SubmissionBriefDto;
 import uk.ac.swansea.autograder.api.lecturer.controllers.dto.SubmissionDetailDto;
 import uk.ac.swansea.autograder.api.lecturer.controllers.dto.SubmissionDto;
-import uk.ac.swansea.autograder.api.student.entities.Submission;
-import uk.ac.swansea.autograder.api.student.services.SubmissionDetailService;
-import uk.ac.swansea.autograder.api.student.services.SubmissionService;
+import uk.ac.swansea.autograder.general.entities.Submission;
+import uk.ac.swansea.autograder.general.services.SubmissionDetailService;
+import uk.ac.swansea.autograder.general.services.SubmissionService;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import java.util.List;
