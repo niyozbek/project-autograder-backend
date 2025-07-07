@@ -14,8 +14,6 @@ repositories {
 }
 
 dependencies {
-    // devtools
-    // developmentOnly 'org.springframework.boot:spring-boot-devtools'
     // rest
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.symphonyoss.symphony:messageml:0.10.1'
@@ -48,4 +46,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test {
+    failFast = true
+    testLogging {
+        events "passed", "skipped", "failed", "standardOut", "standardError"
+        showStandardStreams = true
+    }
 }

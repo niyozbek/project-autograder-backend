@@ -10,9 +10,21 @@ services:
     networks:
       - 'spring-boot-local'
     environment:
-      DB_URL: '${DB_URL}'
+#      DB
+      DB_HOST: '${DB_HOST}'
+      DB_PORT: '${DB_PORT}'
+      FORWARD_DB_PORT: '${FORWARD_DB_PORT}'
+      DB_DATABASE: '${DB_DATABASE}'
       DB_USERNAME: '${DB_USERNAME}'
       DB_PASSWORD: '${DB_PASSWORD}'
+#      DB_TEST
+      DB_TEST_HOST: '${DB_TEST_HOST}'
+      DB_TEST_PORT: '${DB_TEST_PORT}'
+      FORWARD_DB_TEST_PORT: '${FORWARD_DB_TEST_PORT}'
+      DB_TEST_DATABASE: '${DB_TEST_DATABASE}'
+      DB_TEST_USERNAME: '${DB_TEST_USERNAME}'
+      DB_TEST_PASSWORD: '${DB_TEST_PASSWORD}'
+#      REDIS
       REDIS_HOST: '${REDIS_HOST}'
       REDIS_PORT: '${REDIS_PORT}'
       REDIS_PASSWORD: '${REDIS_PASSWORD}'
@@ -20,10 +32,11 @@ services:
     depends_on:
       - pgsql
       - redis
+      - pgsql-test
   pgsql:
     image: postgres:15
     ports:
-      - '${FORWARD_DB_PORT:-5432}:5432'
+      - '${FORWARD_DB_PORT:-5432}:${DB_PORT}'
     environment:
       PGPASSWORD: '${DB_PASSWORD}'
       POSTGRES_DB: '${DB_DATABASE}'
@@ -31,11 +44,27 @@ services:
       POSTGRES_PASSWORD: '${DB_PASSWORD}'
     volumes:
       - 'pgsql-data-local:/var/lib/postgresql/data'
-      - './db-init:/docker-entrypoint-initdb.d'
     networks:
       - 'spring-boot-local'
     healthcheck:
       test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE}', '-U', '${DB_USERNAME}']
+      retries: 3
+      timeout: 5s
+  pgsql-test:
+    image: postgres:15
+    ports:
+      - '${FORWARD_DB_TEST_PORT:-5433}:${DB_TEST_PORT}'
+    environment:
+      PGPASSWORD: '${DB_TEST_PASSWORD}'
+      POSTGRES_DB: '${DB_TEST_DATABASE}'
+      POSTGRES_USER: '${DB_TEST_USERNAME}'
+      POSTGRES_PASSWORD: '${DB_TEST_PASSWORD}'
+    volumes:
+      - 'pgsql-data-test:/var/lib/postgresql/data'
+    networks:
+      - 'spring-boot-local'
+    healthcheck:
+      test: [ 'CMD', 'pg_isready', '-q', '-d', '${DB_TEST_DATABASE}', '-U', '${DB_TEST_USERNAME}' ]
       retries: 3
       timeout: 5s
   redis:
@@ -56,6 +85,8 @@ networks:
     driver: bridge
 volumes:
   pgsql-data-local:
+    driver: local
+  pgsql-data-test:
     driver: local
   redis-data-local:
     driver: local
