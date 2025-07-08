@@ -13,7 +13,7 @@ class HomeControllerSmokeTest {
 	private HomeController controller;
 
 	@Test
-	void contextLoads() throws Exception {
+	void contextLoads() {
 		assertThat(controller).isNotNull();
 	}
 
