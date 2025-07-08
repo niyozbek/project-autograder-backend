@@ -20,7 +20,7 @@ class HomeControllerRequestTest {
 	private TestRestTemplate restTemplate;
 
 	@Test
-	void indexShouldReturnDefaultMessage() throws Exception {
+	void indexShouldReturnDefaultMessage() {
 		assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/home",
 				String.class)).contains("Welcome to Autograder Web Service");
 	}
