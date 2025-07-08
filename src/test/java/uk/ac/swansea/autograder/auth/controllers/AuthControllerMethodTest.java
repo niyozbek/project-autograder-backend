@@ -43,36 +43,36 @@ class AuthControllerMethodTest {
         flyway.migrate();
     }
 
-//    @Test
-//    void adminShouldLoginSuccessfully() throws Exception {
-//        // Create Lecturer
-//        NewUserDto newUserDto = NewUserDto.builder()
-//                .username("test_user").password("test_pass").build();
-//        userService.createLecturer(newUserDto);
-//
-//        // Arrange
-//        LoginDto loginDto = new LoginDto();
-//        loginDto.setUsername("test_user");
-//        loginDto.setPassword("test_pass");
-//
-//        // Act & Assert
-//        MvcResult result = mockMvc.perform(post("/auth/login")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(loginDto)))
-//                .andDo(print())
-//                .andExpect(status().isOk())
-//                .andReturn();
-//
-//        // Verify response can be deserialized to LoginResponseDto
-//        String responseContent = result.getResponse().getContentAsString();
-//        LoginResponseDto responseDto = objectMapper.readValue(responseContent, LoginResponseDto.class);
-//
-//        // Assert all fields are present and have correct types
-//        assertNotNull(responseDto.getToken());
-//        assertNotNull(responseDto.getRole());
-//        assertEquals("LECTURER", responseDto.getRole());
-//        assertEquals("test_user", responseDto.getUsername()); // Fixed assertion to match test_user
-//    }
+    @Test
+    void adminShouldLoginSuccessfully() throws Exception {
+        // Create Admin
+        NewUserDto newUserDto = NewUserDto.builder()
+                .username("test_user").password("test_pass").build();
+        userService.createAdmin(newUserDto);
+
+        // Arrange
+        LoginDto loginDto = new LoginDto();
+        loginDto.setUsername("test_user");
+        loginDto.setPassword("test_pass");
+
+        // Act & Assert
+        MvcResult result = mockMvc.perform(post("/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(loginDto)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        // Verify response can be deserialized to LoginResponseDto
+        String responseContent = result.getResponse().getContentAsString();
+        LoginResponseDto responseDto = objectMapper.readValue(responseContent, LoginResponseDto.class);
+
+        // Assert all fields are present and have correct types
+        assertNotNull(responseDto.getToken());
+        assertNotNull(responseDto.getRole());
+        assertEquals("ADMIN", responseDto.getRole());
+        assertEquals("test_user", responseDto.getUsername()); // Fixed assertion to match test_user
+    }
 
     @Test
     void lecturerShouldLoginSuccessfully() throws Exception {

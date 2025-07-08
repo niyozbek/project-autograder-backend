@@ -11,13 +11,18 @@ public class RoleService {
     @Autowired
     private RoleRepository roleRepository;
 
+    public Role getAdminRole() throws ResourceNotFoundException {
+        return roleRepository.findByName(Role.RoleType.ADMIN)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
     public Role getLecturerRole() throws ResourceNotFoundException {
-        return roleRepository.findByName("LECTURER")
+        return roleRepository.findByName(Role.RoleType.LECTURER)
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
     public Role getStudentRole() throws ResourceNotFoundException {
-        return roleRepository.findByName("STUDENT")
+        return roleRepository.findByName(Role.RoleType.STUDENT)
                 .orElseThrow(ResourceNotFoundException::new);
     }
 }

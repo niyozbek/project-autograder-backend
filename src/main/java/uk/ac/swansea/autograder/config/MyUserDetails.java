@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class MyUserDetails implements UserDetails {
 
-    private User user;
+    private final User user;
 
     public MyUserDetails(User user) {
         this.user = user;
@@ -25,7 +25,7 @@ public class MyUserDetails implements UserDetails {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
         for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
         }
 
         return authorities;
@@ -72,6 +72,6 @@ public class MyUserDetails implements UserDetails {
         if (role == null) {
             return "";
         }
-        return role.getName();
+        return role.getName().toString();
     }
 }

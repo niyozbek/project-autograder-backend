@@ -31,6 +31,11 @@ public class UserService {
         return userRepository.findAllUsersByRoleId(roleService.getStudentRole().getId(), pageable);
     }
 
+    public User createAdmin(NewUserDto newUserDto) throws ResourceNotFoundException {
+        User user = createUser(newUserDto);
+        return assignRole(user, roleService.getAdminRole());
+    }
+
     public User createLecturer(NewUserDto newUserDto) throws ResourceNotFoundException {
         User user = createUser(newUserDto);
         return assignRole(user, roleService.getLecturerRole());
@@ -41,7 +46,7 @@ public class UserService {
         return assignRole(user, roleService.getStudentRole());
     }
 
-    private User createUser(NewUserDto newUserDto) {
+    public User createUser(NewUserDto newUserDto) {
         User user = new User();
         user.setUsername(newUserDto.getUsername());
         user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
@@ -49,7 +54,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    private User assignRole(User user, Role role) {
+    public User assignRole(User user, Role role) {
         user.getRoles().add(role);
         return userRepository.save(user);
     }
