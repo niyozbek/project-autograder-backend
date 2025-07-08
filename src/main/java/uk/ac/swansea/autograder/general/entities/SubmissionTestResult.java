@@ -13,7 +13,7 @@ import javax.persistence.Table;
 public class SubmissionTestResult {
 
     @Id
-    @Column(name = "submissionId")
+    @Column(name = "submission_id")
     private Long submissionId;
     private Status status;
 
