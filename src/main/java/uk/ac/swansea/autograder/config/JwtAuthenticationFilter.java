@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+import uk.ac.swansea.autograder.general.entities.Role;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -51,15 +52,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean notAuthorized(UserDetails user, HttpServletRequest request) {
         String url = request.getRequestURI();
         if (url.contains("/api/admin") && user.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals("ADMIN"))) {
+                .noneMatch(a -> a.getAuthority().equals(Role.RoleType.ADMIN.toString()))) {
             return true;
         }
         if (url.contains("/api/lecturer") && user.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals("LECTURER"))) {
+                .noneMatch(a -> a.getAuthority().equals(Role.RoleType.LECTURER.toString()))) {
             return true;
         }
         if (url.contains("/api/student") && user.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals("STUDENT"))) {
+                .noneMatch(a -> a.getAuthority().equals(Role.RoleType.STUDENT.toString()))) {
             return true;
         }
 

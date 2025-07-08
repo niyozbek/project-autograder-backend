@@ -1,5 +1,5 @@
 # Overview
-An autograding web application is a software tool designed to automatically evaluate and grade assignments.
+An autograder web application is a software tool designed to automatically evaluate and grade assignments.
 Frontend web application is available at https://github.com/niyozbek/project-autograder-app.
 
 # Requirements
@@ -38,7 +38,7 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
 - Up redis and pgsql for local profile:
   `docker compose -f compose.local.yaml up redis pgsql --build -d`
 - Configure application-local.yml.
-- Set profile to local in IntelliJ.
+- Set the profile to local in IntelliJ.
 
 ### Access container terminal:
   `docker compose -f compose.local.yaml exec {SERVICE} bash`

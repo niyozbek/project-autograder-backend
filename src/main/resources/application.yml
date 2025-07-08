@@ -29,3 +29,6 @@ spring:
     init:
       platform: postgres
 client-url: http://localhost:8886/submission-test-result
+app:
+  jwtExpirationInMinutes: ${JWT_EXPIRATION_IN_MINUTES}
+  jwtSecret: ${JWT_SECRET}

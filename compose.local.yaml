@@ -2,7 +2,7 @@ services:
   app:
     image: gradle:8.5-jdk17
     working_dir: /app
-    command: [ "gradle", "bootRun", "--debug", "--no-daemon" ]
+    command: [ "gradle", "bootRun", "--no-daemon" ] # --debug
     volumes:
         - .:/app
     ports:
@@ -10,6 +10,9 @@ services:
     networks:
       - 'spring-boot-local'
     environment:
+#      APP
+      JWT_EXPIRATION_IN_MINUTES: '${JWT_EXPIRATION_IN_MINUTES}'
+      JWT_SECRET: '${JWT_SECRET}'
 #      DB
       DB_HOST: '${DB_HOST}'
       DB_PORT: '${DB_PORT}'

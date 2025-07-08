@@ -29,3 +29,6 @@ spring:
     init:
       platform: postgres
 client-url: http://localhost:8886/submission-test-result
+app:
+  jwtExpirationInMinutes: 60
+  jwtSecret: 'REPLACE_HERE'

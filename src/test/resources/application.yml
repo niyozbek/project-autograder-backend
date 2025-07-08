@@ -33,3 +33,6 @@ spring:
     port: ${REDIS_PORT}
     password: ${REDIS_PASSWORD}
 client-url: http://localhost:8886/submission-test-result
+app:
+  jwtExpirationInMinutes: ${JWT_EXPIRATION_IN_MINUTES}
+  jwtSecret: ${JWT_SECRET}
