@@ -55,10 +55,10 @@ public class ExecutionService {
 
     private ExecutionOutput execute(ExecutionDto dto) {
         Piston api = Piston.getDefaultApi(); //get the api at https://emkc.org/api/v2/piston
-        CodeFile codeFile = new CodeFile(dto.getFilename(), dto.getCode()); //create the codeFile containing the javascript code
+        CodeFile codeFile = new CodeFile(dto.getFilename(), dto.getCode()); //create the codeFile containing the JavaScript code
         ExecutionRequest request = new ExecutionRequest(dto.getLanguage(), dto.getVersion(), codeFile); //create the request using the codeFile, a language and a version
         request.setStdin(dto.getInput());
-        // loop until we get appropriate result, because java code fails sometimes in remote server
+        // loop until we get the appropriate result, because java code sometimes fails in the remote server
         ExecutionOutput executionOutput;
         do {
             ExecutionResult result = api.execute(request); //execute the request

@@ -61,7 +61,7 @@ public class StudentProblemController {
     }
 
     /**
-     * Submit solution to a problem
+     * Submit a solution to a problem
      *
      * @param id            problemId
      * @param submissionDto submission body

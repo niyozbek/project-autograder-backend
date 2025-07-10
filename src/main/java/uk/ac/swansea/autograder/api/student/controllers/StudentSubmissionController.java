@@ -41,7 +41,7 @@ public class StudentSubmissionController {
     private ModelMapper modelMapper;
 
     /**
-     * Get list of submitted solutions by the student
+     * Get the list of submitted solutions by the student
      * also for a specific problem
      *
      * @return list of submissions
@@ -66,7 +66,7 @@ public class StudentSubmissionController {
     }
 
     /**
-     * Get list specific submission
+     * Get the specific submission
      *
      * @return submission
      */

@@ -44,6 +44,10 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
   `docker compose -f compose.local.yaml up redis pgsql pgsql-test --build -d`
 - Configure application-local.yml.
 - Set the profile to local in IntelliJ.
+  `export SPRING_PROFILES_ACTIVE=local`
+  `gradle classes`
+  `gradle test --debug`
+  `gradle bootRun`
 
 ### Access container terminal:
   `docker compose -f compose.local.yaml exec {SERVICE} bash`
@@ -52,9 +56,9 @@ Example:
 
 # Get started
 Three roles are created with migration by default:
--admin role -> {username: admin, password: admin}
--lecturer role -> {username: alex, password: alex}
--student role -> {username: patrick, password: patrick}
+-admin role: {username: admin, password: admin}
+-lecturer role: {username: alex, password: alex}
+-student role: {username: patrick, password: patrick}
 
 # REST API DOCUMENTATION: 
 http://localhost:8080/swagger-ui/index.html#/

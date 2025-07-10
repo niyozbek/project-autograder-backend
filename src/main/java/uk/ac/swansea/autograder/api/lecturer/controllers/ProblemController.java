@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Create problem, so that students can submit a code for it+
+ * Create a problem so that students can submit a code for it+
  * Can view submissions for each problem
  * Can view all problems created previously+
  * Can't view problems created by other lecturers+

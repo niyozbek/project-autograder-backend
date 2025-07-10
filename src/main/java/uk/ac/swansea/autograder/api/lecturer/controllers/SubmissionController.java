@@ -34,7 +34,7 @@ public class SubmissionController {
     private ModelMapper modelMapper;
 
     /**
-     * Get list of submitted solutions of a specific problem
+     * Get the list of submitted solutions to a specific problem
      *
      * @return list of submissions
      */
@@ -50,7 +50,7 @@ public class SubmissionController {
     }
 
     /**
-     * Get list specific submission
+     * Get the specific submission
      *
      * @return submission
      */
