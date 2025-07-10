@@ -3,7 +3,7 @@ package uk.ac.swansea.autograder.api.lecturer.controllers.dto;
 import lombok.Data;
 import uk.ac.swansea.autograder.general.entities.Problem;
 
-import javax.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotBlank;
 
 @Data
 public class ProblemBriefDto {

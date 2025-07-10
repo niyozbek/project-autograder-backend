@@ -12,7 +12,7 @@ import uk.ac.swansea.autograder.auth.controllers.dto.LoginResponseDto;
 import uk.ac.swansea.autograder.auth.services.AuthService;
 import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("auth")

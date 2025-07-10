@@ -131,7 +131,7 @@ public class SubmissionMainService {
         postToClient(submissionTestResult);
     }
 
-    @Value("${client-url}")
+    @Value("${app.client.submissionResultUrl}")
     private String clientUrl;
 
     private String postToClient(SubmissionTestResult submissionTestResult) {

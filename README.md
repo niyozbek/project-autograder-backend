@@ -5,6 +5,10 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
 # Requirements
 - Docker
 
+# Version
+- Spring Boot 3.5.x
+- Postgres 17.x
+
 ## Dev environment set-up (Optional):
 - Install java open-jdk:17
 - Install gradle:
@@ -12,6 +16,7 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
   `gradle --version`
   `gradle build`
   `gradle bootRun`
+  `gradle wrapper`
 - Documentation: https://docs.spring.io/spring-boot/docs/2.6.6/reference/htmlsingle
 
 ## Use openssl to generate keys or secrets:
@@ -36,7 +41,7 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
 
 ## Run the project in debug mode via IntelliJ:
 - Up redis and pgsql for local profile:
-  `docker compose -f compose.local.yaml up redis pgsql --build -d`
+  `docker compose -f compose.local.yaml up redis pgsql pgsql-test --build -d`
 - Configure application-local.yml.
 - Set the profile to local in IntelliJ.
 

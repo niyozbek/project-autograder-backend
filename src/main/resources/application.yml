@@ -1,34 +1,49 @@
+# Server Configuration
 server:
-  port: 8080
+  port: ${SERVER_PORT:8080}
+
+# Spring Configuration
 spring:
-  flyway:
-    baseline-on-migrate: true
-  cache:
-    type: redis
-    cache-names: runtimes
-    redis:
-      time-to-live: 60000
-      cache-null-values: false
-      use-key-prefix: true
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
-  jpa:
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: validate
-    open-in-view: true
+  # Database Configuration
   datasource:
-    url: jdbc:postgresql://${DB_HOST}:${FORWARD_DB_PORT}/${DB_DATABASE}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:autograder}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driverClassName: org.postgresql.Driver
-  sql:
-    init:
-      platform: postgres
-client-url: http://localhost:8886/submission-test-result
+
+  # Database Migration Configuration
+  flyway:
+    baselineOnMigrate: true
+
+  # JPA Configuration  
+  jpa:
+    database: postgresql
+    showSql: ${SHOW_SQL:true}
+    hibernate:
+      ddlAuto: validate
+    openInView: true
+
+  # Redis Cache Configuration
+  cache:
+    type: redis
+    cacheNames: runtimes
+    redis:
+      timeToLive: ${CACHE_TTL:60000}
+      cacheNullValues: false
+      useKeyPrefix: true
+  
+  # Redis Connection Configuration
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
+# Application-specific Configuration
 app:
-  jwtExpirationInMinutes: ${JWT_EXPIRATION_IN_MINUTES}
-  jwtSecret: ${JWT_SECRET}
+  security:
+    jwt:
+      expirationMinutes: ${JWT_EXPIRATION:60}
+      secret: ${JWT_SECRET}
+  client:
+    submissionResultUrl: ${CLIENT_URL}

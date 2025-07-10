@@ -18,10 +18,10 @@ import java.util.Date;
 @Slf4j
 public class JwtTokenProvider {
 
-    @Value("${app.jwtSecret}")
+    @Value("${app.security.jwt.secret}")
     private String jwtSecret;
 
-    @Value("${app.jwtExpirationInMinutes}")
+    @Value("${app.security.jwt.expirationMinutes}")
     private int jwtExpirationInMinutes;
 
     public String generateUserToken(Authentication authentication) {

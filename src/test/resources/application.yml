@@ -1,26 +1,22 @@
+# Spring Configuration
 spring:
-  flyway:
-    enabled: true
-#    clean-on-validation-error: true
-#    clean-disabled: false
-#    baseline-on-migrate: true
-  jpa:
-    database: POSTGRESQL
-    show-sql: true
-    hibernate:
-      ddl-auto: none
-    properties:
-      hibernate:
-        format_sql: true
+  # Database Configuration
   datasource:
     url: jdbc:postgresql://${DB_TEST_HOST}:${DB_TEST_PORT}/${DB_TEST_DATABASE}
     username: ${DB_TEST_USERNAME}
     password: ${DB_TEST_PASSWORD}
     driverClassName: org.postgresql.Driver
-  sql:
-    init:
-      platform: postgres
-      mode: always
+  flyway:
+    enabled: true
+
+  # JPA Configuration
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  # Redis Cache Configuration
   cache:
     type: redis
     cache-names: runtimes
@@ -28,11 +24,19 @@ spring:
       time-to-live: 60000
       cache-null-values: false
       use-key-prefix: true
-  redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
-    password: ${REDIS_PASSWORD}
-client-url: http://localhost:8886/submission-test-result
+
+  # Redis Connection Configuration
+  data:
+    redis:
+      host: ${REDIS_HOST}
+      password: ${REDIS_PASSWORD}
+      port: ${REDIS_PORT}
+
+# Application-specific Configuration
 app:
-  jwtExpirationInMinutes: ${JWT_EXPIRATION_IN_MINUTES}
-  jwtSecret: ${JWT_SECRET}
+  security:
+    jwt:
+      expirationMinutes: ${JWT_EXPIRATION:60}
+      secret: ${JWT_SECRET}
+  client:
+    submissionResultUrl: ${CLIENT_URL}

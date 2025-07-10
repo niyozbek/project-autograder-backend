@@ -2,7 +2,8 @@
 [DONE] why swagger doesn't have auth button.
 [DONE] optimize docker. 
 [DONE] set app.jwtSecret and app.jwtExpirationInMinutes in JwtTokenProvider from env
-[] upgrade spring boot and dependencies.
+[DONE] upgrade spring boot and dependencies.
+[] fix warnings.
 [] use username and user.id for getting userDetails in JwtAuthenticationFilter.
 [] merge submission_test_results into submissions.
 [] Restrict usage of websocket for students then to specific studentId.

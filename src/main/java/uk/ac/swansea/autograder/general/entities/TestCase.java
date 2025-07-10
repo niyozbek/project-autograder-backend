@@ -2,7 +2,7 @@ package uk.ac.swansea.autograder.general.entities;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "test_cases")

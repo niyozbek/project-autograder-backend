@@ -37,7 +37,7 @@ services:
       - redis
       - pgsql-test
   pgsql:
-    image: postgres:15
+    image: postgres:17
     ports:
       - '${FORWARD_DB_PORT:-5432}:${DB_PORT}'
     environment:
@@ -54,7 +54,7 @@ services:
       retries: 3
       timeout: 5s
   pgsql-test:
-    image: postgres:15
+    image: postgres:17
     ports:
       - '${FORWARD_DB_TEST_PORT:-5433}:${DB_TEST_PORT}'
     environment:
