@@ -8,10 +8,11 @@ spring:
     driverClassName: org.postgresql.Driver
   flyway:
     enabled: true
+    clean-disabled: false
 
   # JPA Configuration
   jpa:
-    database: POSTGRESQL
+    database: postgresql
     show-sql: true
     hibernate:
       ddl-auto: none

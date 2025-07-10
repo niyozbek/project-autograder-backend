@@ -47,3 +47,9 @@ app:
       secret: ${JWT_SECRET}
   client:
     submissionResultUrl: ${CLIENT_URL}
+
+# Actuator
+management:
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED

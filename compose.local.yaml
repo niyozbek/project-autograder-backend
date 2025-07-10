@@ -1,18 +1,22 @@
 services:
   app:
-    image: gradle:8.5-jdk17
-    working_dir: /app
-    command: [ "gradle", "bootRun", "--no-daemon" ] # --debug
-    volumes:
-        - .:/app
+    build: .
+    command: [ "./gradlew", "bootRun", "--no-daemon" ] # --debug
     ports:
       - "8081:8080"
     networks:
       - 'spring-boot-local'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8080/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     environment:
 #      APP
       JWT_EXPIRATION_IN_MINUTES: '${JWT_EXPIRATION_IN_MINUTES}'
       JWT_SECRET: '${JWT_SECRET}'
+      CLIENT_URL: '${CLIENT_URL}'
 #      DB
       DB_HOST: '${DB_HOST}'
       DB_PORT: '${DB_PORT}'

@@ -61,7 +61,9 @@ public class WebSecurityConfig {
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
-                                "/gs-guide-websocket/**").permitAll()
+                                "/gs-guide-websocket/**",
+                                "/actuator/**"
+                                ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exc -> exc

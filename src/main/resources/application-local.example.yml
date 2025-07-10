@@ -47,3 +47,9 @@ app:
       secret: 'REPLACE_HERE'
   client:
     submissionResultUrl: http://localhost:8886/submission-test-result
+
+# Actuator
+management:
+  endpoint:
+    health:
+      show-details: WHEN_AUTHORIZED
