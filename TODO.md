@@ -4,6 +4,7 @@
 [DONE] set app.jwtSecret and app.jwtExpirationInMinutes in JwtTokenProvider from env
 [DONE] upgrade spring boot and dependencies.
 [DONE] fix warnings. all correct.
+[] add permission based rbac instead of role based, route based rbac.
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] merge submission_test_results into submissions.
 [] Restrict usage of websocket for students then to specific studentId.
