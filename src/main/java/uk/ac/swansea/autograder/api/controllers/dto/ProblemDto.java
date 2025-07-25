@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.api.lecturer.controllers.dto;
+package uk.ac.swansea.autograder.api.controllers.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

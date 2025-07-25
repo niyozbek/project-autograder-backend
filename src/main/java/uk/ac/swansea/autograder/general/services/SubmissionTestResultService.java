@@ -12,8 +12,6 @@ import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 public class SubmissionTestResultService {
     @Autowired
     private SubmissionTestResultRepository submissionTestResultRepository;
-    @Autowired
-    private SubmissionService submissionService;
 
     public void createSubmissionTestResult(Long submissionId, int totalTestCases, int processedTestCases, int correctTestCases) {
         SubmissionTestResult submissionTestResult = new SubmissionTestResult();
@@ -26,17 +24,10 @@ public class SubmissionTestResultService {
         submissionTestResultRepository.save(submissionTestResult);
     }
 
-
     public SubmissionTestResult getSubmissionTestResult(Long submissionId)
             throws ResourceNotFoundException {
         return submissionTestResultRepository.findById(submissionId)
                 .orElseThrow(ResourceNotFoundException::new);
-    }
-
-    public SubmissionTestResult getSubmissionTestResult(Long submissionId, Long studentId)
-            throws BadRequestException, ResourceNotFoundException {
-        Submission submission = submissionService.getSubmission(submissionId, studentId);
-        return getSubmissionTestResult(submission.getId());
     }
 
     public void updateSubmissionTestResult(SubmissionTestResult submissionTestResult) {

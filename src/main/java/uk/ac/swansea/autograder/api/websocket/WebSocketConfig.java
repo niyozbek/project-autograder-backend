@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.api.student.websocket;
+package uk.ac.swansea.autograder.api.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

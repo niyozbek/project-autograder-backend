@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.api.student.controllers.dto;
+package uk.ac.swansea.autograder.api.controllers.dto;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SubmissionDto extends SubmissionBriefDto{
+public class SubmissionDto extends SubmissionBriefDto {
     @NotBlank
     private String code;
 }

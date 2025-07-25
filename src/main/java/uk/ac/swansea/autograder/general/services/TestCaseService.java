@@ -3,7 +3,7 @@ package uk.ac.swansea.autograder.general.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.api.lecturer.controllers.dto.TestCaseDto;
+import uk.ac.swansea.autograder.api.controllers.dto.TestCaseDto;
 import uk.ac.swansea.autograder.general.entities.Problem;
 import uk.ac.swansea.autograder.general.entities.TestCase;
 import uk.ac.swansea.autograder.general.repositories.TestCaseRepository;
@@ -26,11 +26,9 @@ public class TestCaseService {
         return testCaseRepository.findAllByProblemId(id, pageable);
     }
 
-    public TestCase addTestCase(TestCaseDto testCaseDto, Long lecturerId) throws ResourceNotFoundException, BadRequestException {
-        Problem problem = problemService.getProblemByLecturerId(testCaseDto.getProblemId(), lecturerId);
-
+    public TestCase addTestCase(Long problemId, TestCaseDto testCaseDto, Long lecturerId) throws ResourceNotFoundException, BadRequestException {
         TestCase testCase = new TestCase();
-        testCase.setProblemId(problem.getId());
+        testCase.setProblemId(problemId);
         testCase.setInput(testCaseDto.getInput());
         testCase.setExpectedOutput(testCaseDto.getExpectedOutput());
         return testCaseRepository.save(testCase);

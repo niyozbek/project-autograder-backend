@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.api.student.websocket;
+package uk.ac.swansea.autograder.api.websocket;
 
 import lombok.Getter;
 

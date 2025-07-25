@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.api.student.websocket;
+package uk.ac.swansea.autograder.api.websocket;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;

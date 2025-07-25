@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.api.admin.controllers.dto.NewUserDto;
+import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
 import uk.ac.swansea.autograder.general.entities.Role;
 import uk.ac.swansea.autograder.general.entities.User;
 import uk.ac.swansea.autograder.general.repositories.UserRepository;

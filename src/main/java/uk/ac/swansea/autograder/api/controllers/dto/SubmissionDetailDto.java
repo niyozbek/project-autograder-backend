@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.api.student.controllers.dto;
+package uk.ac.swansea.autograder.api.controllers.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

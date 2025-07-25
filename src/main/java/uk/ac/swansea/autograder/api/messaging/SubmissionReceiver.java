@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.api.student.messaging;
+package uk.ac.swansea.autograder.api.messaging;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import uk.ac.swansea.autograder.api.admin.controllers.dto.NewUserDto;
+import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginResponseDto;
 import uk.ac.swansea.autograder.general.services.UserService;

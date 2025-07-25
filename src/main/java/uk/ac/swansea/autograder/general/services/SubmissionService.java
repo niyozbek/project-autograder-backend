@@ -21,16 +21,6 @@ public class SubmissionService {
         return submissionRepository.findAllByProblemIdAndStudentId(problemId, studentId, pageable);
     }
 
-    // use problemId and studentID to verify if submissionId can be accessed
-    public Submission getSubmission(Long submissionId, Long studentId) throws BadRequestException, ResourceNotFoundException {
-        Submission submission = submissionRepository.findById(submissionId).orElseThrow(
-                ResourceNotFoundException::new);
-        if (!Objects.equals(submission.getStudentId(), studentId)) {
-            throw new BadRequestException();
-        }
-        return submission;
-    }
-
     public Submission getSubmission(Long submissionId) throws ResourceNotFoundException {
         return submissionRepository.findById(submissionId).orElseThrow(
                 ResourceNotFoundException::new);
