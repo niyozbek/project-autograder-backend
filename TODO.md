@@ -6,6 +6,9 @@
 [DONE] fix warnings. all correct.
 [] add permission based rbac instead of role based, route based rbac.
     [DONE] improve route directory structure
+    [] no need for lecturers and students route.
+    [] crud for roles to users.
+    [] hardcode permissions only instead of roles
     [] studentId, lecturerId -> userId
     [] instead of roles, make sure to have permissions
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
