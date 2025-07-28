@@ -49,4 +49,8 @@ public class SubmissionService {
     public void updateSubmission(Submission submission) {
         submissionRepository.save(submission);
     }
+
+    public List<Submission> getSubmissions(Pageable pageable) {
+        return submissionRepository.findAll(pageable).toList();
+    }
 }

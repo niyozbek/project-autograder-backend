@@ -38,15 +38,15 @@ public class SubmissionMainService {
     @Autowired
     private SubmissionSender submissionSender;
 
-    public Submission submitSolution(Long id, SubmissionDto submissionDto, Long studentId)
+    public Submission submitSolution(SubmissionDto submissionDto)
             throws ResourceNotFoundException, BadRequestException {
-        Problem problem = problemService.getProblem(id);
+        Problem problem = problemService.getProblem(submissionDto.getProblemId());
         if (!Objects.equals(problem.getStatus(), Problem.Status.ACTIVE)) {
             throw new BadRequestException();
         }
 
         Submission submission = submissionService.createSubmission(problem.getId(),
-                studentId,
+                submissionDto.getStudentId(),
                 submissionDto.getLanguage(),
                 submissionDto.getVersion(),
                 submissionDto.getFilename(),

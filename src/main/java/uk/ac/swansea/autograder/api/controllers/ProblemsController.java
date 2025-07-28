@@ -14,17 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.controllers.dto.*;
 import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
 import uk.ac.swansea.autograder.general.entities.Problem;
-import uk.ac.swansea.autograder.general.entities.Submission;
-import uk.ac.swansea.autograder.general.entities.TestCase;
 import uk.ac.swansea.autograder.general.services.ProblemService;
 import uk.ac.swansea.autograder.config.MyUserDetails;
-import uk.ac.swansea.autograder.exceptions.BadRequestException;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import jakarta.validation.Valid;
 import uk.ac.swansea.autograder.general.services.SubmissionMainService;
-import uk.ac.swansea.autograder.general.services.SubmissionService;
-import uk.ac.swansea.autograder.general.services.TestCaseService;
 import uk.ac.swansea.autograder.general.services.dto.RuntimeDto;
 
 import java.util.List;
@@ -41,10 +36,6 @@ import java.util.List;
 public class ProblemsController {
     @Autowired
     private ProblemService problemService;
-    @Autowired
-    private SubmissionService submissionService;
-    @Autowired
-    private TestCaseService testCaseService;
     @Autowired
     private SubmissionMainService submissionMainService;
     @Autowired
@@ -120,64 +111,9 @@ public class ProblemsController {
         return modelMapper.map(problem, ProblemDto.class);
     }
 
-    /**
-     * Get the list of submitted solutions to a specific problem
-     *
-     * @return list of submissions
-     */
-    @GetMapping("{id}/submission")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
-    public List<SubmissionBriefDto> getSubmissions(@PathVariable Long id,
-                                                   @RequestParam(defaultValue = "0") Integer pageNo,
-                                                   @RequestParam(defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        List<Submission> submissionList = submissionService
-                .getSubmissionsByProblemId(id, pageable);
-        return modelMapper.map(submissionList, new TypeToken<List<SubmissionBriefDto>>() {}.getType());
-    }
-
-    @GetMapping("{id}/test-case")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
-    public List<TestCase> getTestCases(@PathVariable Long id,
-                                       @RequestParam(defaultValue = "0") Integer pageNo,
-                                       @RequestParam(defaultValue = "10") Integer pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        return testCaseService.getAllTestCasesByProblemId(id, pageable);
-    }
-
-    @PostMapping("{id}/test-case")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
-    public TestCase addTestCase(Authentication authentication,
-                                @PathVariable Long id,
-                                @Valid @RequestBody TestCaseDto testCaseDto) throws BadRequestException, ResourceNotFoundException, UnauthorizedException {
-        // check owner id
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        Problem problem = problemService.getProblem(id);
-        if (!problem.getLecturerId().equals(user.getId())) {
-            throw new UnauthorizedException();
-        }
-        return testCaseService.addTestCase(id, testCaseDto, user.getId());
-    }
-
     @GetMapping("{id}/runtime")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
     public List<RuntimeDto> getProblemRuntime(@PathVariable Long id) {
         return submissionMainService.getRuntime(id);
-    }
-
-    /**
-     * Submit a solution to a problem
-     *
-     * @param id            problemId
-     * @param submissionDto submission body
-     */
-    @PostMapping("{id}/submit")
-    @PreAuthorize("hasAuthority('STUDENT')")
-    public Submission submitSolution(Authentication authentication,
-                                     @PathVariable Long id,
-                                     @Valid @RequestBody SubmissionDto submissionDto)
-            throws ResourceNotFoundException, BadRequestException {
-        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        return submissionMainService.submitSolution(id, submissionDto, user.getId());
     }
 }

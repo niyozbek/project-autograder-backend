@@ -1,5 +1,6 @@
 package uk.ac.swansea.autograder.api.controllers;
 
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,10 @@ import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
 import uk.ac.swansea.autograder.general.entities.Problem;
 import uk.ac.swansea.autograder.general.entities.Submission;
 import uk.ac.swansea.autograder.general.entities.SubmissionTestResult;
-import uk.ac.swansea.autograder.general.services.SubmissionDetailService;
-import uk.ac.swansea.autograder.general.services.SubmissionService;
+import uk.ac.swansea.autograder.general.services.*;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
-import uk.ac.swansea.autograder.general.services.SubmissionTestResultService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,7 +42,31 @@ public class SubmissionsController {
     @Autowired
     private SubmissionTestResultService submissionTestResultService;
     @Autowired
+    private SubmissionMainService submissionMainService;
+    @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ProblemService problemService;
+
+    /**
+     * Get the list of submitted solutions to a specific problem
+     *
+     * @return list of submissions
+     */
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
+    public List<SubmissionBriefDto> getSubmissions(@RequestParam(required = false) Long problemId,
+                                                   @RequestParam(defaultValue = "0") Integer pageNo,
+                                                   @RequestParam(defaultValue = "10") Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
+        List<Submission> submissionList;
+        if (problemId != null) {
+            submissionList = submissionService.getSubmissionsByProblemId(problemId, pageable);;
+        } else {
+            submissionList = submissionService.getSubmissions(pageable);
+        }
+        return modelMapper.map(submissionList, new TypeToken<List<SubmissionBriefDto>>() {}.getType());
+    }
 
     /**
      * Get the list of submitted solutions by the student
@@ -51,7 +75,6 @@ public class SubmissionsController {
      * @return list of submissions
      */
     @GetMapping("own")
-
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
     public List<SubmissionBriefDto> getOwnSubmissions(Authentication authentication,
                                                    @RequestParam(required = false) Long problemId,
@@ -147,10 +170,26 @@ public class SubmissionsController {
                 ).collect(Collectors.toList());
     }
 
+
+    /**
+     * Submit a solution to a problem
+     *
+     * @param submissionDto submission body
+     */
+    @PostMapping
+    @PreAuthorize("hasAuthority('STUDENT')")
+    public Submission submitSolution(Authentication authentication,
+                                     @Valid @RequestBody SubmissionDto submissionDto)
+            throws ResourceNotFoundException, BadRequestException {
+        MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
+        submissionDto.setStudentId(user.getId());
+        return submissionMainService.submitSolution(submissionDto);
+    }
+
     /**
      * Get test cases and results
      */
-    @GetMapping("own/{submissionId}/test-result")
+    @GetMapping("own/{submissionId}/test-result") //TODO: what to do with this one?
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
     public SubmissionTestResult getTestResult(Authentication authentication,
                                               @PathVariable Long submissionId)
