@@ -9,7 +9,9 @@
 [DONE] add permission-based rbac instead of role-based, route-based rbac.
     [DONE] hardcode permissions only instead of roles
     [DONE] instead of roles, make sure to have permissions
-[] no need for lecturers and students route, users instead.
+[CANCELLED] no need for lecturers and students route, users instead.
+    we will need such routes for convenience, at least for now.
+[] test with frontend
 [] studentId, lecturerId → userId
 [] crud for roles to users.
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.

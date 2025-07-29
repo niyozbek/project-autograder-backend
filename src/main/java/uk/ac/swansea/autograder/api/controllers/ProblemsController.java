@@ -98,10 +98,9 @@ public class ProblemsController {
             summary = "Update problem",
             description = "Updates an existing problem. Only the user who created the problem can modify it."
     )
-    public ProblemDto updateProblem(Authentication authentication,
-                                    @PathVariable Long id,
+    public ProblemDto updateProblem(@PathVariable Long id,
                                     @Valid @RequestBody ProblemDto problemDto)
-            throws ResourceNotFoundException, UnauthorizedException {
+            throws ResourceNotFoundException {
         Problem problem = problemService.updateProblem(id, problemDto);
         return modelMapper.map(problem, ProblemDto.class);
     }
@@ -128,7 +127,7 @@ public class ProblemsController {
     }
 
     @GetMapping("{id}/runtime")
-    @PreAuthorize("hasAuthority('ADMIN', 'LECTURER', 'STUDENT')")
+    @PreAuthorize("hasAuthority('')")
     public List<RuntimeDto> getProblemRuntime(@PathVariable Long id) {
         return submissionMainService.getRuntime(id);
     }

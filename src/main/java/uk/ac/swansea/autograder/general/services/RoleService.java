@@ -17,9 +17,4 @@ public class RoleService {
         return roleRepository.findByName(name)
                 .orElseThrow(ResourceNotFoundException::new);
     }
-
-    public Role getRoleById(Integer id) throws ResourceNotFoundException {
-        return roleRepository.findById(id)
-                .orElseThrow(ResourceNotFoundException::new);
-    }
 }
