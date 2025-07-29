@@ -8,14 +8,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.controllers.dto.TestCaseDto;
-import uk.ac.swansea.autograder.config.MyUserDetails;
-import uk.ac.swansea.autograder.exceptions.BadRequestException;
-import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
-import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
 import uk.ac.swansea.autograder.api.entities.Problem;
 import uk.ac.swansea.autograder.api.entities.TestCase;
 import uk.ac.swansea.autograder.api.services.ProblemService;
 import uk.ac.swansea.autograder.api.services.TestCaseService;
+import uk.ac.swansea.autograder.config.MyUserDetails;
+import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
+import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class TestCasesController {
     @PostMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
     public TestCase addTestCase(Authentication authentication,
-                                @Valid @RequestBody TestCaseDto testCaseDto) throws BadRequestException, ResourceNotFoundException, UnauthorizedException {
+                                @Valid @RequestBody TestCaseDto testCaseDto) throws ResourceNotFoundException, UnauthorizedException {
         // check owner id
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         Long problemId = testCaseDto.getProblemId();
@@ -56,6 +55,6 @@ public class TestCasesController {
         if (!problem.getLecturerId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
-        return testCaseService.addTestCase(problemId, testCaseDto, user.getId());
+        return testCaseService.addTestCase(problemId, testCaseDto);
     }
 }
