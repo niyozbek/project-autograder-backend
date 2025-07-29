@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginResponseDto;
+import uk.ac.swansea.autograder.general.enums.RoleEnum;
 import uk.ac.swansea.autograder.general.services.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -48,7 +49,7 @@ class AuthControllerMethodTest {
         // Create Admin
         NewUserDto newUserDto = NewUserDto.builder()
                 .username("test_user").password("test_pass").build();
-        userService.createAdmin(newUserDto);
+        userService.createUserWithRole(newUserDto, RoleEnum.ADMIN);
 
         // Arrange
         LoginDto loginDto = new LoginDto();
@@ -79,7 +80,7 @@ class AuthControllerMethodTest {
         // Create Lecturer
         NewUserDto newUserDto = NewUserDto.builder()
                 .username("test_user").password("test_pass").build();
-        userService.createLecturer(newUserDto);
+        userService.createUserWithRole(newUserDto, RoleEnum.LECTURER);
 
         // Arrange
         LoginDto loginDto = new LoginDto();
@@ -110,7 +111,7 @@ class AuthControllerMethodTest {
         // Create Student
         NewUserDto newUserDto = NewUserDto.builder()
                 .username("test_user").password("test_pass").build();
-        userService.createStudent(newUserDto);
+        userService.createUserWithRole(newUserDto, RoleEnum.STUDENT);
 
         // Arrange
         LoginDto loginDto = new LoginDto();

@@ -30,6 +30,6 @@ public enum PermissionEnum {
     CREATE_LECTURER,
     VIEW_LECTURER,
     CREATE_STUDENT,
-    VIEW_STUDENT;
+    VIEW_STUDENT
 }
 
