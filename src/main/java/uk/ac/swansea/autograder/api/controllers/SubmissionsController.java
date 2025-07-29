@@ -1,5 +1,6 @@
 package uk.ac.swansea.autograder.api.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -27,12 +28,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Get all submissions+
- * Get a specific submission+
- * View every test case of every submission+
+ * Get all submissions.
+ * Get a specific submission.
+ * View every test case of every submission.
  */
 @RestController
 @RequestMapping("api/submissions")
+@Tag(name = "Manage submissions", description = "Can create/update submissions.")
 public class SubmissionsController {
     private final SubmissionService submissionService;
     private final SubmissionDetailService submissionDetailService;

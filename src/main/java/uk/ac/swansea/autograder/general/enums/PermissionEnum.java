@@ -4,6 +4,9 @@ public enum PermissionEnum {
     // User management
     CREATE_USER,
     VIEW_USER,
+    VIEW_OWN_USER,
+    UPDATE_USER,
+    UPDATE_OWN_USER,
 
     // Role management
     CREATE_ROLE,

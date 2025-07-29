@@ -12,10 +12,11 @@
 [CANCELLED] no need for lecturers and students route, users instead.
     we will need such routes for convenience, at least for now.
 [DONE] studentId, lecturerId → userId
+[DONE] crud for roles to users.
+[] add fullname to user table
+[] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] where are the log files?
 [] test with frontend
-[] crud for roles to users.
-[] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] merge submission_test_results into submissions.
 [] Restrict usage of websocket for students then to specific studentId.
 [] confirm if two websocket connections collide.

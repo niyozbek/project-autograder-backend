@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
+import uk.ac.swansea.autograder.api.controllers.dto.UserDto;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 import uk.ac.swansea.autograder.general.entities.Role;
 import uk.ac.swansea.autograder.general.entities.User;
@@ -29,6 +30,10 @@ public class UserService {
         return userRepository.findAllUsersByRoleId(role.getId(), pageable);
     }
 
+    public List<User> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable).toList();
+    }
+
     public User createUserWithRole(NewUserDto newUserDto, RoleEnum roleEnum) throws ResourceNotFoundException {
         User user = createUser(newUserDto);
         Role role = roleService.getRoleByName(roleEnum.name());
@@ -45,6 +50,17 @@ public class UserService {
 
     public User assignRole(User user, Role role) {
         user.getRoles().add(role);
+        return userRepository.save(user);
+    }
+
+    public User getUser(Long id) throws ResourceNotFoundException {
+        return userRepository.findById(id)
+                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public User updateUser(UserDto userDto) throws ResourceNotFoundException {
+        User user = getUser(userDto.getId());
+        user.setUsername(userDto.getUsername());
         return userRepository.save(user);
     }
 }

@@ -24,14 +24,13 @@ import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
 import java.util.List;
 
 /**
- * Create a problem so that students can submit a code for it+
- * Can view submissions for each problem
- * Can view all problems created previously+
- * Can't view problems created by other lecturers+
+ * Create a problem so that students can submit a code for it.
+ * Can view submissions for each problem.
+ * Can view all problems created previously.
  */
 @RestController
 @RequestMapping("api/problems")
-@Tag(name = "Manage problems", description = "Lecturer can manage problems")
+@Tag(name = "Manage problems", description = "Create a problem so that students can submit a code for it.")
 public class ProblemsController {
     private final ProblemService problemService;
     private final SubmissionMainService submissionMainService;

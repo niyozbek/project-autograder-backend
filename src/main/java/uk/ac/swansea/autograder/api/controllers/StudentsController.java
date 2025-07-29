@@ -20,11 +20,11 @@ import uk.ac.swansea.autograder.general.services.UserService;
 import java.util.List;
 
 /**
- * Can create/edit lecturer profile and student profile.
+ * Can create/update student profile.
  */
 @RestController
 @RequestMapping("api/students")
-@Tag(name = "Manage students", description = "Admin can manage students")
+@Tag(name = "Manage students", description = "Can create/update student profile.")
 public class StudentsController {
     private final UserService userService;
     private final ModelMapper modelMapper;

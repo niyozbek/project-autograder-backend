@@ -1,5 +1,6 @@
 package uk.ac.swansea.autograder.api.controllers;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/test-cases")
+@Tag(name = "Manage test-cases", description = "Can create/update test-cases.")
 public class TestCasesController {
     private final TestCaseService testCaseService;
     private final ProblemService problemService;
