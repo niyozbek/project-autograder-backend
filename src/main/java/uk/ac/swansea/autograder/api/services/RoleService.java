@@ -1,6 +1,5 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autograder.general.entities.Role;
 import uk.ac.swansea.autograder.general.repositories.RoleRepository;
@@ -8,8 +7,11 @@ import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 @Service
 public class RoleService {
-    @Autowired
-    private RoleRepository roleRepository;
+    private final RoleRepository roleRepository;
+
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
     public Role getAdminRole() throws ResourceNotFoundException {
         return roleRepository.findByName(Role.RoleType.ADMIN)

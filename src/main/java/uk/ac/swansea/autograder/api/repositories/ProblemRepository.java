@@ -1,9 +1,9 @@
-package uk.ac.swansea.autograder.general.repositories;
+package uk.ac.swansea.autograder.api.repositories;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
-import uk.ac.swansea.autograder.general.entities.Problem;
+import uk.ac.swansea.autograder.api.entities.Problem;
 
 import java.util.List;
 

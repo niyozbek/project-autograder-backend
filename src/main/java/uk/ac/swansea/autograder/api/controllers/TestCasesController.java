@@ -1,7 +1,6 @@
 package uk.ac.swansea.autograder.api.controllers;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,20 +12,23 @@ import uk.ac.swansea.autograder.config.MyUserDetails;
 import uk.ac.swansea.autograder.exceptions.BadRequestException;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
-import uk.ac.swansea.autograder.general.entities.Problem;
-import uk.ac.swansea.autograder.general.entities.TestCase;
-import uk.ac.swansea.autograder.general.services.ProblemService;
-import uk.ac.swansea.autograder.general.services.TestCaseService;
+import uk.ac.swansea.autograder.api.entities.Problem;
+import uk.ac.swansea.autograder.api.entities.TestCase;
+import uk.ac.swansea.autograder.api.services.ProblemService;
+import uk.ac.swansea.autograder.api.services.TestCaseService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/test-cases")
 public class TestCasesController {
-    @Autowired
-    private TestCaseService testCaseService;
-    @Autowired
-    private ProblemService problemService;
+    private final TestCaseService testCaseService;
+    private final ProblemService problemService;
+
+    public TestCasesController(TestCaseService testCaseService, ProblemService problemService) {
+        this.testCaseService = testCaseService;
+        this.problemService = problemService;
+    }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")

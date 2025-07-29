@@ -1,6 +1,5 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,12 +13,15 @@ import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private RoleService roleService;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final RoleService roleService;
+
+    public UserService(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository, RoleService roleService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.roleService = roleService;
+    }
 
     public List<User> getLecturers(Pageable pageable)
             throws ResourceNotFoundException {

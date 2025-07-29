@@ -52,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
+    //TODO: possibly this method is not needed anymore
     private boolean notAuthorized(UserDetails user, HttpServletRequest request) {
         String url = request.getRequestURI();
         if (url.contains("/api/admin") && user.getAuthorities().stream()

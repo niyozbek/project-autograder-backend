@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginResponseDto;
-import uk.ac.swansea.autograder.general.services.UserService;
+import uk.ac.swansea.autograder.api.services.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

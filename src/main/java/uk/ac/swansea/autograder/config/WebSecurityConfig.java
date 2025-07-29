@@ -1,6 +1,5 @@
 package uk.ac.swansea.autograder.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,10 +22,13 @@ import uk.ac.swansea.autograder.exceptions.JwtAuthenticationEntryPoint;
 @EnableMethodSecurity(securedEnabled = true)  // replaces @EnableGlobalMethodSecurity
 public class WebSecurityConfig {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationEntryPoint unauthorizedHandler;
+
+    public WebSecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler) {
+        this.userDetailsService = userDetailsService;
+        this.unauthorizedHandler = unauthorizedHandler;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

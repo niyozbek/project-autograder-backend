@@ -3,7 +3,6 @@ package uk.ac.swansea.autograder.api.controllers;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,17 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionBriefDto;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionDetailDto;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionDto;
-import uk.ac.swansea.autograder.api.controllers.dto.UserDto;
+import uk.ac.swansea.autograder.api.services.SubmissionDetailService;
+import uk.ac.swansea.autograder.api.services.SubmissionMainService;
+import uk.ac.swansea.autograder.api.services.SubmissionService;
+import uk.ac.swansea.autograder.api.services.SubmissionTestResultService;
 import uk.ac.swansea.autograder.config.MyUserDetails;
 import uk.ac.swansea.autograder.exceptions.BadRequestException;
 import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
-import uk.ac.swansea.autograder.general.entities.Problem;
-import uk.ac.swansea.autograder.general.entities.Submission;
-import uk.ac.swansea.autograder.general.entities.SubmissionTestResult;
-import uk.ac.swansea.autograder.general.services.*;
+import uk.ac.swansea.autograder.api.entities.Submission;
+import uk.ac.swansea.autograder.api.entities.SubmissionTestResult;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,18 +34,19 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/submissions")
 public class SubmissionsController {
-    @Autowired
-    private SubmissionService submissionService;
-    @Autowired
-    private SubmissionDetailService submissionDetailService;
-    @Autowired
-    private SubmissionTestResultService submissionTestResultService;
-    @Autowired
-    private SubmissionMainService submissionMainService;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private ProblemService problemService;
+    private final SubmissionService submissionService;
+    private final SubmissionDetailService submissionDetailService;
+    private final SubmissionTestResultService submissionTestResultService;
+    private final SubmissionMainService submissionMainService;
+    private final ModelMapper modelMapper;
+
+    public SubmissionsController(SubmissionService submissionService, SubmissionDetailService submissionDetailService, SubmissionTestResultService submissionTestResultService, SubmissionMainService submissionMainService, ModelMapper modelMapper) {
+        this.submissionService = submissionService;
+        this.submissionDetailService = submissionDetailService;
+        this.submissionTestResultService = submissionTestResultService;
+        this.submissionMainService = submissionMainService;
+        this.modelMapper = modelMapper;
+    }
 
     /**
      * Get the list of submitted solutions to a specific problem
@@ -61,7 +61,7 @@ public class SubmissionsController {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
         List<Submission> submissionList;
         if (problemId != null) {
-            submissionList = submissionService.getSubmissionsByProblemId(problemId, pageable);;
+            submissionList = submissionService.getSubmissionsByProblemId(problemId, pageable);
         } else {
             submissionList = submissionService.getSubmissions(pageable);
         }
@@ -98,11 +98,11 @@ public class SubmissionsController {
      *
      * @return submission
      */
-    @GetMapping("{submissionId}")
+    @GetMapping("{id}")
     @PreAuthorize("hasAuthority('LECTURER')")
-    public SubmissionDto getSubmission(@PathVariable Long submissionId)
+    public SubmissionDto getSubmission(@PathVariable Long id)
             throws ResourceNotFoundException {
-        Submission submission = submissionService.getSubmission(submissionId);
+        Submission submission = submissionService.getSubmission(id);
         return modelMapper.map(submission, SubmissionDto.class);
     }
 
@@ -111,12 +111,12 @@ public class SubmissionsController {
      *
      * @return submission
      */
-    @GetMapping("own/{submissionId}")
+    @GetMapping("own/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
     public SubmissionDto getOwnSubmission(Authentication authentication,
-                                          @PathVariable Long submissionId)
+                                          @PathVariable Long id)
             throws ResourceNotFoundException, UnauthorizedException {
-        Submission submission = submissionService.getSubmission(submissionId);
+        Submission submission = submissionService.getSubmission(id);
         // check owner id
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         if (!submission.getStudentId().equals(user.getId())) {
@@ -128,10 +128,10 @@ public class SubmissionsController {
     /**
      * Get test cases and results
      */
-    @GetMapping("{submissionId}/detail")
+    @GetMapping("{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
-    public List<SubmissionDetailDto> getSubmissionDetails(@PathVariable Long submissionId) {
-        return submissionDetailService.getSubmissionDetail(submissionId)
+    public List<SubmissionDetailDto> getSubmissionDetails(@PathVariable Long id) {
+        return submissionDetailService.getSubmissionDetail(id)
                 .stream()
                 .map(submissionDetail -> SubmissionDetailDto.builder()
                         .id(submissionDetail.getId())
@@ -147,17 +147,17 @@ public class SubmissionsController {
     /**
      * Get own submission details, which include test cases and results
      */
-    @GetMapping("own/{submissionId}/detail")
+    @GetMapping("own/{id}/detail")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
     public List<SubmissionDetailDto> getOwnSubmissionDetails(Authentication authentication,
-                                                          @PathVariable Long submissionId) throws BadRequestException, ResourceNotFoundException, UnauthorizedException {
+                                                          @PathVariable Long id) throws ResourceNotFoundException, UnauthorizedException {
         // check owner id
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        Submission submission = submissionService.getSubmission(submissionId);
+        Submission submission = submissionService.getSubmission(id);
         if (!submission.getStudentId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
-        return submissionDetailService.getSubmissionDetail(submissionId)
+        return submissionDetailService.getSubmissionDetail(id)
                 .stream()
                 .map(submissionDetail -> SubmissionDetailDto.builder()
                         .id(submissionDetail.getId())
@@ -189,17 +189,17 @@ public class SubmissionsController {
     /**
      * Get test cases and results
      */
-    @GetMapping("own/{submissionId}/test-result") //TODO: what to do with this one?
+    @GetMapping("own/{id}/test-result")
     @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
     public SubmissionTestResult getTestResult(Authentication authentication,
-                                              @PathVariable Long submissionId)
-            throws BadRequestException, ResourceNotFoundException, UnauthorizedException {
+                                              @PathVariable Long id)
+            throws ResourceNotFoundException, UnauthorizedException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         // check owner id
-        Submission submission = submissionService.getSubmission(submissionId);
+        Submission submission = submissionService.getSubmission(id);
         if (!submission.getStudentId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
-        return submissionTestResultService.getSubmissionTestResult(submissionId);
+        return submissionTestResultService.getSubmissionTestResult(id);
     }
 }

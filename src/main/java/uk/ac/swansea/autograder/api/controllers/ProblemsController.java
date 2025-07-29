@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,14 +12,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.controllers.dto.*;
 import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
-import uk.ac.swansea.autograder.general.entities.Problem;
-import uk.ac.swansea.autograder.general.services.ProblemService;
+import uk.ac.swansea.autograder.api.entities.Problem;
+import uk.ac.swansea.autograder.api.services.ProblemService;
 import uk.ac.swansea.autograder.config.MyUserDetails;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import jakarta.validation.Valid;
-import uk.ac.swansea.autograder.general.services.SubmissionMainService;
-import uk.ac.swansea.autograder.general.services.dto.RuntimeDto;
+import uk.ac.swansea.autograder.api.services.SubmissionMainService;
+import uk.ac.swansea.autograder.api.services.dto.RuntimeDto;
 
 import java.util.List;
 
@@ -34,12 +33,15 @@ import java.util.List;
 @RequestMapping("api/problems")
 @Tag(name = "Manage problems", description = "Lecturer can manage problems")
 public class ProblemsController {
-    @Autowired
-    private ProblemService problemService;
-    @Autowired
-    private SubmissionMainService submissionMainService;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ProblemService problemService;
+    private final SubmissionMainService submissionMainService;
+    private final ModelMapper modelMapper;
+
+    public ProblemsController(ProblemService problemService, SubmissionMainService submissionMainService, ModelMapper modelMapper) {
+        this.problemService = problemService;
+        this.submissionMainService = submissionMainService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT', 'LECTURER')")

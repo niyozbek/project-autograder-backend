@@ -1,7 +1,7 @@
-package uk.ac.swansea.autograder.general.repositories;
+package uk.ac.swansea.autograder.api.repositories;
 
 import org.springframework.data.repository.CrudRepository;
-import uk.ac.swansea.autograder.general.entities.SubmissionDetail;
+import uk.ac.swansea.autograder.api.entities.SubmissionDetail;
 
 import java.util.List;
 

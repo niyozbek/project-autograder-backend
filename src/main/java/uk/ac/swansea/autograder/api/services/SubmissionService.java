@@ -1,20 +1,20 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.general.entities.Submission;
-import uk.ac.swansea.autograder.general.repositories.SubmissionRepository;
-import uk.ac.swansea.autograder.exceptions.BadRequestException;
+import uk.ac.swansea.autograder.api.entities.Submission;
+import uk.ac.swansea.autograder.api.repositories.SubmissionRepository;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class SubmissionService {
-    @Autowired
-    private SubmissionRepository submissionRepository;
+    private final SubmissionRepository submissionRepository;
+
+    public SubmissionService(SubmissionRepository submissionRepository) {
+        this.submissionRepository = submissionRepository;
+    }
 
     public List<Submission> getSubmissionsByProblemIdAndStudentId(Long problemId, Long studentId,
                                                                   Pageable pageable) {

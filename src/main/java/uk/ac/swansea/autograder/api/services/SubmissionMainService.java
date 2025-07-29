@@ -1,19 +1,18 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionDto;
-import uk.ac.swansea.autograder.general.entities.Problem;
-import uk.ac.swansea.autograder.general.entities.TestCase;
-import uk.ac.swansea.autograder.general.entities.Submission;
-import uk.ac.swansea.autograder.general.entities.SubmissionTestResult;
+import uk.ac.swansea.autograder.api.entities.Problem;
+import uk.ac.swansea.autograder.api.entities.TestCase;
+import uk.ac.swansea.autograder.api.entities.Submission;
+import uk.ac.swansea.autograder.api.entities.SubmissionTestResult;
 import uk.ac.swansea.autograder.api.messaging.SubmissionSender;
-import uk.ac.swansea.autograder.general.services.dto.ExecutionDto;
-import uk.ac.swansea.autograder.general.services.dto.ExecutionResultDto;
-import uk.ac.swansea.autograder.general.services.dto.RuntimeDto;
+import uk.ac.swansea.autograder.api.services.dto.ExecutionDto;
+import uk.ac.swansea.autograder.api.services.dto.ExecutionResultDto;
+import uk.ac.swansea.autograder.api.services.dto.RuntimeDto;
 import uk.ac.swansea.autograder.exceptions.BadRequestException;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
@@ -23,20 +22,23 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class SubmissionMainService {
-    @Autowired
-    private ProblemService problemService;
-    @Autowired
-    private TestCaseService testCaseService;
-    @Autowired
-    private ExecutionService executionService;
-    @Autowired
-    private SubmissionDetailService submissionDetailService;
-    @Autowired
-    private SubmissionTestResultService submissionTestResultService;
-    @Autowired
-    private SubmissionService submissionService;
-    @Autowired
-    private SubmissionSender submissionSender;
+    private final ProblemService problemService;
+    private final TestCaseService testCaseService;
+    private final ExecutionService executionService;
+    private final SubmissionDetailService submissionDetailService;
+    private final SubmissionTestResultService submissionTestResultService;
+    private final SubmissionService submissionService;
+    private final SubmissionSender submissionSender;
+
+    public SubmissionMainService(ProblemService problemService, TestCaseService testCaseService, ExecutionService executionService, SubmissionDetailService submissionDetailService, SubmissionTestResultService submissionTestResultService, SubmissionService submissionService, SubmissionSender submissionSender) {
+        this.problemService = problemService;
+        this.testCaseService = testCaseService;
+        this.executionService = executionService;
+        this.submissionDetailService = submissionDetailService;
+        this.submissionTestResultService = submissionTestResultService;
+        this.submissionService = submissionService;
+        this.submissionSender = submissionSender;
+    }
 
     public Submission submitSolution(SubmissionDto submissionDto)
             throws ResourceNotFoundException, BadRequestException {

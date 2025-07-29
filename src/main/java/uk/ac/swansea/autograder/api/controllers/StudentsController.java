@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
 import uk.ac.swansea.autograder.api.controllers.dto.UserDto;
 import uk.ac.swansea.autograder.general.entities.User;
-import uk.ac.swansea.autograder.general.services.UserService;
+import uk.ac.swansea.autograder.api.services.UserService;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import jakarta.validation.Valid;
@@ -26,10 +25,13 @@ import java.util.List;
 @RequestMapping("api/students")
 @Tag(name = "Manage students", description = "Admin can manage students")
 public class StudentsController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final UserService userService;
+    private final ModelMapper modelMapper;
+
+    public StudentsController(UserService userService, ModelMapper modelMapper) {
+        this.userService = userService;
+        this.modelMapper = modelMapper;
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")

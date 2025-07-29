@@ -1,17 +1,19 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.general.entities.TestCase;
-import uk.ac.swansea.autograder.general.entities.SubmissionDetail;
-import uk.ac.swansea.autograder.general.repositories.SubmissionDetailRepository;
+import uk.ac.swansea.autograder.api.entities.TestCase;
+import uk.ac.swansea.autograder.api.entities.SubmissionDetail;
+import uk.ac.swansea.autograder.api.repositories.SubmissionDetailRepository;
 
 import java.util.List;
 
 @Service
 public class SubmissionDetailService {
-    @Autowired
-    private SubmissionDetailRepository submissionDetailRepository;
+    private final SubmissionDetailRepository submissionDetailRepository;
+
+    public SubmissionDetailService(SubmissionDetailRepository submissionDetailRepository) {
+        this.submissionDetailRepository = submissionDetailRepository;
+    }
 
     public List<SubmissionDetail> getSubmissionDetail(Long submissionId) {
         return submissionDetailRepository

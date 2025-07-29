@@ -1,13 +1,12 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
 import com.github.codeboy.piston4j.api.*;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.general.services.dto.ExecutionDto;
-import uk.ac.swansea.autograder.general.services.dto.ExecutionResultDto;
-import uk.ac.swansea.autograder.general.services.dto.RuntimeDto;
+import uk.ac.swansea.autograder.api.services.dto.ExecutionDto;
+import uk.ac.swansea.autograder.api.services.dto.ExecutionResultDto;
+import uk.ac.swansea.autograder.api.services.dto.RuntimeDto;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,8 +14,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class ExecutionService {
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
+
+    public ExecutionService(ModelMapper modelMapper) {
+        this.modelMapper = modelMapper;
+    }
 
     /**
      * You can also execute the code without getting the runtime.

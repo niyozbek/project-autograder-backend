@@ -1,19 +1,21 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autograder.api.controllers.dto.ProblemDto;
-import uk.ac.swansea.autograder.general.entities.Problem;
-import uk.ac.swansea.autograder.general.repositories.ProblemRepository;
+import uk.ac.swansea.autograder.api.entities.Problem;
+import uk.ac.swansea.autograder.api.repositories.ProblemRepository;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 
 @Service
 public class ProblemService {
-    @Autowired
-    private ProblemRepository problemRepository;
+    private final ProblemRepository problemRepository;
+
+    public ProblemService(ProblemRepository problemRepository) {
+        this.problemRepository = problemRepository;
+    }
 
     public Problem createProblem(ProblemDto problemDto) {
         Problem problem = new Problem();

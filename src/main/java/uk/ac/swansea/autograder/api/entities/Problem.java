@@ -1,4 +1,4 @@
-package uk.ac.swansea.autograder.general.entities;
+package uk.ac.swansea.autograder.api.entities;
 
 import lombok.Data;
 

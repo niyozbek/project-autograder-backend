@@ -1,17 +1,17 @@
-package uk.ac.swansea.autograder.general.services;
+package uk.ac.swansea.autograder.api.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.general.entities.Submission;
-import uk.ac.swansea.autograder.general.entities.SubmissionTestResult;
-import uk.ac.swansea.autograder.general.repositories.SubmissionTestResultRepository;
-import uk.ac.swansea.autograder.exceptions.BadRequestException;
+import uk.ac.swansea.autograder.api.entities.SubmissionTestResult;
+import uk.ac.swansea.autograder.api.repositories.SubmissionTestResultRepository;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 @Service
 public class SubmissionTestResultService {
-    @Autowired
-    private SubmissionTestResultRepository submissionTestResultRepository;
+    private final SubmissionTestResultRepository submissionTestResultRepository;
+
+    public SubmissionTestResultService(SubmissionTestResultRepository submissionTestResultRepository) {
+        this.submissionTestResultRepository = submissionTestResultRepository;
+    }
 
     public void createSubmissionTestResult(Long submissionId, int totalTestCases, int processedTestCases, int correctTestCases) {
         SubmissionTestResult submissionTestResult = new SubmissionTestResult();

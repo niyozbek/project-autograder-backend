@@ -1,7 +1,7 @@
 package uk.ac.swansea.autograder.api.controllers.dto;
 
 import lombok.Data;
-import uk.ac.swansea.autograder.general.entities.Submission;
+import uk.ac.swansea.autograder.api.entities.Submission;
 
 import jakarta.validation.constraints.NotBlank;
 
