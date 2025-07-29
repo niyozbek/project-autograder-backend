@@ -1,9 +1,8 @@
 package uk.ac.swansea.autograder.api.controllers.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import uk.ac.swansea.autograder.api.entities.Submission;
-
-import jakarta.validation.constraints.NotBlank;
 
 @Data
 public class SubmissionBriefDto {
@@ -15,7 +14,7 @@ public class SubmissionBriefDto {
     private String version;
     @NotBlank
     private String filename;
-    private Long studentId;
+    private Long userId;
     private Submission.Status status;
     private Integer grade;
 }

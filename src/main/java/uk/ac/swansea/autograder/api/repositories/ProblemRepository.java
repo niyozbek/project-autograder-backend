@@ -8,5 +8,5 @@ import uk.ac.swansea.autograder.api.entities.Problem;
 import java.util.List;
 
 public interface ProblemRepository extends PagingAndSortingRepository<Problem, Long>, CrudRepository<Problem, Long> {
-    List<Problem> findAllByLecturerId(Long id, Pageable pageable);
+    List<Problem> findAllByUserId(Long id, Pageable pageable);
 }

@@ -63,7 +63,7 @@ public class ProblemsController {
                                              @RequestParam(defaultValue = "10") Integer pageSize) {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        List<Problem> problems = problemService.getProblemsByLecturerId(user.getId(), pageable);
+        List<Problem> problems = problemService.getProblemsByuserId(user.getId(), pageable);
         return modelMapper.map(problems, new TypeToken<List<ProblemBriefDto>>() {}.getType());
     }
 
@@ -76,7 +76,7 @@ public class ProblemsController {
     public ProblemDto createProblem(Authentication authentication,
                                     @Valid @RequestBody ProblemDto problemDto) {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        problemDto.setLecturerId(user.getId());
+        problemDto.setUserId(user.getId());
         Problem problem = problemService.createProblem(problemDto);
         return modelMapper.map(problem, ProblemDto.class);
     }
@@ -118,7 +118,7 @@ public class ProblemsController {
         // check owner id
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         Problem problem = problemService.getProblem(id);
-        if (!problem.getLecturerId().equals(user.getId())) {
+        if (!problem.getUserId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
         // update

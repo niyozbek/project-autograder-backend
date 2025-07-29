@@ -1,8 +1,7 @@
 package uk.ac.swansea.autograder.api.entities;
 
-import lombok.Data;
-
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "problems")
@@ -17,7 +16,7 @@ public class Problem {
     private String title;
     private String description;
     private Status status;
-    private Long lecturerId;
+    private Long userId;
 
     public enum Status {ACTIVE, EXPIRED, ARCHIVED}
 }

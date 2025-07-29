@@ -1,8 +1,7 @@
 package uk.ac.swansea.autograder.api.entities;
 
-import lombok.Data;
-
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "submissions")
@@ -21,7 +20,7 @@ public class Submission {
     private String code;
     private Status status;
     private Integer grade;
-    private Long studentId;
+    private Long userId;
 
     public enum Status {NEW, COMPILE_ERROR, WRONG_ANSWER, ACCEPTED}
 }

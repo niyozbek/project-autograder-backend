@@ -11,8 +11,9 @@
     [DONE] instead of roles, make sure to have permissions
 [CANCELLED] no need for lecturers and students route, users instead.
     we will need such routes for convenience, at least for now.
+[DONE] studentId, lecturerId → userId
+[] where are the log files?
 [] test with frontend
-[] studentId, lecturerId → userId
 [] crud for roles to users.
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] merge submission_test_results into submissions.

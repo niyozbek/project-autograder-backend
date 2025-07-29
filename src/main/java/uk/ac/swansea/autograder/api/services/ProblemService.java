@@ -22,7 +22,7 @@ public class ProblemService {
         problem.setTitle(problemDto.getTitle());
         problem.setDescription(problemDto.getDescription());
         problem.setStatus(Problem.Status.ACTIVE);
-        problem.setLecturerId(problemDto.getLecturerId());
+        problem.setUserId(problemDto.getUserId());
         return problemRepository.save(problem);
     }
 
@@ -31,8 +31,8 @@ public class ProblemService {
                 .orElseThrow(ResourceNotFoundException::new);
     }
 
-    public List<Problem> getProblemsByLecturerId(Long id, Pageable pageable) {
-        return problemRepository.findAllByLecturerId(id, pageable);
+    public List<Problem> getProblemsByuserId(Long id, Pageable pageable) {
+        return problemRepository.findAllByUserId(id, pageable);
     }
 
     public List<Problem> getProblems(Pageable pageable) {

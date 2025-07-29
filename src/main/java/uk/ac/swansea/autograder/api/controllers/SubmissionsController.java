@@ -85,10 +85,10 @@ public class SubmissionsController {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
         if (problemId != null) {
             submissions = submissionService
-                    .getSubmissionsByProblemIdAndStudentId(problemId, user.getId(), pageable);
+                    .getSubmissionsByProblemIdAnduserId(problemId, user.getId(), pageable);
         } else {
             submissions = submissionService
-                    .getSubmissionsByStudentId(user.getId(), pageable);
+                    .getSubmissionsByuserId(user.getId(), pageable);
         }
         return modelMapper.map(submissions, new TypeToken<List<SubmissionBriefDto>>() {}.getType());
     }
@@ -119,7 +119,7 @@ public class SubmissionsController {
         Submission submission = submissionService.getSubmission(id);
         // check owner id
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        if (!submission.getStudentId().equals(user.getId())) {
+        if (!submission.getUserId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
         return modelMapper.map(submission, SubmissionDto.class);
@@ -154,7 +154,7 @@ public class SubmissionsController {
         // check owner id
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         Submission submission = submissionService.getSubmission(id);
-        if (!submission.getStudentId().equals(user.getId())) {
+        if (!submission.getUserId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
         return submissionDetailService.getSubmissionDetail(id)
@@ -182,7 +182,7 @@ public class SubmissionsController {
                                      @Valid @RequestBody SubmissionDto submissionDto)
             throws ResourceNotFoundException, BadRequestException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
-        submissionDto.setStudentId(user.getId());
+        submissionDto.setUserId(user.getId());
         return submissionMainService.submitSolution(submissionDto);
     }
 
@@ -197,7 +197,7 @@ public class SubmissionsController {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         // check owner id
         Submission submission = submissionService.getSubmission(id);
-        if (!submission.getStudentId().equals(user.getId())) {
+        if (!submission.getUserId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
         return submissionTestResultService.getSubmissionTestResult(id);

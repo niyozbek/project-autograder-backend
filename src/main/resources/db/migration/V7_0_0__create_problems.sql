@@ -4,9 +4,9 @@ CREATE TABLE problems
     title       varchar(256) NOT NULL,
     description text         NOT NULL,
     status      INT          NOT NULL,
-    lecturer_id BIGINT       NOT NULL,
-    CONSTRAINT problems_fk_lecturer_id FOREIGN KEY (lecturer_id) REFERENCES users (id)
+    user_id     BIGINT       NOT NULL,
+    CONSTRAINT problems_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-CREATE INDEX problems_idx_lecturer_id on problems (lecturer_id);
+CREATE INDEX problems_fk_user_id on problems (user_id);
 

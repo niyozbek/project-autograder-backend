@@ -52,7 +52,7 @@ public class TestCasesController {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
         Long problemId = testCaseDto.getProblemId();
         Problem problem = problemService.getProblem(problemId);
-        if (!problem.getLecturerId().equals(user.getId())) {
+        if (!problem.getUserId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
         return testCaseService.addTestCase(problemId, testCaseDto);

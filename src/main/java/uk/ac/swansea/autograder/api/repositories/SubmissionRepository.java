@@ -8,9 +8,9 @@ import uk.ac.swansea.autograder.api.entities.Submission;
 import java.util.List;
 
 public interface SubmissionRepository extends PagingAndSortingRepository<Submission, Long>, CrudRepository<Submission, Long> {
-    List<Submission> findAllByProblemIdAndStudentId(Long problemId, Long studentId, Pageable pageable);
+    List<Submission> findAllByProblemIdAndUserId(Long problemId, Long userId, Pageable pageable);
 
-    List<Submission> findAllByStudentId(Long studentId, Pageable pageable);
+    List<Submission> findAllByuserId(Long userId, Pageable pageable);
 
     List<Submission> findAllByProblemId(Long problemId, Pageable pageable);
 }

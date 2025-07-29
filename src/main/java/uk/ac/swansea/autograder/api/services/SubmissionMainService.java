@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autograder.api.entities.Problem;
-import uk.ac.swansea.autograder.api.entities.TestCase;
 import uk.ac.swansea.autograder.api.entities.Submission;
 import uk.ac.swansea.autograder.api.entities.SubmissionTestResult;
+import uk.ac.swansea.autograder.api.entities.TestCase;
 import uk.ac.swansea.autograder.api.messaging.SubmissionSender;
 import uk.ac.swansea.autograder.api.services.dto.ExecutionDto;
 import uk.ac.swansea.autograder.api.services.dto.ExecutionResultDto;
@@ -48,7 +48,7 @@ public class SubmissionMainService {
         }
 
         Submission submission = submissionService.createSubmission(problem.getId(),
-                submissionDto.getStudentId(),
+                submissionDto.getUserId(),
                 submissionDto.getLanguage(),
                 submissionDto.getVersion(),
                 submissionDto.getFilename(),

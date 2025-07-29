@@ -16,9 +16,9 @@ public class SubmissionService {
         this.submissionRepository = submissionRepository;
     }
 
-    public List<Submission> getSubmissionsByProblemIdAndStudentId(Long problemId, Long studentId,
+    public List<Submission> getSubmissionsByProblemIdAnduserId(Long problemId, Long userId,
                                                                   Pageable pageable) {
-        return submissionRepository.findAllByProblemIdAndStudentId(problemId, studentId, pageable);
+        return submissionRepository.findAllByProblemIdAndUserId(problemId, userId, pageable);
     }
 
     public Submission getSubmission(Long submissionId) throws ResourceNotFoundException {
@@ -26,18 +26,18 @@ public class SubmissionService {
                 ResourceNotFoundException::new);
     }
 
-    public List<Submission> getSubmissionsByStudentId(Long studentId, Pageable pageable) {
-        return submissionRepository.findAllByStudentId(studentId, pageable);
+    public List<Submission> getSubmissionsByuserId(Long userId, Pageable pageable) {
+        return submissionRepository.findAllByuserId(userId, pageable);
     }
 
     public List<Submission> getSubmissionsByProblemId(Long problemId, Pageable pageable) {
         return submissionRepository.findAllByProblemId(problemId, pageable);
     }
 
-    public Submission createSubmission(Long problemId, Long studentId, String language, String version, String filename, String code) {
+    public Submission createSubmission(Long problemId, Long userId, String language, String version, String filename, String code) {
         Submission submission = new Submission();
         submission.setProblemId(problemId);
-        submission.setStudentId(studentId);
+        submission.setUserId(userId);
         submission.setLanguage(language);
         submission.setVersion(version);
         submission.setFilename(filename);
