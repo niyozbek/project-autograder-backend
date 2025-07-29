@@ -2,6 +2,7 @@ package uk.ac.swansea.autograder.api.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
@@ -10,16 +11,15 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import uk.ac.swansea.autograder.api.controllers.dto.*;
-import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
+import uk.ac.swansea.autograder.api.controllers.dto.ProblemBriefDto;
+import uk.ac.swansea.autograder.api.controllers.dto.ProblemDto;
 import uk.ac.swansea.autograder.api.entities.Problem;
 import uk.ac.swansea.autograder.api.services.ProblemService;
-import uk.ac.swansea.autograder.config.MyUserDetails;
-import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
-
-import jakarta.validation.Valid;
 import uk.ac.swansea.autograder.api.services.SubmissionMainService;
 import uk.ac.swansea.autograder.api.services.dto.RuntimeDto;
+import uk.ac.swansea.autograder.config.MyUserDetails;
+import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
+import uk.ac.swansea.autograder.exceptions.UnauthorizedException;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class ProblemsController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'STUDENT', 'LECTURER')")
+    @PreAuthorize("hasAuthority('VIEW_PROBLEM')")
     public List<ProblemBriefDto> getProblems(@RequestParam(defaultValue = "0") Integer pageNo,
                                              @RequestParam(defaultValue = "10") Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
@@ -53,12 +53,12 @@ public class ProblemsController {
     }
 
     @GetMapping("own")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
+    @PreAuthorize("hasAuthority('VIEW_PROBLEM')")
     @Operation(
             summary = "Get all problems",
             description = "Returns a paginated list of problems created by the authenticated lecturer. Results are sorted by ID in descending order."
     )
-    public List<ProblemBriefDto> getProblems(Authentication authentication,
+    public List<ProblemBriefDto> getOwnProblems(Authentication authentication,
                                              @RequestParam(defaultValue = "0") Integer pageNo,
                                              @RequestParam(defaultValue = "10") Integer pageSize) {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
@@ -68,7 +68,7 @@ public class ProblemsController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
+    @PreAuthorize("hasAuthority('CREATE_PROBLEM')")
     @Operation(
             summary = "Create new problem",
             description = "Creates a new programming problem with the provided details. The authenticated lecturer will be set as the creator."
@@ -82,7 +82,7 @@ public class ProblemsController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
+    @PreAuthorize("hasAuthority('VIEW_PROBLEM')")
     @Operation(
             summary = "Get problem by ID",
             description = "Returns detailed information about a specific problem."
@@ -93,12 +93,26 @@ public class ProblemsController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER')")
+    @PreAuthorize("hasAuthority('UPDATE_PROBLEM')")
     @Operation(
             summary = "Update problem",
             description = "Updates an existing problem. Only the user who created the problem can modify it."
     )
     public ProblemDto updateProblem(Authentication authentication,
+                                    @PathVariable Long id,
+                                    @Valid @RequestBody ProblemDto problemDto)
+            throws ResourceNotFoundException, UnauthorizedException {
+        Problem problem = problemService.updateProblem(id, problemDto);
+        return modelMapper.map(problem, ProblemDto.class);
+    }
+
+    @PutMapping("own/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_OWN_PROBLEM')")
+    @Operation(
+            summary = "Update Own problem",
+            description = "Updates an existing problem. Only the user who created the problem can modify it."
+    )
+    public ProblemDto updateOwnProblem(Authentication authentication,
                                     @PathVariable Long id,
                                     @Valid @RequestBody ProblemDto problemDto)
             throws ResourceNotFoundException, UnauthorizedException {
@@ -114,7 +128,7 @@ public class ProblemsController {
     }
 
     @GetMapping("{id}/runtime")
-    @PreAuthorize("hasAnyAuthority('ADMIN', 'LECTURER', 'STUDENT')")
+    @PreAuthorize("hasAuthority('ADMIN', 'LECTURER', 'STUDENT')")
     public List<RuntimeDto> getProblemRuntime(@PathVariable Long id) {
         return submissionMainService.getRuntime(id);
     }

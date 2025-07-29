@@ -6,10 +6,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import uk.ac.swansea.autograder.general.entities.Role;
 import uk.ac.swansea.autograder.general.entities.User;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MyUserDetails implements UserDetails {
 
@@ -21,14 +19,10 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roles = user.getRoles();
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
-        for (Role role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
-        }
-
-        return authorities;
+        return user.getRoles().stream()
+            .flatMap(role -> role.getPermissions().stream())
+            .map(permission -> new SimpleGrantedAuthority(permission.getName()))
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -57,6 +51,6 @@ public class MyUserDetails implements UserDetails {
         if (role == null) {
             return "";
         }
-        return role.getName().toString();
+        return role.getName();
     }
 }

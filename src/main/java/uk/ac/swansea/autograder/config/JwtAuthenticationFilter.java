@@ -1,5 +1,9 @@
 package uk.ac.swansea.autograder.config;
 
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
@@ -10,12 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import uk.ac.swansea.autograder.general.entities.Role;
 
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
@@ -41,34 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                if (notAuthorized(userDetails, request)) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "No access");
-                    return;
-                }
             }
         } catch (Exception ex) {
             logger.error("Could not set user authentication in security context", ex);
         }
         filterChain.doFilter(request, response);
-    }
-
-    //TODO: possibly this method is not needed anymore
-    private boolean notAuthorized(UserDetails user, HttpServletRequest request) {
-        String url = request.getRequestURI();
-        if (url.contains("/api/admin") && user.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals(Role.RoleType.ADMIN.toString()))) {
-            return true;
-        }
-        if (url.contains("/api/lecturer") && user.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals(Role.RoleType.LECTURER.toString()))) {
-            return true;
-        }
-        if (url.contains("/api/student") && user.getAuthorities().stream()
-                .noneMatch(a -> a.getAuthority().equals(Role.RoleType.STUDENT.toString()))) {
-            return true;
-        }
-
-        return false;
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {

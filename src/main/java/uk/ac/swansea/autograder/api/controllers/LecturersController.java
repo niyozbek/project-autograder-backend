@@ -2,6 +2,7 @@ package uk.ac.swansea.autograder.api.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
@@ -10,13 +11,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
-import uk.ac.swansea.autograder.api.controllers.dto.SubmissionBriefDto;
 import uk.ac.swansea.autograder.api.controllers.dto.UserDto;
-import uk.ac.swansea.autograder.general.entities.User;
-import uk.ac.swansea.autograder.api.services.UserService;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
+import uk.ac.swansea.autograder.general.entities.User;
+import uk.ac.swansea.autograder.general.enums.RoleEnum;
+import uk.ac.swansea.autograder.general.services.UserService;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 /**
@@ -35,22 +35,22 @@ public class LecturersController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('VIEW_LECTURER')")
     @Operation(summary = "Get all lecturers", description = "Returns a paginated list of lecturers")
     public List<UserDto> getLecturers(@RequestParam(defaultValue = "0") Integer pageNo,
                                       @RequestParam(defaultValue = "10") Integer pageSize)
             throws ResourceNotFoundException {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        List<User> users = userService.getLecturers(pageable);
-        return modelMapper.map(users, new TypeToken<List<SubmissionBriefDto>>() {}.getType());
+        List<User> users = userService.getUsersByRole(RoleEnum.LECTURER, pageable);
+        return modelMapper.map(users, new TypeToken<List<UserDto>>() {}.getType());
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('CREATE_LECTURER')")
     @Operation(summary = "Create new lecturer", description = "Creates a new lecturer account")
     public UserDto createLecturer(@Valid @RequestBody NewUserDto newUserDto)
             throws ResourceNotFoundException {
-        User user = userService.createLecturer(newUserDto);
+        User user = userService.createUserWithRole(newUserDto, RoleEnum.LECTURER);
         return modelMapper.map(user, UserDto.class);
     }
 }

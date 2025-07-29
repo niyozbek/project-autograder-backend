@@ -2,6 +2,7 @@ package uk.ac.swansea.autograder.api.controllers;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.data.domain.PageRequest;
@@ -11,11 +12,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
 import uk.ac.swansea.autograder.api.controllers.dto.UserDto;
-import uk.ac.swansea.autograder.general.entities.User;
-import uk.ac.swansea.autograder.api.services.UserService;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
+import uk.ac.swansea.autograder.general.entities.User;
+import uk.ac.swansea.autograder.general.enums.RoleEnum;
+import uk.ac.swansea.autograder.general.services.UserService;
 
-import jakarta.validation.Valid;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class StudentsController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('VIEW_STUDENT')")
     @Operation(
             summary = "Get all students",
             description = "Returns a paginated list of students. Results are sorted by ID in descending order."
@@ -43,19 +44,19 @@ public class StudentsController {
                                      @RequestParam(defaultValue = "10") Integer pageSize)
             throws ResourceNotFoundException {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
-        List<User> users = userService.getStudents(pageable);
+        List<User> users = userService.getUsersByRole(RoleEnum.STUDENT, pageable);
         return modelMapper.map(users, new TypeToken<List<UserDto>>() {}.getType());
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('CREATE_STUDENT')")
     @Operation(
             summary = "Create new student",
             description = "Creates a new student account with the provided user details"
     )
     public UserDto createStudent(@Valid @RequestBody NewUserDto newUserDto)
             throws ResourceNotFoundException {
-        User user = userService.createStudent(newUserDto);
+        User user = userService.createUserWithRole(newUserDto, RoleEnum.STUDENT);
         return modelMapper.map(user, UserDto.class);
     }
 }

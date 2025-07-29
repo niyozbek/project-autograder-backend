@@ -5,7 +5,7 @@ import uk.ac.swansea.autograder.general.entities.Role;
 
 import java.util.Optional;
 
-public interface RoleRepository extends CrudRepository<Role, Long> {
+public interface RoleRepository extends CrudRepository<Role, Integer> {
 
-    Optional<Role> findByName(Role.RoleType name);
+    Optional<Role> findByName(String name);
 }

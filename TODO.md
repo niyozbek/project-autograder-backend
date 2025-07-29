@@ -6,9 +6,9 @@
 [DONE] fix warnings. all correct.
 [DONE] improve route directory structure
 [DONE] make sure entity crud is located in its own controller, more universal approach.
-[] add permission-based rbac instead of role-based, route-based rbac.
-    [] hardcode permissions only instead of roles
-    [] instead of roles, make sure to have permissions
+[DONE] add permission-based rbac instead of role-based, route-based rbac.
+    [DONE] hardcode permissions only instead of roles
+    [DONE] instead of roles, make sure to have permissions
 [] no need for lecturers and students route, users instead.
 [] studentId, lecturerId → userId
 [] crud for roles to users.

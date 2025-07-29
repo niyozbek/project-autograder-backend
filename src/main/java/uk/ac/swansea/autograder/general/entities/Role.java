@@ -1,8 +1,10 @@
 package uk.ac.swansea.autograder.general.entities;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
-import jakarta.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -13,26 +15,13 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "name")
-    private RoleType name;
+    private String name;
 
-    public enum RoleType {
-        ADMIN("ADMIN"),
-        LECTURER("LECTURER"),
-        STUDENT("STUDENT");
-
-        private final String value;
-
-        RoleType(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return value;
-        }
-    }
-
-    // remaining getters and setters
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "roles_permissions",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> permissions = new HashSet<>();
 }
