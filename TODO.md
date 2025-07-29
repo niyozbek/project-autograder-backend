@@ -6,12 +6,12 @@
 [DONE] fix warnings. all correct.
 [DONE] improve route directory structure
 [DONE] make sure entity crud is located in its own controller, more universal approach.
-[] no need for lecturers and students route, users instead.
-[] studentId, lecturerId → userId
-[] crud for roles to users.
 [] add permission-based rbac instead of role-based, route-based rbac.
     [] hardcode permissions only instead of roles
     [] instead of roles, make sure to have permissions
+[] no need for lecturers and students route, users instead.
+[] studentId, lecturerId → userId
+[] crud for roles to users.
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] merge submission_test_results into submissions.
 [] Restrict usage of websocket for students then to specific studentId.
