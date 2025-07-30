@@ -129,17 +129,22 @@ public class SubmissionMainService {
         }
 
         // send it to another service
-        log.info("sending to client >>");
-        postToClient(submissionTestResult);
+        if (clientEnabled) {
+            log.info("sending to client >>");
+            postToClient(submissionTestResult);
+        }
     }
 
     @Value("${app.client.submissionResultUrl}")
     private String clientUrl;
 
-    private String postToClient(SubmissionTestResult submissionTestResult) {
+    @Value("${app.client.enabled}")
+    private Boolean clientEnabled;
+
+    private void postToClient(SubmissionTestResult submissionTestResult) {
         String uri = clientUrl;
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForObject(uri, submissionTestResult, String.class);
+        restTemplate.postForObject(uri, submissionTestResult, String.class);
     }
 
     public List<RuntimeDto> getRuntimes() {

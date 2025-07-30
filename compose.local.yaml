@@ -15,8 +15,9 @@ services:
     environment:
 #      APP
       JWT_EXPIRATION_IN_MINUTES: '${JWT_EXPIRATION_IN_MINUTES}'
-      JWT_SECRET: '${JWT_SECRET}'
-      CLIENT_URL: '${CLIENT_URL}'
+      JWT_SECRET:     '${JWT_SECRET}'
+      CLIENT_ENABLED: '${CLIENT_ENABLED}'
+      CLIENT_URL:     '${CLIENT_URL}'
 #      DB
       DB_HOST: '${DB_HOST}'
       DB_PORT: '${DB_PORT}'

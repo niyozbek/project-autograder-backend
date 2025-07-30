@@ -46,6 +46,7 @@ app:
       expirationMinutes: ${JWT_EXPIRATION:60}
       secret: ${JWT_SECRET}
   client:
+    enabled: ${CLIENT_ENABLED}
     submissionResultUrl: ${CLIENT_URL}
 
 # Actuator

@@ -46,6 +46,7 @@ app:
       expirationMinutes: 60
       secret: 'REPLACE_HERE'
   client:
+    enabled: false
     submissionResultUrl: http://localhost:8886/submission-test-result
 
 # Actuator

@@ -15,7 +15,7 @@
 [DONE] crud for roles to users.
 [DONE] test with frontend
     [DONE] getRuntimes fix
-    [] client: enable as variable.
+    [DONE] client: enable as variable.
     [DONE] permissions test
 [] add fullname to user table
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
