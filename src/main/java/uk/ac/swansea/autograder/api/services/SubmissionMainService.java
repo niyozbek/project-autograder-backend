@@ -142,8 +142,7 @@ public class SubmissionMainService {
         return restTemplate.postForObject(uri, submissionTestResult, String.class);
     }
 
-    public List<RuntimeDto> getRuntime(Long id) {
-        // maybe consider id later
+    public List<RuntimeDto> getRuntimes() {
         return executionService.getRuntimes();
     }
 }

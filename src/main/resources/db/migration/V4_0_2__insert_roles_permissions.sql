@@ -27,14 +27,19 @@ INSERT INTO roles_permissions (role_id, permission_id) VALUES--LECTURER
     (2, 5),
     (2, 7),
     (2, 10),
-    (2, 11),
+    (2, 12),
+    (2, 13),
+    (2, 14),
+    (2, 15),
+    (2, 16),
+    (2, 17),
     (2, 21),
-    (2, 22),
-    (2, 5);
+    (2, 22);
 
 INSERT INTO roles_permissions (role_id, permission_id) VALUES--STUDENT
     (3, 3),
     (3, 5),
     (3, 13),
     (3, 15),
+    (3, 16),
     (3, 18);

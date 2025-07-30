@@ -125,9 +125,9 @@ public class ProblemsController {
         return modelMapper.map(problem, ProblemDto.class);
     }
 
-    @GetMapping("{id}/runtime")
-    @PreAuthorize("hasAuthority('')")
-    public List<RuntimeDto> getProblemRuntime(@PathVariable Long id) {
-        return submissionMainService.getRuntime(id);
+    @GetMapping("runtimes")
+    @PreAuthorize("hasAuthority('CREATE_PROBLEM')")
+    public List<RuntimeDto> getProblemRuntimes() {
+        return submissionMainService.getRuntimes();
     }
 }
