@@ -11,5 +11,7 @@ public class NewUserDto {
     @NotBlank
     private String username;
     @NotBlank
+    private String fullname;
+    @NotBlank
     private String password;
 }

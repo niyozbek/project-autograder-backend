@@ -43,6 +43,7 @@ public class UserService {
     public User createUser(NewUserDto newUserDto) {
         User user = new User();
         user.setUsername(newUserDto.getUsername());
+        user.setFullname(newUserDto.getFullname());
         user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
         user.setEnabled(true);
         return userRepository.save(user);

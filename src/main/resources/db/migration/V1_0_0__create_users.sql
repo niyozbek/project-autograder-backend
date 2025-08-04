@@ -3,7 +3,7 @@ CREATE TABLE users
     id        BIGSERIAL PRIMARY KEY,
     username  varchar(45) NOT NULL,
     email     varchar(45),
-    full_name varchar(45),
+    fullname  varchar(45),
     password  varchar(64) NOT NULL,
     enabled   boolean
 );

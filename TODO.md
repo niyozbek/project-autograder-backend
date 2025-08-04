@@ -17,7 +17,7 @@
     [DONE] getRuntimes fix
     [DONE] client: enable as variable.
     [DONE] permissions test
-[] add fullname to user table
+[DONE] add fullname to user table, with crud.
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] where are the log files?
 [] merge submission_test_results into submissions.
