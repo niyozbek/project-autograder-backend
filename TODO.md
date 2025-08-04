@@ -17,8 +17,12 @@
     [DONE] permissions test
 [DONE] add fullname to user table, with crud.
 [] no need for lecturers and students route, users instead.
-    [] roles crud
+    [DONE] roles crud
+    [DONE] role create, 
+    [DOING] role update with permissions
     [] permissions view
+[] something is wrong with exception!!! only 401 is received
+[] entity column validations: @Column(nullable = false, unique = true)
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] where are the log files?
 [] merge submission_test_results into submissions.

@@ -11,6 +11,7 @@ public enum PermissionEnum {
     // Role management
     CREATE_ROLE,
     VIEW_ROLE,
+    UPDATE_ROLE,
     ASSIGN_PERMISSION,
     ASSIGN_ROLE,
 
