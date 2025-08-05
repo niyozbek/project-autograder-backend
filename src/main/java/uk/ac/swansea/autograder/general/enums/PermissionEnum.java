@@ -29,11 +29,5 @@ public enum PermissionEnum {
     CREATE_SUBMISSION,
     VIEW_SUBMISSION,
     VIEW_OWN_SUBMISSION,
-
-    // User type management
-    CREATE_LECTURER,
-    VIEW_LECTURER,
-    CREATE_STUDENT,
-    VIEW_STUDENT
 }
 

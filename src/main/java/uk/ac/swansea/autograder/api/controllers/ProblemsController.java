@@ -55,7 +55,7 @@ public class ProblemsController {
     @PreAuthorize("hasAuthority('VIEW_PROBLEM')")
     @Operation(
             summary = "Get all problems",
-            description = "Returns a paginated list of problems created by the authenticated lecturer. Results are sorted by ID in descending order."
+            description = "Returns a paginated list of problems created by the authenticated user. Results are sorted by ID in descending order."
     )
     public List<ProblemBriefDto> getOwnProblems(Authentication authentication,
                                              @RequestParam(defaultValue = "0") Integer pageNo,
@@ -70,7 +70,7 @@ public class ProblemsController {
     @PreAuthorize("hasAuthority('CREATE_PROBLEM')")
     @Operation(
             summary = "Create new problem",
-            description = "Creates a new programming problem with the provided details. The authenticated lecturer will be set as the creator."
+            description = "Creates a new programming problem with the provided details. The authenticated user will be set as the creator."
     )
     public ProblemDto createProblem(Authentication authentication,
                                     @Valid @RequestBody ProblemDto problemDto) {

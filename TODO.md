@@ -1,4 +1,5 @@
-[] no need for lecturers and students route, users instead.
+[DOING] no need for lecturers and students route, users instead.
+    [] fix tests
 [] entity column validations: @Column(nullable = false, unique = true)
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] where are the log files?

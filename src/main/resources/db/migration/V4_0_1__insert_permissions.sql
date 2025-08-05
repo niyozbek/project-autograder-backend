@@ -21,13 +21,7 @@ INSERT INTO permissions (name) VALUES ('CREATE_SUBMISSION');--16
 INSERT INTO permissions (name) VALUES ('VIEW_SUBMISSION');
 INSERT INTO permissions (name) VALUES ('VIEW_OWN_SUBMISSION');
 
-INSERT INTO permissions (name) VALUES ('CREATE_LECTURER');--19
-INSERT INTO permissions (name) VALUES ('VIEW_LECTURER');
+INSERT INTO permissions (name) VALUES ('UPDATE_ROLE'); --19
 
-INSERT INTO permissions (name) VALUES ('CREATE_STUDENT');--21
-INSERT INTO permissions (name) VALUES ('VIEW_STUDENT');
-
-INSERT INTO permissions (name) VALUES ('UPDATE_ROLE'); --23
-
-INSERT INTO permissions (name) VALUES ('VIEW_PERMISSION'); --24
+INSERT INTO permissions (name) VALUES ('VIEW_PERMISSION'); --20
 
