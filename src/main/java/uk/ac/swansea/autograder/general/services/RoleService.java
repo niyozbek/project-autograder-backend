@@ -10,7 +10,9 @@ import uk.ac.swansea.autograder.general.entities.Permission;
 import uk.ac.swansea.autograder.general.entities.Role;
 import uk.ac.swansea.autograder.general.repositories.RoleRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class RoleService {
@@ -48,7 +50,12 @@ public class RoleService {
     public Role updateRole(RoleDto roleDto) throws ResourceNotFoundException {
         Role role = getRole(roleDto.getId());
         role.setName(roleDto.getName());
-        // TODO: update permissions
+        Set<Permission> permissions = new HashSet<>();
+        for (PermissionDto permissionDto : roleDto.getPermissions()) {
+            Permission permission = permissionService.getPermissionById(permissionDto.getId());
+            permissions.add(permission);
+        }
+        role.setPermissions(permissions);
         return roleRepository.save(role);
     }
 }

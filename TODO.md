@@ -19,7 +19,7 @@
 [] no need for lecturers and students route, users instead.
     [DONE] roles crud
     [DONE] role create, 
-    [DOING] role update with permissions
+    [DONE] role update with permissions
     [] permissions view
 [DONE] something is wrong with exception!!! only 401 is received
 [] entity column validations: @Column(nullable = false, unique = true)
