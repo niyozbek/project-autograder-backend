@@ -21,7 +21,7 @@
     [DONE] role create, 
     [DOING] role update with permissions
     [] permissions view
-[] something is wrong with exception!!! only 401 is received
+[DONE] something is wrong with exception!!! only 401 is received
 [] entity column validations: @Column(nullable = false, unique = true)
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] where are the log files?

@@ -42,7 +42,7 @@ public class RoleService {
     }
 
     public Role getRole(Integer id) throws ResourceNotFoundException {
-        return roleRepository.findById(id).orElseThrow();
+        return roleRepository.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     public Role updateRole(RoleDto roleDto) throws ResourceNotFoundException {
