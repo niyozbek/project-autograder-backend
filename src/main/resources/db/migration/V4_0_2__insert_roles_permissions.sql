@@ -21,7 +21,8 @@ INSERT INTO roles_permissions (role_id, permission_id) VALUES--ADMIN
     (1, 20),
     (1, 21),
     (1, 22),
-    (1, 23);
+    (1, 23),
+    (1, 24);
 
 INSERT INTO roles_permissions (role_id, permission_id) VALUES--LECTURER
     (2, 3),

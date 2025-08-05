@@ -20,7 +20,7 @@
     [DONE] roles crud
     [DONE] role create, 
     [DONE] role update with permissions
-    [] permissions view
+    [DONE] permissions view
 [DONE] something is wrong with exception!!! only 401 is received
 [] entity column validations: @Column(nullable = false, unique = true)
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
@@ -29,3 +29,5 @@
 [] Restrict usage of websocket for students then to specific studentId.
 [] confirm if two websocket connections collide.
 [] try to spin up piston via docker.
+[] with paginated routes, we need to return page info as well, how many pages or items and etc.
+[] sort permission file

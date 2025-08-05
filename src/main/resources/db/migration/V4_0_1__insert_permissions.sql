@@ -29,3 +29,5 @@ INSERT INTO permissions (name) VALUES ('VIEW_STUDENT');
 
 INSERT INTO permissions (name) VALUES ('UPDATE_ROLE'); --23
 
+INSERT INTO permissions (name) VALUES ('VIEW_PERMISSION'); --24
+

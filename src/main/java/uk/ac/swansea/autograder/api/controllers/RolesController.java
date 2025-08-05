@@ -22,7 +22,7 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * Can create/update users.
+ * Can create/update roles.
  */
 @RestController
 @RequestMapping("api/roles")
