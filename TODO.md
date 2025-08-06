@@ -1,5 +1,6 @@
 [DONE] in case of db error, 401 is received.
-[] entity column validations: @Column(nullable = false, unique = true)
+[CANCELLED] entity column validations: @Column(nullable = false, unique = true)
+    redundant, we have db level constraints!
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] where are the log files?
 [] merge submission_test_results into submissions.
