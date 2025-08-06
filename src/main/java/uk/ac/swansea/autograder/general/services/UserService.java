@@ -35,10 +35,6 @@ public class UserService {
         user.setFullname(newUserDto.getFullname());
         user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
         user.setEnabled(true);
-        for (RoleBriefDto roleBriefDto : newUserDto.getRoles()) {
-            Role role = roleService.getRole(roleBriefDto.getId());
-            user.getRoles().add(role);
-        }
         return userRepository.save(user);
     }
 
@@ -51,6 +47,11 @@ public class UserService {
         User user = getUser(userDto.getId());
         user.setUsername(userDto.getUsername());
         user.setFullname(userDto.getFullname());
+        return userRepository.save(user);
+    }
+
+    public User updateUserRoles(UserDto userDto) throws ResourceNotFoundException {
+        User user = getUser(userDto.getId());
         Set<Role> roles = new HashSet<>();
         for (RoleBriefDto roleBriefDto : userDto.getRoles()) {
             Role role = roleService.getRole(roleBriefDto.getId());

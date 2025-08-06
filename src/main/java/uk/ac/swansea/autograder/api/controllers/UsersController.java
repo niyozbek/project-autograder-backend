@@ -84,4 +84,12 @@ public class UsersController {
         User user = userService.updateUser(userDto);
         return modelMapper.map(user, UserDto.class);
     }
+
+    @PutMapping("{id}/assign-roles")
+    @PreAuthorize("hasAuthority('ASSIGN_ROLES')")
+    @Operation(summary = "Update roles", description = "Updates user roles")
+    public UserDto updateUserRoles(@Valid @RequestBody UserDto userDto) throws ResourceNotFoundException {
+        User user = userService.updateUserRoles(userDto);
+        return modelMapper.map(user, UserDto.class);
+    }
 }

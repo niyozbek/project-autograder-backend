@@ -6,7 +6,7 @@ INSERT INTO permissions (name) VALUES ('UPDATE_OWN_USER');
 
 INSERT INTO permissions (name) VALUES ('CREATE_ROLE');--6
 INSERT INTO permissions (name) VALUES ('VIEW_ROLE');
-INSERT INTO permissions (name) VALUES ('ASSIGN_PERMISSION');
+INSERT INTO permissions (name) VALUES ('ASSIGN_PERMISSION');--not used yet
 INSERT INTO permissions (name) VALUES ('ASSIGN_ROLE');
 
 INSERT INTO permissions (name) VALUES ('CREATE_PROBLEM');--10
