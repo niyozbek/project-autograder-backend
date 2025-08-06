@@ -1,6 +1,6 @@
-[] where are the log files?
-    [] logs has to be stored in some file, by category, for example error.log, info.log
-    [] perhaps with dates and autoclean
+[DONE] where are the log files?
+    [DONE] logs has to be stored in some file, by category, for example error.log, info.log
+    [DONE] perhaps with dates and autoclean
 [] merge submission_test_results into submissions.
 [] Restrict usage of websocket for students then to specific studentId.
 [] confirm if two websocket connections collide.
