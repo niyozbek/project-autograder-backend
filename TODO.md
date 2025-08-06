@@ -1,4 +1,4 @@
-[] in case of db error, 401 is received.
+[DONE] in case of db error, 401 is received.
 [] entity column validations: @Column(nullable = false, unique = true)
 [] use username and user→id for getting userDetails in JwtAuthenticationFilter.
 [] where are the log files?
