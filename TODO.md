@@ -7,3 +7,8 @@
 [] try to spin up piston via docker.
 [] with paginated routes, we need to return page info as well, how many pages or items and etc.
 [] sort permission file
+[] write more tests, 
+    [] integration tests
+    [] test controllers as unit
+    [] test service layer as unit
+[] test with frontend
