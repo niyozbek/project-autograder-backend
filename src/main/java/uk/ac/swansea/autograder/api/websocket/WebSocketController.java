@@ -3,23 +3,23 @@ package uk.ac.swansea.autograder.api.websocket;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
-import uk.ac.swansea.autograder.api.entities.SubmissionTestResult;
-import uk.ac.swansea.autograder.api.services.SubmissionTestResultService;
+import uk.ac.swansea.autograder.api.entities.Submission;
+import uk.ac.swansea.autograder.api.services.SubmissionService;
 
 @Controller
 public class WebSocketController {
-    private final SubmissionTestResultService submissionTestResultService;
+    private final SubmissionService submissionService;
 
-    public WebSocketController(SubmissionTestResultService submissionTestResultService) {
-        this.submissionTestResultService = submissionTestResultService;
+    public WebSocketController(SubmissionService submissionService) {
+        this.submissionService = submissionService;
     }
 
     @MessageMapping("test-result")
     @SendTo("/topic/test-results")
-    public SubmissionTestResult getTestResult(WebSocketMessage webSocketMessage)
+    public Submission getTestResult(WebSocketMessage webSocketMessage)
             throws Exception {
 //        Thread.sleep(1000);
-        return submissionTestResultService.getSubmissionTestResult(webSocketMessage.getSubmissionId());
+        return submissionService.getSubmission(webSocketMessage.getSubmissionId());
     }
 
 }

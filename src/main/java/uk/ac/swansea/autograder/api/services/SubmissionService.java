@@ -16,7 +16,7 @@ public class SubmissionService {
         this.submissionRepository = submissionRepository;
     }
 
-    public List<Submission> getSubmissionsByProblemIdAnduserId(Long problemId, Long userId,
+    public List<Submission> getSubmissionsByProblemIdAndUserId(Long problemId, Long userId,
                                                                   Pageable pageable) {
         return submissionRepository.findAllByProblemIdAndUserId(problemId, userId, pageable);
     }
@@ -26,7 +26,7 @@ public class SubmissionService {
                 ResourceNotFoundException::new);
     }
 
-    public List<Submission> getSubmissionsByuserId(Long userId, Pageable pageable) {
+    public List<Submission> getSubmissionsByUserId(Long userId, Pageable pageable) {
         return submissionRepository.findAllByuserId(userId, pageable);
     }
 
@@ -52,5 +52,14 @@ public class SubmissionService {
 
     public List<Submission> getSubmissions(Pageable pageable) {
         return submissionRepository.findAll(pageable).toList();
+    }
+
+    public void createSubmissionTestResult(Long submissionId, int totalTestCases, int processedTestCases, int correctTestCases) throws ResourceNotFoundException {
+        Submission submission = getSubmission(submissionId);
+        submission.setStatus(Submission.Status.PROCESSING);
+        submission.setTotalTestCases(totalTestCases);
+        submission.setProcessedTestCases(processedTestCases);
+        submission.setCorrectTestCases(correctTestCases);
+        submissionRepository.save(submission);
     }
 }

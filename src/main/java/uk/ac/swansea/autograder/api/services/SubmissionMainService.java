@@ -7,7 +7,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autograder.api.entities.Problem;
 import uk.ac.swansea.autograder.api.entities.Submission;
-import uk.ac.swansea.autograder.api.entities.SubmissionTestResult;
 import uk.ac.swansea.autograder.api.entities.TestCase;
 import uk.ac.swansea.autograder.api.messaging.SubmissionSender;
 import uk.ac.swansea.autograder.api.services.dto.ExecutionDto;
@@ -26,16 +25,19 @@ public class SubmissionMainService {
     private final TestCaseService testCaseService;
     private final ExecutionService executionService;
     private final SubmissionDetailService submissionDetailService;
-    private final SubmissionTestResultService submissionTestResultService;
     private final SubmissionService submissionService;
     private final SubmissionSender submissionSender;
 
-    public SubmissionMainService(ProblemService problemService, TestCaseService testCaseService, ExecutionService executionService, SubmissionDetailService submissionDetailService, SubmissionTestResultService submissionTestResultService, SubmissionService submissionService, SubmissionSender submissionSender) {
+    public SubmissionMainService(ProblemService problemService,
+                                 TestCaseService testCaseService,
+                                 ExecutionService executionService,
+                                 SubmissionDetailService submissionDetailService,
+                                 SubmissionService submissionService,
+                                 SubmissionSender submissionSender) {
         this.problemService = problemService;
         this.testCaseService = testCaseService;
         this.executionService = executionService;
         this.submissionDetailService = submissionDetailService;
-        this.submissionTestResultService = submissionTestResultService;
         this.submissionService = submissionService;
         this.submissionSender = submissionSender;
     }
@@ -55,7 +57,7 @@ public class SubmissionMainService {
                 submissionDto.getCode());
 
         int totalTestCases = testCaseService.countAllTestCasesByProblemId(submission.getProblemId());
-        submissionTestResultService.createSubmissionTestResult(submission.getId(), totalTestCases, 0, 0);
+        submissionService.createSubmissionTestResult(submission.getId(), totalTestCases, 0, 0);
         submissionSender.send(submission.getId());
         return submission;
     }
@@ -98,7 +100,7 @@ public class SubmissionMainService {
                 .filename(submission.getFilename())
                 .code(submission.getCode())
                 .build();
-        SubmissionTestResult submissionTestResult = submissionTestResultService.getSubmissionTestResult(submission.getId());
+        Submission submissionTestResult = submissionService.getSubmission(submission.getId());
         testCases.forEach(testCase -> {
             executionDto.setInput(testCase.getInput());
             executionDto.setExpectedOutput(testCase.getExpectedOutput());
@@ -110,10 +112,8 @@ public class SubmissionMainService {
             if (executionResultDto.getIsValid()) {
                 submissionTestResult.setCorrectTestCases(submissionTestResult.getCorrectTestCases() + 1);
             }
-            submissionTestResultService.updateSubmissionTestResult(submissionTestResult);
+            submissionService.updateSubmission(submissionTestResult);
         });
-        submissionTestResult.setStatus(SubmissionTestResult.Status.COMPLETED);
-        submissionTestResultService.updateSubmissionTestResult(submissionTestResult);
 
         if (Objects.equals(submissionTestResult.getProcessedTestCases(), submissionTestResult.getTotalTestCases())) {
             if (Objects.equals(submissionTestResult.getCorrectTestCases(), submissionTestResult.getTotalTestCases())) {
@@ -141,7 +141,7 @@ public class SubmissionMainService {
     @Value("${app.client.enabled}")
     private Boolean clientEnabled;
 
-    private void postToClient(SubmissionTestResult submissionTestResult) {
+    private void postToClient(Submission submissionTestResult) {
         String uri = clientUrl;
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.postForObject(uri, submissionTestResult, String.class);

@@ -9,6 +9,9 @@ CREATE TABLE submissions
     status     INT           NOT NULL,
     grade      INT           NULL,
     user_id    BIGINT        NOT NULL,
+    total_test_cases     INTEGER NULL,
+    processed_test_cases INTEGER NULL,
+    correct_test_cases   INTEGER NULL,
     CONSTRAINT test_cases_fk_problem_id FOREIGN KEY (problem_id) REFERENCES problems (id),
     CONSTRAINT problems_fk_user_id FOREIGN KEY (user_id) REFERENCES users (id)
 );

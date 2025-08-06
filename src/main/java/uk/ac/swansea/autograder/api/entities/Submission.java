@@ -22,5 +22,9 @@ public class Submission {
     private Integer grade;
     private Long userId;
 
-    public enum Status {NEW, COMPILE_ERROR, WRONG_ANSWER, ACCEPTED}
+    private Integer totalTestCases;
+    private Integer processedTestCases;
+    private Integer correctTestCases;
+
+    public enum Status {NEW, COMPILE_ERROR, PROCESSING, WRONG_ANSWER, ACCEPTED}
 }

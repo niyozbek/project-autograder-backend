@@ -14,11 +14,9 @@ import uk.ac.swansea.autograder.api.controllers.dto.SubmissionBriefDto;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionDetailDto;
 import uk.ac.swansea.autograder.api.controllers.dto.SubmissionDto;
 import uk.ac.swansea.autograder.api.entities.Submission;
-import uk.ac.swansea.autograder.api.entities.SubmissionTestResult;
 import uk.ac.swansea.autograder.api.services.SubmissionDetailService;
 import uk.ac.swansea.autograder.api.services.SubmissionMainService;
 import uk.ac.swansea.autograder.api.services.SubmissionService;
-import uk.ac.swansea.autograder.api.services.SubmissionTestResultService;
 import uk.ac.swansea.autograder.config.MyUserDetails;
 import uk.ac.swansea.autograder.exceptions.BadRequestException;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
@@ -38,14 +36,15 @@ import java.util.stream.Collectors;
 public class SubmissionsController {
     private final SubmissionService submissionService;
     private final SubmissionDetailService submissionDetailService;
-    private final SubmissionTestResultService submissionTestResultService;
     private final SubmissionMainService submissionMainService;
     private final ModelMapper modelMapper;
 
-    public SubmissionsController(SubmissionService submissionService, SubmissionDetailService submissionDetailService, SubmissionTestResultService submissionTestResultService, SubmissionMainService submissionMainService, ModelMapper modelMapper) {
+    public SubmissionsController(SubmissionService submissionService,
+                                 SubmissionDetailService submissionDetailService,
+                                 SubmissionMainService submissionMainService,
+                                 ModelMapper modelMapper) {
         this.submissionService = submissionService;
         this.submissionDetailService = submissionDetailService;
-        this.submissionTestResultService = submissionTestResultService;
         this.submissionMainService = submissionMainService;
         this.modelMapper = modelMapper;
     }
@@ -87,10 +86,10 @@ public class SubmissionsController {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
         if (problemId != null) {
             submissions = submissionService
-                    .getSubmissionsByProblemIdAnduserId(problemId, user.getId(), pageable);
+                    .getSubmissionsByProblemIdAndUserId(problemId, user.getId(), pageable);
         } else {
             submissions = submissionService
-                    .getSubmissionsByuserId(user.getId(), pageable);
+                    .getSubmissionsByUserId(user.getId(), pageable);
         }
         return modelMapper.map(submissions, new TypeToken<List<SubmissionBriefDto>>() {}.getType());
     }
@@ -193,7 +192,7 @@ public class SubmissionsController {
      */
     @GetMapping("own/{id}/test-result")
     @PreAuthorize("hasAuthority('VIEW_OWN_SUBMISSION')")
-    public SubmissionTestResult getTestResult(Authentication authentication,
+    public Submission getTestResult(Authentication authentication,
                                               @PathVariable Long id)
             throws ResourceNotFoundException, UnauthorizedException {
         MyUserDetails user = (MyUserDetails) authentication.getPrincipal();
@@ -202,6 +201,6 @@ public class SubmissionsController {
         if (!submission.getUserId().equals(user.getId())) {
             throw new UnauthorizedException();
         }
-        return submissionTestResultService.getSubmissionTestResult(id);
+        return submissionService.getSubmission(id);
     }
 }
