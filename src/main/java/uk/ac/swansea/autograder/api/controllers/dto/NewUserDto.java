@@ -5,6 +5,8 @@ import lombok.Data;
 
 import jakarta.validation.constraints.NotBlank;
 
+import java.util.Set;
+
 @Data
 @Builder
 public class NewUserDto {
@@ -14,4 +16,5 @@ public class NewUserDto {
     private String fullname;
     @NotBlank
     private String password;
+    private Set<RoleBriefDto> roles;
 }

@@ -3,15 +3,15 @@ package uk.ac.swansea.autograder.general.services;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
-import uk.ac.swansea.autograder.api.controllers.dto.UserDto;
+import uk.ac.swansea.autograder.api.controllers.dto.*;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 import uk.ac.swansea.autograder.general.entities.Role;
 import uk.ac.swansea.autograder.general.entities.User;
-import uk.ac.swansea.autograder.general.enums.RoleEnum;
 import uk.ac.swansea.autograder.general.repositories.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -25,32 +25,20 @@ public class UserService {
         this.roleService = roleService;
     }
 
-    public List<User> getUsersByRole(RoleEnum roleEnum, Pageable pageable) throws ResourceNotFoundException {
-        Role role = roleService.getRoleByName(roleEnum.name());
-        return userRepository.findAllUsersByRoleId(role.getId(), pageable);
-    }
-
     public List<User> getUsers(Pageable pageable) {
         return userRepository.findAll(pageable).toList();
     }
 
-    public User createUserWithRole(NewUserDto newUserDto, RoleEnum roleEnum) throws ResourceNotFoundException {
-        User user = createUser(newUserDto);
-        Role role = roleService.getRoleByName(roleEnum.name());
-        return assignRole(user, role);
-    }
-
-    public User createUser(NewUserDto newUserDto) {
+    public User createUser(NewUserDto newUserDto) throws ResourceNotFoundException {
         User user = new User();
         user.setUsername(newUserDto.getUsername());
         user.setFullname(newUserDto.getFullname());
         user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
         user.setEnabled(true);
-        return userRepository.save(user);
-    }
-
-    public User assignRole(User user, Role role) {
-        user.getRoles().add(role);
+        for (RoleBriefDto roleBriefDto : newUserDto.getRoles()) {
+            Role role = roleService.getRole(roleBriefDto.getId());
+            user.getRoles().add(role);
+        }
         return userRepository.save(user);
     }
 
@@ -62,6 +50,13 @@ public class UserService {
     public User updateUser(UserDto userDto) throws ResourceNotFoundException {
         User user = getUser(userDto.getId());
         user.setUsername(userDto.getUsername());
+        user.setFullname(userDto.getFullname());
+        Set<Role> roles = new HashSet<>();
+        for (RoleBriefDto roleBriefDto : userDto.getRoles()) {
+            Role role = roleService.getRole(roleBriefDto.getId());
+            roles.add(role);
+        }
+        user.setRoles(roles);
         return userRepository.save(user);
     }
 }

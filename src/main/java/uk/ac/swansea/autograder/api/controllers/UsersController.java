@@ -41,7 +41,7 @@ public class UsersController {
     @PreAuthorize("hasAuthority('VIEW_USER')")
     @Operation(summary = "Get all users", description = "Returns a paginated list of users")
     public List<UserDto> getUsers(@RequestParam(defaultValue = "0") Integer pageNo,
-                                      @RequestParam(defaultValue = "10") Integer pageSize) {
+                                       @RequestParam(defaultValue = "10") Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("id").descending());
         List<User> users = userService.getUsers(pageable);
         return modelMapper.map(users, new TypeToken<List<UserDto>>() {}.getType());
@@ -50,7 +50,7 @@ public class UsersController {
     @PostMapping
     @PreAuthorize("hasAuthority('CREATE_USER')")
     @Operation(summary = "Create new user", description = "Creates a new user account")
-    public UserDto createUser(@Valid @RequestBody NewUserDto newUserDto) {
+    public UserDto createUser(@Valid @RequestBody NewUserDto newUserDto) throws ResourceNotFoundException {
         User user = userService.createUser(newUserDto);
         return modelMapper.map(user, UserDto.class);
     }

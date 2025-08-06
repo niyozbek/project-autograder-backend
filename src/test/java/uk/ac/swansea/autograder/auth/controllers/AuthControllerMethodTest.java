@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,10 +12,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import uk.ac.swansea.autograder.api.controllers.dto.NewUserDto;
+import uk.ac.swansea.autograder.api.controllers.dto.RoleBriefDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginDto;
 import uk.ac.swansea.autograder.auth.controllers.dto.LoginResponseDto;
-import uk.ac.swansea.autograder.general.enums.RoleEnum;
+import uk.ac.swansea.autograder.general.entities.Role;
+import uk.ac.swansea.autograder.general.services.RoleService;
 import uk.ac.swansea.autograder.general.services.UserService;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -37,6 +42,10 @@ class AuthControllerMethodTest {
 
     @Autowired
     private Flyway flyway;
+    @Autowired
+    private RoleService roleService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @BeforeEach
     void setUp() {
@@ -46,10 +55,15 @@ class AuthControllerMethodTest {
 
     @Test
     void adminShouldLoginSuccessfully() throws Exception {
-        // Create Admin
+        // Fetch role
+        Role role = roleService.getRole(1);
+        RoleBriefDto roleBriefDto = modelMapper.map(role, RoleBriefDto.class);
+        // Create user
         NewUserDto newUserDto = NewUserDto.builder()
-                .username("test_user").password("test_pass").build();
-        userService.createUserWithRole(newUserDto, RoleEnum.ADMIN);
+                .username("test_user").password("test_pass")
+                .roles(Set.of(roleBriefDto))
+                .build();
+        userService.createUser(newUserDto);
 
         // Arrange
         LoginDto loginDto = new LoginDto();
@@ -77,10 +91,15 @@ class AuthControllerMethodTest {
 
     @Test
     void lecturerShouldLoginSuccessfully() throws Exception {
-        // Create Lecturer
+        // Fetch role
+        Role role = roleService.getRole(2);
+        RoleBriefDto roleBriefDto = modelMapper.map(role, RoleBriefDto.class);
+        // Create user
         NewUserDto newUserDto = NewUserDto.builder()
-                .username("test_user").password("test_pass").build();
-        userService.createUserWithRole(newUserDto, RoleEnum.LECTURER);
+                .username("test_user").password("test_pass")
+                .roles(Set.of(roleBriefDto))
+                .build();
+        userService.createUser(newUserDto);
 
         // Arrange
         LoginDto loginDto = new LoginDto();
@@ -108,10 +127,15 @@ class AuthControllerMethodTest {
 
     @Test
     void studentShouldLoginSuccessfully() throws Exception {
-        // Create Student
+        // Fetch role
+        Role role = roleService.getRole(3);
+        RoleBriefDto roleBriefDto = modelMapper.map(role, RoleBriefDto.class);
+        // Create user
         NewUserDto newUserDto = NewUserDto.builder()
-                .username("test_user").password("test_pass").build();
-        userService.createUserWithRole(newUserDto, RoleEnum.STUDENT);
+                .username("test_user").password("test_pass")
+                .roles(Set.of(roleBriefDto))
+                .build();
+        userService.createUser(newUserDto);
 
         // Arrange
         LoginDto loginDto = new LoginDto();
