@@ -1,4 +1,5 @@
-[] use username and user→id for getting userDetails in JwtAuthenticationFilter.
+[REDUNDANT] use username and user→id for getting userDetails in JwtAuthenticationFilter.
+    username is unique now
 [] where are the log files?
 [] merge submission_test_results into submissions.
 [] Restrict usage of websocket for students then to specific studentId.
