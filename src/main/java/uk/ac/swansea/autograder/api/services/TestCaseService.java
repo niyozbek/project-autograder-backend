@@ -36,11 +36,6 @@ public class TestCaseService {
         return testCaseRepository.countAllByProblemId(problemId);
     }
 
-    public TestCase getFirstTestCaseByProblemId(Long problemId) throws ResourceNotFoundException {
-        return testCaseRepository.findFirstByProblemId(problemId)
-                .orElseThrow(ResourceNotFoundException::new);
-    }
-
     public List<TestCase> getAllTestCases(Pageable pageable) {
         return testCaseRepository.findAll(pageable).toList();
     }

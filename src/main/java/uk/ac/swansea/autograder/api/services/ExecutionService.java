@@ -27,8 +27,12 @@ public class ExecutionService {
      * @param dto input
      * @return result
      */
-    public ExecutionResultDto submit(ExecutionDto dto) {
+    public ExecutionResultDto submit(ExecutionDto dto) throws Exception {
         ExecutionOutput executionOutput = execute(dto);
+        if (!executionOutput.getStderr().isBlank()) {
+            throw new Exception(executionOutput.getStderr());
+        }
+
         String output = executionOutput.getStdout();
         // remove \n from the result
         if (output.length() > 1) {
@@ -43,31 +47,14 @@ public class ExecutionService {
                 .isValid(Objects.equals(output, expectedOutput)).build();
     }
 
-    /**
-     * You can also execute the code without getting the runtime.
-     * However, this is not recommended since it won't work unless you know the correct version of the runtime
-     *
-     * @param dto input
-     * @return result
-     */
-    public boolean isCompiled(ExecutionDto dto) {
-        ExecutionOutput executionOutput = execute(dto);
-        return executionOutput.getStderr().isBlank();
-    }
-
     private ExecutionOutput execute(ExecutionDto dto) {
         Piston api = Piston.getDefaultApi(); //get the api at https://emkc.org/api/v2/piston
         CodeFile codeFile = new CodeFile(dto.getFilename(), dto.getCode()); //create the codeFile containing the JavaScript code
         ExecutionRequest request = new ExecutionRequest(dto.getLanguage(), dto.getVersion(), codeFile); //create the request using the codeFile, a language and a version
         request.setStdin(dto.getInput());
         // loop until we get the appropriate result, because java code sometimes fails in the remote server
-        ExecutionOutput executionOutput;
-        do {
-            ExecutionResult result = api.execute(request); //execute the request
-            executionOutput = result.getOutput();
-        } while (executionOutput.getCode() != 0 && executionOutput.getSignal() != null);
-
-        return executionOutput;
+        ExecutionResult result = api.execute(request); //execute the request
+        return result.getOutput();
     }
 
     /**

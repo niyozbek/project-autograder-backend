@@ -64,35 +64,10 @@ public class SubmissionMainService {
 
     public void runSubmission(Long submissionId) throws ResourceNotFoundException {
         Submission submission = submissionService.getSubmission(submissionId);
-        verifyCodeCompilation(submission);
         runTestCases(submission);
     }
 
-    private void verifyCodeCompilation(Submission submission) throws ResourceNotFoundException {
-        ExecutionDto executionDto = ExecutionDto.builder()
-                .language(submission.getLanguage())
-                .version(submission.getVersion())
-                .filename(submission.getFilename())
-                .code(submission.getCode())
-                .build();
-        TestCase firstTestCase = testCaseService.getFirstTestCaseByProblemId(submission.getProblemId());
-
-        executionDto.setInput(firstTestCase.getInput());
-        executionDto.setExpectedOutput(firstTestCase.getExpectedOutput());
-
-        boolean isCompiled = executionService.isCompiled(executionDto);
-        if (!isCompiled) {
-            submission.setStatus(Submission.Status.COMPILE_ERROR);
-            submissionService.updateSubmission(submission);
-        }
-    }
-
-    private void runTestCases(Submission submission) throws ResourceNotFoundException {
-        // don't run test cases if the code is not compiled
-        if (submission.getStatus() == Submission.Status.COMPILE_ERROR) {
-            return;
-        }
-
+    private void runTestCases(Submission submission) {
         List<TestCase> testCases = testCaseService.getAllTestCasesByProblemId(submission.getProblemId());
         ExecutionDto executionDto = ExecutionDto.builder()
                 .language(submission.getLanguage())
@@ -100,30 +75,37 @@ public class SubmissionMainService {
                 .filename(submission.getFilename())
                 .code(submission.getCode())
                 .build();
-        Submission submissionTestResult = submissionService.getSubmission(submission.getId());
-        testCases.forEach(testCase -> {
+        for (TestCase testCase : testCases) {
             executionDto.setInput(testCase.getInput());
             executionDto.setExpectedOutput(testCase.getExpectedOutput());
-            ExecutionResultDto executionResultDto = executionService.submit(executionDto);
+            ExecutionResultDto executionResultDto;
+            try {
+                executionResultDto = executionService.submit(executionDto);
+            } catch (Exception e) {
+                submission.setStatus(Submission.Status.COMPILE_ERROR);
+                submission.setOutput(e.getMessage());
+                break; // the loop
+            }
             // save the result to submissionDetails
             submissionDetailService.createSubmissionDetail(submission.getId(),
                     testCase, executionResultDto.getOutput(), executionResultDto.getIsValid());
-            submissionTestResult.setProcessedTestCases(submissionTestResult.getProcessedTestCases() + 1);
+            submission.setProcessedTestCases(submission.getProcessedTestCases() + 1);
             if (executionResultDto.getIsValid()) {
-                submissionTestResult.setCorrectTestCases(submissionTestResult.getCorrectTestCases() + 1);
+                submission.setCorrectTestCases(submission.getCorrectTestCases() + 1);
             }
-            submissionService.updateSubmission(submissionTestResult);
-        });
+        }
+        // save submission
+        submissionService.updateSubmission(submission);
 
-        if (Objects.equals(submissionTestResult.getProcessedTestCases(), submissionTestResult.getTotalTestCases())) {
-            if (Objects.equals(submissionTestResult.getCorrectTestCases(), submissionTestResult.getTotalTestCases())) {
+        if (Objects.equals(submission.getProcessedTestCases(), submission.getTotalTestCases())) {
+            if (Objects.equals(submission.getCorrectTestCases(), submission.getTotalTestCases())) {
                 submission.setStatus(Submission.Status.ACCEPTED);
             } else {
                 submission.setStatus(Submission.Status.WRONG_ANSWER);
             }
             int grade = (int) Math.round(
-                    (double) submissionTestResult.getCorrectTestCases() * 100 /
-                            (double) submissionTestResult.getTotalTestCases());
+                    (double) submission.getCorrectTestCases() * 100 /
+                            (double) submission.getTotalTestCases());
             submission.setGrade(grade);
             submissionService.updateSubmission(submission);
         }
@@ -131,7 +113,7 @@ public class SubmissionMainService {
         // send it to another service
         if (clientEnabled) {
             log.info("sending to client >>");
-            postToClient(submissionTestResult);
+            postToClient(submission);
         }
     }
 

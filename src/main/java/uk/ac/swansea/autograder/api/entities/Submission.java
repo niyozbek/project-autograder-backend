@@ -19,6 +19,7 @@ public class Submission {
     private String filename;
     private String code;
     private Status status;
+    private String output;
     private Integer grade;
     private Long userId;
 

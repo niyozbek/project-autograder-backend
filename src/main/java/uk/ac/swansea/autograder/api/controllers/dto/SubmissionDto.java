@@ -10,4 +10,5 @@ import jakarta.validation.constraints.NotBlank;
 public class SubmissionDto extends SubmissionBriefDto {
     @NotBlank
     private String code;
+    private String output;
 }

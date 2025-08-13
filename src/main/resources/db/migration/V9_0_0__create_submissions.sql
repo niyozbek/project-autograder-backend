@@ -7,6 +7,7 @@ CREATE TABLE submissions
     filename   varchar(256)  NOT NULL,
     code       varchar(2048) NOT NULL,
     status     INT           NOT NULL,
+    output     TEXT          NULL,
     grade      INT           NULL,
     user_id    BIGINT        NOT NULL,
     total_test_cases     INTEGER NULL,

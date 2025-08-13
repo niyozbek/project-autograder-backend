@@ -1,6 +1,7 @@
 # Critical
 [DONE] merge submission_test_results into submissions.
 [TEST] assign-roles route.
+[DONE] display error message for submission
 [] Restrict usage of websocket for students then to specific studentId.
 [] confirm if two websocket connections collide.
 # Optimisation
