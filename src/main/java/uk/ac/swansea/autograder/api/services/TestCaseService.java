@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import uk.ac.swansea.autograder.api.controllers.dto.TestCaseDto;
 import uk.ac.swansea.autograder.api.entities.TestCase;
 import uk.ac.swansea.autograder.api.repositories.TestCaseRepository;
-import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 

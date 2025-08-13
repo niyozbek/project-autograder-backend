@@ -6,7 +6,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import uk.ac.swansea.autograder.api.entities.TestCase;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface TestCaseRepository extends PagingAndSortingRepository<TestCase, Long>, CrudRepository<TestCase, Long> {
     List<TestCase> findAllByProblemId(Long id);
