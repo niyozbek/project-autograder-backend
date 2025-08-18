@@ -64,10 +64,7 @@ public class SubmissionMainService {
 
     public void runSubmission(Long submissionId) throws ResourceNotFoundException {
         Submission submission = submissionService.getSubmission(submissionId);
-        runTestCases(submission);
-    }
 
-    private void runTestCases(Submission submission) {
         List<TestCase> testCases = testCaseService.getAllTestCasesByProblemId(submission.getProblemId());
         ExecutionDto executionDto = ExecutionDto.builder()
                 .language(submission.getLanguage())
@@ -94,21 +91,18 @@ public class SubmissionMainService {
                 submission.setCorrectTestCases(submission.getCorrectTestCases() + 1);
             }
         }
-        // save submission
-        submissionService.updateSubmission(submission);
 
-        if (Objects.equals(submission.getProcessedTestCases(), submission.getTotalTestCases())) {
-            if (Objects.equals(submission.getCorrectTestCases(), submission.getTotalTestCases())) {
-                submission.setStatus(Submission.Status.ACCEPTED);
-            } else {
-                submission.setStatus(Submission.Status.WRONG_ANSWER);
-            }
-            int grade = (int) Math.round(
-                    (double) submission.getCorrectTestCases() * 100 /
-                            (double) submission.getTotalTestCases());
-            submission.setGrade(grade);
-            submissionService.updateSubmission(submission);
+        if (Objects.equals(submission.getCorrectTestCases(), submission.getTotalTestCases())) {
+            submission.setStatus(Submission.Status.ACCEPTED);
+        } else {
+            submission.setStatus(Submission.Status.WRONG_ANSWER);
         }
+        int grade = (int) Math.round(
+                (double) submission.getCorrectTestCases() * 100 /
+                        (double) submission.getTotalTestCases());
+        submission.setGrade(grade);
+
+        submissionService.updateSubmission(submission);
 
         // send it to another service
         if (clientEnabled) {

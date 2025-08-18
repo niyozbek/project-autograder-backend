@@ -52,7 +52,6 @@ public class ExecutionService {
         CodeFile codeFile = new CodeFile(dto.getFilename(), dto.getCode()); //create the codeFile containing the JavaScript code
         ExecutionRequest request = new ExecutionRequest(dto.getLanguage(), dto.getVersion(), codeFile); //create the request using the codeFile, a language and a version
         request.setStdin(dto.getInput());
-        // loop until we get the appropriate result, because java code sometimes fails in the remote server
         ExecutionResult result = api.execute(request); //execute the request
         return result.getOutput();
     }
