@@ -9,11 +9,12 @@ import uk.ac.swansea.autograder.general.entities.User;
 
 import java.util.List;
 
-
 public interface UserRepository extends PagingAndSortingRepository<User, Long>, CrudRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.username = :username")
     User getUserByUsername(@Param("username") String username);
 
     @Query("SELECT u FROM User u LEFT JOIN u.roles role WHERE role.id = ?1")
     List<User> findAllUsersByRoleId(Integer role, Pageable pageable);
+
+    User findByEmail(String email);
 }

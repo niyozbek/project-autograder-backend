@@ -4,7 +4,7 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
 
 # Requirements
 - Docker & Docker Compose
-- Java 17 (Open JDK)
+- Java 21 (Open JDK)
 - Piston (Code Execution Engine - handled via Docker)
 
 # Tech Stack
@@ -15,7 +15,7 @@ Frontend web application is available at https://github.com/niyozbek/project-aut
 - **Execution**: Piston (Self-hosted via Docker)
 
 ## Dev environment set-up (Optional):
-- Install java open-jdk:17
+- Install java open-jdk:21
 - Install gradle:
   `sdk install gradle`
   `gradle --version`
@@ -67,3 +67,13 @@ Three default roles are created via Flyway migrations:
 
 # REST API DOCUMENTATION: 
 http://localhost:8080/swagger-ui/index.html#/
+
+
+# Enable user
+curl -X PATCH http://localhost:8095/api/debug/users/2/enable
+
+# Disable user  
+curl -X PATCH http://localhost:8095/api/debug/users/2/disable
+
+# Check status
+curl http://localhost:8095/api/debug/users/2

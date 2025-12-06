@@ -20,14 +20,15 @@ import uk.ac.swansea.autograder.handlers.JwtAuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(securedEnabled = true)  // replaces @EnableGlobalMethodSecurity
+    @EnableMethodSecurity(securedEnabled = true) // replaces @EnableGlobalMethodSecurity
 public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationEntryPoint unauthorizedHandler;
     private final CustomAccessDeniedHandler accessDeniedHandler;
 
-    public WebSecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler, CustomAccessDeniedHandler accessDeniedHandler) {
+    public WebSecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationEntryPoint unauthorizedHandler,
+            CustomAccessDeniedHandler accessDeniedHandler) {
         this.userDetailsService = userDetailsService;
         this.unauthorizedHandler = unauthorizedHandler;
         this.accessDeniedHandler = accessDeniedHandler;
@@ -67,16 +68,14 @@ public class WebSecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
                                 "/actuator/**"
-                                ).permitAll()
-                        .anyRequest().authenticated()
-                )
+//                                "/api/debug/**" // Debug endpoints - NO AUTH (remove in production!)
+                        ).permitAll()
+                        .anyRequest().authenticated())
                 .exceptionHandling(exc -> exc
                         .authenticationEntryPoint(unauthorizedHandler)
-                        .accessDeniedHandler(accessDeniedHandler)
-                )
+                        .accessDeniedHandler(accessDeniedHandler))
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import uk.ac.swansea.autograder.api.controllers.dto.*;
+import uk.ac.swansea.autograder.auth.services.EmailService;
 import uk.ac.swansea.autograder.exceptions.ResourceNotFoundException;
 import uk.ac.swansea.autograder.general.entities.Role;
 import uk.ac.swansea.autograder.general.entities.User;
@@ -18,11 +19,14 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final EmailService emailService;
 
-    public UserService(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository, RoleService roleService) {
+    public UserService(BCryptPasswordEncoder passwordEncoder, UserRepository userRepository,
+            RoleService roleService, EmailService emailService) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.emailService = emailService;
     }
 
     public List<User> getUsers(Pageable pageable) {
@@ -33,9 +37,23 @@ public class UserService {
         User user = new User();
         user.setUsername(newUserDto.getUsername());
         user.setFullname(newUserDto.getFullname());
+        user.setEmail(newUserDto.getEmail());
         user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
         user.setEnabled(true);
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Send welcome email with credentials
+        try {
+            emailService.sendWelcomeEmail(newUserDto.getEmail(), newUserDto.getUsername(), newUserDto.getPassword());
+            System.out.println("✓ Welcome email sent successfully to: " + newUserDto.getEmail());
+        } catch (Exception e) {
+            // Log full error for debugging
+            System.err.println("✗ Failed to send welcome email to " + newUserDto.getEmail());
+            System.err.println("  Error: " + e.getClass().getName() + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return savedUser;
     }
 
     public User getUser(Long id) throws ResourceNotFoundException {
@@ -47,6 +65,7 @@ public class UserService {
         User user = getUser(userDto.getId());
         user.setUsername(userDto.getUsername());
         user.setFullname(userDto.getFullname());
+        user.setEmail(userDto.getEmail());
         return userRepository.save(user);
     }
 
@@ -60,4 +79,17 @@ public class UserService {
         user.setRoles(roles);
         return userRepository.save(user);
     }
+
+    // public User disableUser(Long id) throws ResourceNotFoundException {
+    // User user = getUser(id);
+    // user.setEnabled(false);
+    // return userRepository.save(user);
+    // }
+    //
+    // public User enableUser(Long id) throws ResourceNotFoundException {
+    // User user = getUser(id);
+    // user.setEnabled(true);
+    // return userRepository.save(user);
+    // }
+
 }

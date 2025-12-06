@@ -18,6 +18,19 @@ import java.util.Map;
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDeniedException(
+            org.springframework.security.access.AccessDeniedException ex) {
+        log.error("Access denied exception: ", ex);
+
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpStatus.FORBIDDEN.value());
+        body.put("error", "Forbidden");
+        body.put("message", "Access Denied");
+
+        return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex) {
         log.error("Unauthorized exception: ", ex);

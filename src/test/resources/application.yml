@@ -29,9 +29,9 @@ spring:
   # Redis Connection Configuration
   data:
     redis:
-      host: ${REDIS_HOST}
-      password: ${REDIS_PASSWORD}
-      port: ${REDIS_PORT}
+      host: ${REDIS_HOST:localhost}
+      password: ${REDIS_PASSWORD:}
+      port: ${REDIS_PORT:6379}
 
 # Application-specific Configuration
 app:
@@ -41,3 +41,13 @@ app:
       secret: ${JWT_SECRET}
   client:
     submissionResultUrl: ${CLIENT_URL}
+  password-reset:
+    tokenExpirationMinutes: 60
+    baseUrl: http://localhost:4200/reset-password
+  mail:
+    from: test@autograder.local
+
+# Mail Configuration (for tests, use mock or disabled)
+spring.mail:
+  host: localhost
+  port: 1025

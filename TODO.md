@@ -22,6 +22,9 @@
   - Make permissions string->importable variable.
 [] api/problems/runtimes - fix permission
 [] Rename method names in roles controller 
+[DONE] - setup/implement email into all users, via this email the user must be able to reset his password if he forgot his password 
+   - Using Mailpit (open-source SMTP) for local/dev, can configure any SMTP for production
+   - Endpoints: POST /auth/forgot-password, POST /auth/reset-password
 # Testing
 [] write more tests, 
     [] integration tests
@@ -50,16 +53,16 @@
 [DONE] Role-based UI access control - only ADMIN sees admin dropdown
 
 # Security & Authorization
-[] Verify all admin routes return 403 (not 500) for unauthorized access
+[DONE] Verify all admin routes return 403 (not 500) for unauthorized access
 [] Add better error messages for permission denied scenarios
-[] Consider adding permission-based route guards beyond role checks
-[] Jwt token experation will make the right callback
-[] isenable column in users table should return access denied 
+[ALREADY DONE] Consider adding permission-based route guards beyond role checks
+[DONE] Jwt token experation will make the right callback
+[DONE] isenable column in users table should return access denied 
 [] endpoint issues need to be fixed  // before this implementation solution must be agreed by the team lead! 
-[] - 
+[DONE] - Update the java from 17 to 21
 
 # Readme
-[] update readme
+[DONE] update readme
 
 # Question from the 
 [] 

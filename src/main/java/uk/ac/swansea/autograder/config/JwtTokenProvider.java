@@ -42,7 +42,7 @@ public class JwtTokenProvider {
 
     public String getUserUsernameFromJWT(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(jwtSecret.getBytes()))
-                .build();    //
+                .build(); //
 
         DecodedJWT jwt = verifier.verify(token);
 
@@ -51,7 +51,7 @@ public class JwtTokenProvider {
 
     public String getUserRoleFromJWT(String token) {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(jwtSecret.getBytes()))
-                .build();    //
+                .build(); //
 
         DecodedJWT jwt = verifier.verify(token);
 
@@ -64,10 +64,11 @@ public class JwtTokenProvider {
                     .build();
             verifier.verify(authToken);
             return true;
-        } catch (JWTDecodeException ex) {
-            log.error("Invalid JWT token");
         } catch (TokenExpiredException ex) {
             log.error("Expired JWT token");
+            throw ex; // Rethrow to allow filter to catch and set attribute
+        } catch (JWTDecodeException ex) {
+            log.error("Invalid JWT token");
         } catch (JWTVerificationException ex) {
             log.error("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {

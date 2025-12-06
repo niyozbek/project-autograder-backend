@@ -13,12 +13,12 @@ services:
       retries: 3
       start_period: 40s
     environment:
-#      APP
+      #      APP
       JWT_EXPIRATION_IN_MINUTES: '${JWT_EXPIRATION_IN_MINUTES}'
-      JWT_SECRET:     '${JWT_SECRET}'
+      JWT_SECRET: '${JWT_SECRET}'
       CLIENT_ENABLED: '${CLIENT_ENABLED}'
-      CLIENT_URL:     '${CLIENT_URL}'
-#      DB
+      CLIENT_URL: '${CLIENT_URL}'
+      #      DB
       DB_HOST: '${DB_HOST}'
       DB_PORT: '${DB_PORT}'
       FORWARD_DB_PORT: '${FORWARD_DB_PORT}'
@@ -26,21 +26,21 @@ services:
       DB_NAME: '${DB_NAME}'
       DB_USERNAME: '${DB_USERNAME}'
       DB_PASSWORD: '${DB_PASSWORD}'
-#      DB_TEST
+      #      DB_TEST
       DB_TEST_HOST: '${DB_TEST_HOST}'
       DB_TEST_PORT: '${DB_TEST_PORT}'
       FORWARD_DB_TEST_PORT: '${FORWARD_DB_TEST_PORT}'
       DB_TEST_DATABASE: '${DB_TEST_DATABASE}'
       DB_TEST_USERNAME: '${DB_TEST_USERNAME}'
       DB_TEST_PASSWORD: '${DB_TEST_PASSWORD}'
-#      REDIS
+      #      REDIS
       REDIS_HOST: '${REDIS_HOST}'
       REDIS_PORT: '${REDIS_PORT}'
       REDIS_PASSWORD: '${REDIS_PASSWORD}'
-#      PISTON
+      #      PISTON
       PISTON_HOST: '${PISTON_HOST}'
       PISTON_PORT: '${PISTON_PORT}'
-#      SPRING_PROFILES_ACTIVE: Local
+    #      SPRING_PROFILES_ACTIVE: Local
     depends_on:
       - pgsql
       - redis
@@ -59,7 +59,7 @@ services:
     networks:
       - 'spring-boot-local'
     healthcheck:
-      test: ['CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE}', '-U', '${DB_USERNAME}']
+      test: [ 'CMD', 'pg_isready', '-q', '-d', '${DB_DATABASE}', '-U', '${DB_USERNAME}' ]
       retries: 3
       timeout: 5s
   pgsql-test:
@@ -104,7 +104,7 @@ services:
       - piston-jobs:/piston/jobs
     privileged: true
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:2000/api/v2/runtimes"]
+      test: [ "CMD", "curl", "-f", "http://localhost:2000/api/v2/runtimes" ]
       interval: 30s
       timeout: 10s
       retries: 3

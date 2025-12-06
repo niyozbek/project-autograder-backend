@@ -9,7 +9,7 @@ group = 'uk.ac.swansea'
 version = '0.0.1-SNAPSHOT'
 
 java {
-    sourceCompatibility = '17'
+    sourceCompatibility = '21'
 }
 
 repositories {
@@ -45,6 +45,8 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.8'
     // websocket
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // email
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     // Apache HttpClient5 for RestClient
     implementation 'org.apache.httpcomponents.client5:httpclient5'
 }
