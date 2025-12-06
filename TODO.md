@@ -1,7 +1,7 @@
 # Critical
 [TEST] assign-roles route.
 [] Restrict usage of websocket for students then to specific studentId with Auth.
-# Optimisation (ALL COMPLETED EXCEPT PISTON INTEGRATION)
+# Optimisation
 [] make sure post returns 201 everywhere and location, following convention
 [] paginated routes return metadata
   - Roles Controller for example returning List with pageNo in the param, return page.
@@ -11,10 +11,8 @@
 [] Rename method names in roles controller 
 # Testing
 [] write more tests, 
-    [] integration tests
-    [] test controllers as unit
-    [] test service layer as unit
-[] test with frontend
+    [] for all service files, write tests to test service layer as unit, with mocks
+    [] write one-two integration unit test for the most complex features in the system, starts from service ends at service, no controller included.
 
 # Security & Authorization
 [] Add better error messages for permission denied scenarios
