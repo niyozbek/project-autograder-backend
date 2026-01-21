@@ -21,15 +21,12 @@ services:
       #      DB
       DB_HOST: '${DB_HOST}'
       DB_PORT: '${DB_PORT}'
-      FORWARD_DB_PORT: '${FORWARD_DB_PORT}'
       DB_DATABASE: '${DB_DATABASE}'
-      DB_NAME: '${DB_NAME}'
       DB_USERNAME: '${DB_USERNAME}'
       DB_PASSWORD: '${DB_PASSWORD}'
       #      DB_TEST
       DB_TEST_HOST: '${DB_TEST_HOST}'
       DB_TEST_PORT: '${DB_TEST_PORT}'
-      FORWARD_DB_TEST_PORT: '${FORWARD_DB_TEST_PORT}'
       DB_TEST_DATABASE: '${DB_TEST_DATABASE}'
       DB_TEST_USERNAME: '${DB_TEST_USERNAME}'
       DB_TEST_PASSWORD: '${DB_TEST_PASSWORD}'
@@ -48,7 +45,7 @@ services:
   pgsql:
     image: postgres:17
     ports:
-      - '${FORWARD_DB_PORT:-5432}:${DB_PORT}'
+      - '${DB_PORT:-5432}:5432'
     environment:
       PGPASSWORD: '${DB_PASSWORD}'
       POSTGRES_DB: '${DB_DATABASE}'
@@ -65,7 +62,7 @@ services:
   pgsql-test:
     image: postgres:17
     ports:
-      - '${FORWARD_DB_TEST_PORT:-5433}:${DB_TEST_PORT}'
+      - '${DB_TEST_PORT:-5433}:5432'
     environment:
       PGPASSWORD: '${DB_TEST_PASSWORD}'
       POSTGRES_DB: '${DB_TEST_DATABASE}'
@@ -82,7 +79,7 @@ services:
   redis:
     image: 'redis:alpine'
     ports:
-      - '${FORWARD_REDIS_PORT:-6379}:6379'
+      - '${REDIS_PORT:-6379}:6379'
     command: [ 'redis-server', '--requirepass', '${REDIS_PASSWORD}' ]
     volumes:
       - 'redis-data-local:/data'
